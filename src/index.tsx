@@ -158,11 +158,24 @@ img{display:block;max-width:100%;}
 }
 
 /* ── ABOUT ── */
-.about-body{
-  max-width:740px;
+.about-2col{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:72px;
+  align-items:start;
+  max-width:960px;
+  margin:0 auto;
+}
+.about-img-wrap{
+  position:sticky;top:88px;
+}
+.about-img-wrap img{
+  width:100%;height:360px;
+  object-fit:cover;object-position:center;
+  display:block;
 }
 .about-body p{
-  font-size:14px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
+  font-size:14px;font-weight:400;color:#333;line-height:2.3;margin-bottom:0;
 }
 .about-body p + p{
   margin-top:20px;
@@ -172,7 +185,7 @@ img{display:block;max-width:100%;}
   color:#444;margin-top:52px;margin-bottom:10px;line-height:2.0;
 }
 .about-body .en-sub{
-  font-size:13px;font-weight:400;color:#888;line-height:2.0;max-width:640px;
+  font-size:13px;font-weight:400;color:#888;line-height:2.0;
   margin-top:4px;
 }
 .skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px;}
@@ -422,6 +435,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
+  .about-2col{grid-template-columns:200px 1fr;gap:36px;max-width:100%;}
+  .about-img-wrap img{height:260px;}
   .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
   .sns-item{border-bottom:1px solid #ccc;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
@@ -433,6 +448,9 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 }
 @media(max-width:640px){
   .sec{padding:56px 0;}
+  .about-2col{grid-template-columns:1fr;gap:28px;max-width:100%;}
+  .about-img-wrap{position:static;}
+  .about-img-wrap img{height:220px;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
@@ -612,7 +630,14 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 <section id="about" style="background:#f0eeeb;">
   <div class="page sec fade">
     <p class="sec-label">About</p>
-    <div class="about-section">
+    <div class="about-2col">
+
+      <!-- 左列: 写真 -->
+      <div class="about-img-wrap">
+        <img src="/about/about-photo.jpg" alt="Field recording in nature">
+      </div>
+
+      <!-- 右列: テキスト -->
       <div class="about-body">
         <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
         通常のBGM制作・効果音制作はもちろん、<br>
@@ -632,6 +657,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
           <span class="skill-tag">Field Recording</span>
         </div>
       </div>
+
     </div>
   </div>
 </section>

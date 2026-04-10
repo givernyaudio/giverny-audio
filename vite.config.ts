@@ -13,7 +13,7 @@ function patchRoutes(): Plugin {
       const routes = {
         version: 1,
         include: ['/*'],
-        exclude: ['/static/*', '/hero/*', '/favicon.svg', '/favicon.ico']
+        exclude: ['/static/*', '/hero/*', '/about/*', '/favicon.svg', '/favicon.ico']
       }
       writeFileSync(
         join(process.cwd(), 'dist/_routes.json'),
