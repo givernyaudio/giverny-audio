@@ -710,12 +710,37 @@ img{display:block;max-width:100%;}
 .eq-grid{
   display:block;
 }
-.eq-sec{margin-bottom:40px;}
+.eq-sec{margin-bottom:8px;}
+.eq-toggle{
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;
+  border:none;
+  border-bottom:1px solid #ccc;
+  padding:14px 18px;
+  cursor:pointer;
+  text-align:left;
+  transition:background .15s;
+}
+.eq-toggle:hover{background:#f7f5f0;}
 .eq-cat{
   font-size:10px;letter-spacing:.24em;text-transform:uppercase;
-  color:#888;padding-bottom:10px;
-  border-bottom:1px solid #ccc;margin-bottom:1px;
+  color:#888;
+  margin:0;
 }
+.eq-arrow{
+  font-size:11px;color:#bbb;
+  transition:transform .22s;
+  flex-shrink:0;
+  margin-left:12px;
+}
+.eq-sec.open .eq-arrow{transform:rotate(180deg);}
+.eq-body{
+  overflow:hidden;
+  max-height:0;
+  transition:max-height .28s ease;
+}
+.eq-sec.open .eq-body{max-height:2000px;}
 .eq-tbl{width:100%;border-collapse:collapse;}
 .eq-tbl tr{background:#fff;border-bottom:1px solid #e8e6e1;}
 .eq-tbl tr:hover{background:#faf9f6;}
@@ -1262,18 +1287,31 @@ function renderEquipment() {
   return `
 <p class="sec-label">Equipment</p>
 <div class="eq-grid">
-${EQUIPMENT_LIST.map(sec => `
-  <div class="eq-sec">
-    <p class="eq-cat">${sec.cat}</p>
-    <table class="eq-tbl">
-      ${sec.items.map(item => `
-      <tr>
-        <td class="eq-maker">${item.maker}</td>
-        <td class="eq-name">${item.name}</td>
-      </tr>`).join('')}
-    </table>
+${EQUIPMENT_LIST.map((sec, i) => `
+  <div class="eq-sec${i === 0 ? ' open' : ''}" id="eq-${i}">
+    <button class="eq-toggle" onclick="eqToggle(${i})" aria-expanded="${i === 0}">
+      <span class="eq-cat">${sec.cat}</span>
+      <span class="eq-arrow">▼</span>
+    </button>
+    <div class="eq-body">
+      <table class="eq-tbl">
+        ${sec.items.map(item => `
+        <tr>
+          <td class="eq-maker">${item.maker}</td>
+          <td class="eq-name">${item.name}</td>
+        </tr>`).join('')}
+      </table>
+    </div>
   </div>`).join('')}
-</div>`
+</div>
+<script>
+function eqToggle(i){
+  const sec = document.getElementById('eq-'+i);
+  const isOpen = sec.classList.contains('open');
+  sec.classList.toggle('open', !isOpen);
+  sec.querySelector('.eq-toggle').setAttribute('aria-expanded', String(!isOpen));
+}
+</script>`
 }
 
 // ─────────────────────────────
