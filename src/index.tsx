@@ -668,9 +668,7 @@ img{display:block;max-width:100%;}
 
 /* ── EQUIPMENT ── */
 .eq-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:0 48px;
+  display:block;
 }
 .eq-sec{margin-bottom:40px;}
 .eq-cat{
@@ -757,7 +755,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wthumb{width:120px;height:68px;min-width:120px;max-width:120px;min-height:68px;max-height:68px;}
   .wthumb img{width:100%;height:100%;}
   .wm{display:none;overflow:hidden;width:0;padding:0;}
-  .eq-grid{grid-template-columns:1fr;gap:0;}
 }
 @media(max-width:640px){
   .sec{padding:56px 0;}
@@ -780,7 +777,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .contact-box{padding:32px 20px;}
   .tab-bar-in{padding:0 16px;}
   .tab-btn{padding:0 14px;font-size:10px;}
-  .eq-grid{grid-template-columns:1fr;}
+
 
 }
 `
