@@ -829,13 +829,11 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
         通常のBGM制作・効果音制作はもちろん、<br>
         豊富なゲーム制作経験を活かし、多様なオーディオ制作（BGM・SE・サウンドデザイン・ボイス収録）を提供します。</p>
-        <p>フィールドレコーディング・アダプティブBGM設計・Wwise / FMOD 実装サポートまで、<br>
-        ゲームオーディオをワンストップで対応可能。<br>
-        インディーゲームから商業タイトルまで、プレイヤーを没入させるサウンドを制作します。</p>
+        <p>ゲーム・イマーシブコンテンツを横断する制作実績をもとに、<br>
+        プレイヤーと観客を没入させるサウンドを生み出します。</p>
         <p class="en-catch">Game Sound To Realize Your Vision.<br>Fulfills All Your Audio Needs.</p>
-        <p class="en-sub">Solo game audio studio specializing in BGM composition, sound effects, sound design, and audio implementation. Providing comprehensive audio production services from indie to commercial game titles using Ableton Live, Reaper, Wwise, and field recording equipment.</p>
+        <p class="en-sub">With a track record spanning games and immersive content, we craft sound that draws players and audiences deeper into the experience. From BGM and sound effects to voice direction and audio implementation.</p>
         <div class="skill-tags">
-          <span class="skill-tag">Ableton Live</span>
           <span class="skill-tag">Reaper</span>
           <span class="skill-tag">Wwise</span>
           <span class="skill-tag">FMOD Studio</span>
@@ -930,8 +928,8 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
           <p class="svc-ja">サウンドデザイン</p>
         </div>
         <div class="svc-right">
-          ゲーム、映画、アニメ、PVなどの効果音を制作。<br>
-          ハイエンドクラスのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
+          ゲーム、映像、PVなどの効果音を制作。<br>
+          ハイエンドのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
           Unity/Unreal, Wwise/ADX2の実装実績があり、ゲームエンジンやミドルウェア組み込みも幅広く対応可能。
         </div>
       </div>
@@ -942,7 +940,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         </div>
         <div class="svc-right">
           iZotope RXによるノイズ除去・整音からゲームエンジン・ミドルウェアへの実装まで一貫して対応いたします。<br>
-          また、キャストやスタジオのブッキング、ボイスディレクションも対応が可能ですので、音声収録の全てをご依頼いただく事が可能です。
+          また、キャストやスタジオのブッキング、ボイスディレクションも対応が可能ですので、音声収録の全てをお任せいただく事が可能。
         </div>
       </div>
       <div class="svc-row">
@@ -952,7 +950,8 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         </div>
         <div class="svc-right">
           BOOTH / itch.io / Gumroad にて効果音素材や環境音、IRデータを販売中。<br>
-          高品質のマイク/レコーダーで録音した効果音素材、サラウンド・Ambisonicsで録音された環境音、高品質の2ndAmbisonicsで収集したイマーシブ対応のIRデータです。<br>
+          ハイエンドマイク/レコーダーで録音した高品質な効果音素材。<br>
+          サラウンド・Ambisonicsで録音された環境音、イマーシブ対応のIRデータも取り揃えています。<br>
           詳しくは、<a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
         </div>
       </div>
