@@ -145,10 +145,10 @@ img{display:block;max-width:100%;}
 /* ── SECTION ── */
 .sec{padding:88px 0;}
 .sec-label{
-  font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  font-size:18px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
   color:#1a1a1a;
   border-bottom:2px solid #999;
-  padding-bottom:14px;
+  padding-bottom:16px;
   margin-bottom:52px;
 }
 .sec-title{
@@ -162,7 +162,7 @@ img{display:block;max-width:100%;}
   max-width:740px;
 }
 .about-body p{
-  font-size:15px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
+  font-size:20px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
 }
 .about-body p + p{
   margin-top:20px;
