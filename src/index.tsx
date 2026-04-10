@@ -162,7 +162,7 @@ img{display:block;max-width:100%;}
   max-width:740px;
 }
 .about-body p{
-  font-size:20px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
+  font-size:14px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
 }
 .about-body p + p{
   margin-top:20px;
