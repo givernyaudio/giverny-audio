@@ -826,11 +826,10 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 
       <!-- 右列: テキスト -->
       <div class="about-body">
-        <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
-        通常のBGM制作・効果音制作はもちろん、<br>
-        豊富なゲーム制作経験を活かし、多様なオーディオ制作（BGM・SE・サウンドデザイン・ボイス収録）を提供します。</p>
-        <p>ゲーム・イマーシブコンテンツを横断する制作実績をもとに、<br>
-        プレイヤーと観客を没入させるサウンドを生み出します。</p>
+        <p>Giverny Audio はゲームオーディオ / サウンドデザインを専門とする制作スタジオです。<br>
+        サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。</p>
+        <p>専門的な知識と積み重ねてきた技術を活かし、クライアントのビジョンに寄り添いながら、質の高いオーディオを提供することを大切にしています。<br>
+        ゲームからイマーシブコンテンツまで、幅広い分野での制作実績をもとに、プレイヤーや体験者をその世界へ自然と引き込むサウンドをお届けします。</p>
         <p class="en-catch">Game Sound To Realize Your Vision.<br>Fulfills All Your Audio Needs.</p>
         <p class="en-sub">With a track record spanning games and immersive content, we craft sound that draws players and audiences deeper into the experience. From BGM and sound effects to voice direction and audio implementation.</p>
         <div class="skill-tags">
