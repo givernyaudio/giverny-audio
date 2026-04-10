@@ -86,6 +86,63 @@ const PICKUP_ITEMS = [
 ]
 
 // ═══════════════════════════════════════════════════════════════════════
+//  ★ Equipment（機材）一覧 設定
+//  ★ カテゴリを追加・削除・並び替えする場合はここを編集してください
+//  ★ 各フィールド:
+//     cat   = カテゴリ名（セクション見出し）
+//     items = 機材の配列。各機材は以下のフィールドを持つ:
+//       name   = 機材名
+//       maker  = メーカー名（右列に小さく表示）
+//       note   = 用途メモ（任意。空文字 '' にすると非表示）
+// ═══════════════════════════════════════════════════════════════════════
+const EQUIPMENT_LIST = [
+  {
+    cat: 'DAW / Software',
+    items: [
+      { name: 'Ableton Live 12 Suite', maker: 'Ableton',               note: 'BGM制作・電子音楽' },
+      { name: 'Reaper 7',              maker: 'Cockos',                 note: 'SE制作・整音' },
+      { name: 'Wwise 2023',            maker: 'Audiokinetic',           note: 'ゲームエンジン連携' },
+      { name: 'FMOD Studio',           maker: 'Firelight Technologies', note: 'インタラクティブオーディオ' },
+      { name: 'iZotope RX 11',         maker: 'iZotope',                note: 'ノイズ除去・音声修復' },
+    ],
+  },
+  {
+    cat: 'Plugins / Instruments',
+    items: [
+      { name: 'Spitfire BBCSO Pro',  maker: 'Spitfire Audio',       note: 'オーケストラ音源' },
+      { name: 'Kontakt 7',           maker: 'Native Instruments',   note: 'サンプラー' },
+      { name: 'Serum',               maker: 'Xfer Records',         note: 'シンセサイザー' },
+      { name: 'Omnisphere 3',        maker: 'Spectrasonics',        note: 'シンセ・テクスチャー' },
+      { name: 'FabFilter Pro Bundle',maker: 'FabFilter',            note: 'EQ / コンプ / リミッター' },
+      { name: 'Waves SSL Bundle',    maker: 'Waves',                note: 'チャンネルストリップ' },
+      { name: 'Soundtoys 5',         maker: 'Soundtoys',            note: 'エフェクト群' },
+      { name: 'Hybrid Keys',         maker: 'Spitfire Audio',       note: 'ピアノ・キーボード' },
+    ],
+  },
+  {
+    cat: 'Hardware',
+    items: [
+      { name: 'MacBook Pro 16" M3 Max',   maker: 'Apple',            note: 'メインPC' },
+      { name: 'Apollo Twin X Duo',        maker: 'Universal Audio',  note: 'オーディオインターフェース' },
+      { name: 'Neumann TLM 103',          maker: 'Neumann',          note: 'コンデンサーマイク' },
+      { name: 'Genelec 8341A (Pair)',      maker: 'Genelec',          note: 'モニタースピーカー' },
+      { name: 'Sony MDR-M1ST',            maker: 'Sony',             note: 'モニターヘッドフォン' },
+      { name: 'Arturia KeyLab 88 MkII',   maker: 'Arturia',          note: 'MIDIキーボード' },
+      { name: 'Arturia DrumBrute Impact', maker: 'Arturia',          note: 'ドラムマシン' },
+    ],
+  },
+  {
+    cat: 'Field Recording',
+    items: [
+      { name: 'Zoom H6',            maker: 'Zoom',             note: '6ch フィールドレコーダー' },
+      { name: 'Sony PCM-D100',      maker: 'Sony',             note: 'ハイレゾフィールドレコーダー' },
+      { name: 'Sennheiser MKH 416', maker: 'Sennheiser',       note: 'ショットガンマイク' },
+      { name: 'DPA 4060 (Pair)',     maker: 'DPA Microphones',  note: 'バイノーラルマイク' },
+    ],
+  },
+]
+
+// ═══════════════════════════════════════════════════════════════════════
 //  ★ Works（実績）一覧 設定
 //  ★ 新しい実績を追加する場合: 配列の先頭に追加してください（新しいものが上に表示されます）
 //  ★ 各フィールド:
@@ -610,7 +667,12 @@ img{display:block;max-width:100%;}
 }
 
 /* ── EQUIPMENT ── */
-.eq-sec{margin-bottom:48px;}
+.eq-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 48px;
+}
+.eq-sec{margin-bottom:40px;}
 .eq-cat{
   font-size:10px;letter-spacing:.24em;text-transform:uppercase;
   color:#888;padding-bottom:10px;
@@ -619,10 +681,15 @@ img{display:block;max-width:100%;}
 .eq-tbl{width:100%;border-collapse:collapse;}
 .eq-tbl tr{background:#fff;border-bottom:1px solid #e8e6e1;}
 .eq-tbl tr:hover{background:#faf9f6;}
-.eq-tbl td{padding:13px 18px;font-size:13px;}
-.eq-tbl td:first-child{color:#333;font-weight:400;width:280px;border-right:1px solid #e8e6e1;}
-.eq-tbl td:nth-child(2){color:#888;width:200px;border-right:1px solid #e8e6e1;font-size:12px;}
-.eq-tbl td:last-child{color:#aaa;font-size:11px;letter-spacing:.06em;}
+.eq-tbl td{padding:11px 16px;font-size:13px;vertical-align:top;}
+.eq-name{color:#333;font-weight:400;width:55%;}
+.eq-maker{color:#888;font-size:12px;width:45%;}
+.eq-note{
+  display:block;
+  font-size:10px;color:#aaa;
+  letter-spacing:.04em;
+  margin-top:2px;
+}
 
 /* ── STORE ── */
 .store-plats{
@@ -696,6 +763,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wthumb{width:120px;height:68px;min-width:120px;max-width:120px;min-height:68px;max-height:68px;}
   .wthumb img{width:100%;height:100%;}
   .wm{display:none;overflow:hidden;width:0;padding:0;}
+  .eq-grid{grid-template-columns:1fr;gap:0;}
 }
 @media(max-width:640px){
   .sec{padding:56px 0;}
@@ -718,7 +786,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .contact-box{padding:32px 20px;}
   .tab-bar-in{padding:0 16px;}
   .tab-btn{padding:0 14px;font-size:10px;}
-  .eq-tbl td:nth-child(2){display:none;}
+  .eq-grid{grid-template-columns:1fr;}
+  .eq-note{display:none;}
 }
 `
 
@@ -1161,53 +1230,18 @@ function fw(y,b){
 function renderEquipment() {
   return `
 <p class="sec-label">Equipment</p>
-
-<div class="eq-sec">
-  <p class="eq-cat">DAW / Software</p>
-  <table class="eq-tbl">
-    <tr><td>Ableton Live 12 Suite</td><td>Ableton</td><td>BGM制作・電子音楽</td></tr>
-    <tr><td>Reaper 7</td><td>Cockos</td><td>SE制作・整音</td></tr>
-    <tr><td>Wwise 2023</td><td>Audiokinetic</td><td>ゲームエンジン連携</td></tr>
-    <tr><td>FMOD Studio</td><td>Firelight Technologies</td><td>インタラクティブオーディオ</td></tr>
-    <tr><td>iZotope RX 11</td><td>iZotope</td><td>ノイズ除去・音声修復</td></tr>
-  </table>
-</div>
-
-<div class="eq-sec">
-  <p class="eq-cat">Plugins / Instruments</p>
-  <table class="eq-tbl">
-    <tr><td>Spitfire BBCSO Pro</td><td>Spitfire Audio</td><td>オーケストラ音源</td></tr>
-    <tr><td>Kontakt 7</td><td>Native Instruments</td><td>サンプラー</td></tr>
-    <tr><td>Serum</td><td>Xfer Records</td><td>シンセサイザー</td></tr>
-    <tr><td>Omnisphere 3</td><td>Spectrasonics</td><td>シンセ・テクスチャー</td></tr>
-    <tr><td>FabFilter Pro Bundle</td><td>FabFilter</td><td>EQ / コンプ / リミッター</td></tr>
-    <tr><td>Waves SSL Bundle</td><td>Waves</td><td>チャンネルストリップ</td></tr>
-    <tr><td>Soundtoys 5</td><td>Soundtoys</td><td>エフェクト群</td></tr>
-    <tr><td>Hybrid Keys</td><td>Spitfire Audio</td><td>ピアノ・キーボード</td></tr>
-  </table>
-</div>
-
-<div class="eq-sec">
-  <p class="eq-cat">Hardware</p>
-  <table class="eq-tbl">
-    <tr><td>MacBook Pro 16" M3 Max</td><td>Apple</td><td>メインPC</td></tr>
-    <tr><td>Apollo Twin X Duo</td><td>Universal Audio</td><td>オーディオインターフェース</td></tr>
-    <tr><td>Neumann TLM 103</td><td>Neumann</td><td>コンデンサーマイク</td></tr>
-    <tr><td>Genelec 8341A (Pair)</td><td>Genelec</td><td>モニタースピーカー</td></tr>
-    <tr><td>Sony MDR-M1ST</td><td>Sony</td><td>モニターヘッドフォン</td></tr>
-    <tr><td>Arturia KeyLab 88 MkII</td><td>Arturia</td><td>MIDIキーボード</td></tr>
-    <tr><td>Arturia DrumBrute Impact</td><td>Arturia</td><td>ドラムマシン</td></tr>
-  </table>
-</div>
-
-<div class="eq-sec">
-  <p class="eq-cat">Field Recording</p>
-  <table class="eq-tbl">
-    <tr><td>Zoom H6</td><td>Zoom</td><td>6ch フィールドレコーダー</td></tr>
-    <tr><td>Sony PCM-D100</td><td>Sony</td><td>ハイレゾフィールドレコーダー</td></tr>
-    <tr><td>Sennheiser MKH 416</td><td>Sennheiser</td><td>ショットガンマイク</td></tr>
-    <tr><td>DPA 4060 (Pair)</td><td>DPA Microphones</td><td>バイノーラルマイク</td></tr>
-  </table>
+<div class="eq-grid">
+${EQUIPMENT_LIST.map(sec => `
+  <div class="eq-sec">
+    <p class="eq-cat">${sec.cat}</p>
+    <table class="eq-tbl">
+      ${sec.items.map(item => `
+      <tr>
+        <td class="eq-name">${item.name}</td>
+        <td class="eq-maker">${item.maker}${item.note ? `<span class="eq-note">${item.note}</span>` : ''}</td>
+      </tr>`).join('')}
+    </table>
+  </div>`).join('')}
 </div>`
 }
 
