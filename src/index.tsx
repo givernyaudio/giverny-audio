@@ -681,15 +681,9 @@ img{display:block;max-width:100%;}
 .eq-tbl{width:100%;border-collapse:collapse;}
 .eq-tbl tr{background:#fff;border-bottom:1px solid #e8e6e1;}
 .eq-tbl tr:hover{background:#faf9f6;}
-.eq-tbl td{padding:11px 16px;font-size:13px;vertical-align:top;}
-.eq-name{color:#333;font-weight:400;width:55%;}
-.eq-maker{color:#888;font-size:12px;width:45%;}
-.eq-note{
-  display:block;
-  font-size:10px;color:#aaa;
-  letter-spacing:.04em;
-  margin-top:2px;
-}
+.eq-tbl td{padding:11px 16px;font-size:13px;vertical-align:middle;}
+.eq-maker{color:#aaa;font-size:11px;width:38%;letter-spacing:.04em;}
+.eq-name{color:#333;font-weight:400;width:62%;}
 
 /* ── STORE ── */
 .store-plats{
@@ -787,7 +781,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .tab-bar-in{padding:0 16px;}
   .tab-btn{padding:0 14px;font-size:10px;}
   .eq-grid{grid-template-columns:1fr;}
-  .eq-note{display:none;}
+
 }
 `
 
@@ -1237,8 +1231,8 @@ ${EQUIPMENT_LIST.map(sec => `
     <table class="eq-tbl">
       ${sec.items.map(item => `
       <tr>
+        <td class="eq-maker">${item.maker}</td>
         <td class="eq-name">${item.name}</td>
-        <td class="eq-maker">${item.maker}${item.note ? `<span class="eq-note">${item.note}</span>` : ''}</td>
       </tr>`).join('')}
     </table>
   </div>`).join('')}
