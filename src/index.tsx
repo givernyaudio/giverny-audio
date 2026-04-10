@@ -4,7 +4,7 @@ const app = new Hono()
 
 app.get('/favicon.svg', (c) => {
   c.header('Content-Type', 'image/svg+xml')
-  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="12" fill="#ffffff" font-family="sans-serif" font-weight="bold">SF</text></svg>`)
+  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="10" fill="#ffffff" font-family="sans-serif" font-weight="bold">GA</text></svg>`)
 })
 app.get('/favicon.ico', (c) => c.redirect('/favicon.svg', 301))
 
@@ -429,7 +429,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
-  .hero-img,.hero-bg{height:380px;}
+  #hero-slides{height:380px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr;}
   .pickup-grid{grid-template-columns:1fr;}
@@ -461,8 +461,8 @@ function layout(title: string, body: string) {
 <header id="hd">
   <div class="hd-in">
     <a href="/" class="logo">
-      SoundForge
-      <span class="logo-sub">Game Audio<br>Production</span>
+      Giverny Audio
+      <span class="logo-sub">Game Audio<br>Sound Design</span>
     </a>
     <nav><ul class="gnav">
       <li><a href="/#about">About</a></li>
@@ -494,7 +494,7 @@ ${body}
 
 <footer id="ft">
   <div class="ft-in">
-    <p class="ft-copy">© 2024 SoundForge. All Rights Reserved.</p>
+    <p class="ft-copy">© 2024 Giverny Audio. All Rights Reserved.</p>
     <nav><ul class="ft-nav">
       <li><a href="/#about">About</a></li>
       <li><a href="/#services">Services</a></li>
@@ -527,23 +527,84 @@ document.querySelectorAll('a[href^="/#"]').forEach(a=>{
 // ─────────────────────────────
 function renderHome() {
   const body = `
-<!-- HERO -->
+<!-- HERO SLIDESHOW
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  画像の追加・差し替え方法：
+    1. 画像ファイルを public/hero/ フォルダに置く（例: hero-02.jpg）
+    2. 下記 JS の HERO_IMAGES 配列にパスを追加するだけ
+       例: const HERO_IMAGES = ['/hero/hero-01.jpg', '/hero/hero-02.jpg'];
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 <div class="hero" style="padding-top:56px;">
-  <!-- 背景：スタジオ雰囲気の暗いグラデーション -->
-  <div class="hero-bg">
-    <!-- グリッドライン装飾 -->
-    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:80px 80px;"></div>
-    <!-- 機材シルエット風の装飾 -->
-    <div style="position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(0deg,rgba(0,0,0,.5) 0%,transparent 100%);"></div>
-    <div class="hero-copy">
-      <p>BGM Composition</p>
-      <p>Sound Effects</p>
-      <p>Sound Design</p>
-      <p>Audio Implementation</p>
-      <p style="margin-top:8px;font-size:clamp(11px,1.8vw,15px);opacity:.65;letter-spacing:.2em;text-transform:uppercase;">Game Audio Production — Solo Studio</p>
+  <div id="hero-slides" style="position:relative;width:100%;height:520px;overflow:hidden;background:#1a1a1a;">
+    <!-- スライド（JSで生成） -->
+    <!-- テキストオーバーレイ -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.28) 0%,rgba(0,0,0,.52) 100%);z-index:2;"></div>
+    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:0;">
+      <p style="font-size:clamp(18px,3.5vw,38px);font-weight:300;color:#fff;letter-spacing:.05em;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
+      <p style="font-size:clamp(11px,1.6vw,16px);font-weight:300;color:rgba(255,255,255,.72);letter-spacing:.18em;margin-top:18px;text-shadow:0 1px 6px rgba(0,0,0,.5);">Giverny Audio &mdash; Game Audio / Sound Design</p>
     </div>
+    <!-- スライドインジケーター -->
+    <div id="hero-dots" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
   </div>
 </div>
+
+<script>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO_IMAGES：差し替え・追加はここだけ編集
+   public/hero/ に画像を置いてパスを追加するだけでOK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const HERO_IMAGES = [
+  '/hero/hero-01.jpg',
+  // '/hero/hero-02.jpg',   ← 追加例
+  // '/hero/hero-03.jpg',
+];
+const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
+
+(function(){
+  const wrap = document.getElementById('hero-slides');
+  const dots = document.getElementById('hero-dots');
+  if(!wrap || HERO_IMAGES.length === 0) return;
+
+  // スライド要素を生成
+  HERO_IMAGES.forEach((src, i) => {
+    const el = document.createElement('div');
+    el.style.cssText = [
+      'position:absolute','inset:0',
+      'background-size:cover','background-position:center',
+      'background-repeat:no-repeat',
+      'transition:opacity 1.4s ease',
+      'opacity:' + (i === 0 ? '1' : '0'),
+      'z-index:1'
+    ].join(';');
+    el.style.backgroundImage = 'url(' + src + ')';
+    el.dataset.idx = String(i);
+    wrap.prepend(el);
+
+    // ドット
+    if(HERO_IMAGES.length > 1){
+      const d = document.createElement('div');
+      d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,' + (i===0?'0.9':'0.35') + ');cursor:pointer;transition:background .3s;';
+      d.addEventListener('click', () => goTo(i));
+      dots.appendChild(d);
+    }
+  });
+
+  let cur = 0;
+  function goTo(next){
+    const slides = wrap.querySelectorAll('[data-idx]');
+    const dotEls = dots.querySelectorAll('div');
+    slides[cur].style.opacity = '0';
+    if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.35)';
+    cur = next;
+    slides[cur].style.opacity = '1';
+    if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.9)';
+  }
+
+  if(HERO_IMAGES.length > 1){
+    setInterval(() => goTo((cur + 1) % HERO_IMAGES.length), HERO_INTERVAL);
+  }
+})();
+</script>
 
 <!-- ABOUT -->
 <section id="about" style="background:#f0eeeb;">
@@ -562,7 +623,7 @@ function renderHome() {
         </div>
       </div>
       <div class="about-body">
-        <p>SoundForge はゲームオーディオ専門の個人制作スタジオです。<br>
+        <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
         通常のBGM制作・効果音制作はもちろん、<br>
         豊富なゲーム制作経験を活かし、多様なオーディオ制作（BGM・SE・サウンドデザイン・ボイス収録）を提供します。</p>
         <p>フィールドレコーディング・アダプティブBGM設計・Wwise / FMOD 実装サポートまで、<br>
@@ -595,7 +656,7 @@ function renderHome() {
         <div class="sns-icon">𝕏</div>
         <div>
           <p class="sns-name">X / Twitter</p>
-          <p class="sns-handle">@soundforge_game</p>
+          <p class="sns-handle">@giverny_audio</p>
           <p class="sns-note">制作進捗・新作情報 随時更新</p>
         </div>
       </a>
@@ -603,7 +664,7 @@ function renderHome() {
         <div class="sns-icon">▶</div>
         <div>
           <p class="sns-name">YouTube</p>
-          <p class="sns-handle">SoundForge Channel</p>
+          <p class="sns-handle">Giverny Audio Channel</p>
           <p class="sns-note">楽曲試聴・メイキング動画</p>
         </div>
       </a>
@@ -611,7 +672,7 @@ function renderHome() {
         <div class="sns-icon">◉</div>
         <div>
           <p class="sns-name">SoundCloud</p>
-          <p class="sns-handle">soundforge-music</p>
+          <p class="sns-handle">giverny-audio</p>
           <p class="sns-note">楽曲ポートフォリオ</p>
         </div>
       </a>
@@ -619,7 +680,7 @@ function renderHome() {
         <div class="sns-icon">⊡</div>
         <div>
           <p class="sns-name">BOOTH</p>
-          <p class="sns-handle">soundforge.booth.pm</p>
+          <p class="sns-handle">givernyaudio.booth.pm</p>
           <p class="sns-note">BGM・SE素材パック販売</p>
         </div>
       </a>
@@ -627,7 +688,7 @@ function renderHome() {
         <div class="sns-icon">⊕</div>
         <div>
           <p class="sns-name">itch.io</p>
-          <p class="sns-handle">soundforge.itch.io</p>
+          <p class="sns-handle">givernyaudio.itch.io</p>
           <p class="sns-note">ゲーム向け素材販売</p>
         </div>
       </a>
@@ -635,7 +696,7 @@ function renderHome() {
         <div class="sns-icon">◻</div>
         <div>
           <p class="sns-name">Instagram</p>
-          <p class="sns-handle">@soundforge_game</p>
+          <p class="sns-handle">@giverny_audio</p>
           <p class="sns-note">制作風景・機材紹介</p>
         </div>
       </a>
@@ -752,14 +813,14 @@ function renderHome() {
         通常2〜3営業日以内にご返信いたします。
       </p>
       <div class="contact-btns">
-        <a href="mailto:info@soundforge.jp" class="btn-main">メールで問い合わせる</a>
+        <a href="mailto:info@givernyaudio.jp" class="btn-main">メールで問い合わせる</a>
         <a href="https://twitter.com/" target="_blank" rel="noopener" class="btn-sub">X / Twitter DM</a>
       </div>
     </div>
   </div>
 </section>
 `
-  return layout('SoundForge | Game Audio Production', body)
+  return layout('Giverny Audio | Game Audio / Sound Design', body)
 }
 
 // ─────────────────────────────
@@ -772,9 +833,9 @@ function renderTabPage(tab: string) {
     { id: 'store', label: 'Store' },
   ]
   const titleMap: Record<string, string> = {
-    works: 'Works | SoundForge',
-    equipment: 'Equipment | SoundForge',
-    store: 'Store | SoundForge',
+    works: 'Works | Giverny Audio',
+    equipment: 'Equipment | Giverny Audio',
+    store: 'Store | Giverny Audio',
   }
   let content = ''
   if (tab === 'works') content = renderWorks()
@@ -795,7 +856,7 @@ function renderTabPage(tab: string) {
   </div>
 </div>
 `
-  return layout(titleMap[tab] || 'SoundForge', body)
+  return layout(titleMap[tab] || 'Giverny Audio', body)
 }
 
 // ─────────────────────────────
@@ -915,11 +976,11 @@ function renderStore() {
 <p class="sec-label">Store</p>
 <div class="store-plats">
   <a href="https://booth.pm/" target="_blank" rel="noopener" class="sp-item">
-    <div><p class="sp-name">BOOTH</p><p class="sp-url">soundforge.booth.pm</p></div>
+    <div><p class="sp-name">BOOTH</p><p class="sp-url">givernyaudio.booth.pm</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
   <a href="https://itch.io/" target="_blank" rel="noopener" class="sp-item">
-    <div><p class="sp-name">itch.io</p><p class="sp-url">soundforge.itch.io</p></div>
+    <div><p class="sp-name">itch.io</p><p class="sp-url">givernyaudio.itch.io</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
 </div>
