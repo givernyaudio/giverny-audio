@@ -460,22 +460,18 @@ img{display:block;max-width:100%;}
 .works-tbl{border:1px solid #ccc;border-bottom:none;width:100%;}
 .wrow{
   display:grid;
-  grid-template-columns:72px 1fr 160px 160px;
+  grid-template-columns:72px 160px 1fr 160px;
   border-bottom:1px solid #ccc;background:#fff;
   align-items:stretch;
 }
-/* 列順: 年 | サムネ | テキスト | ジャンル */
-.wrow > .wy      { order:1; }
-.wrow > .wthumb  { order:2; }
-.wrow > .wb      { order:3; }
-.wrow > .wm      { order:4; }
+/* 列順: 年 | サムネ | テキスト | ジャンル — DOM順で制御 */
 .wrow:hover{background:#faf9f6;}
 .wy{
   padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;
-  border-right:none;
+  border-right:1px solid #e8e6e1;
   display:flex;align-items:center;justify-content:center;
 }
-.wb{padding:22px 24px;border-right:1px solid #e8e6e1;border-left:1px solid #e8e6e1;}
+.wb{padding:22px 24px;border-right:1px solid #e8e6e1;}
 .wt{font-size:14px;font-weight:500;color:#222;margin-bottom:6px;}
 .wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
 .wr{font-size:11px;color:#aaa;}
@@ -585,7 +581,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
   .store-grid{grid-template-columns:1fr 1fr;}
-  .wrow{grid-template-columns:64px 1fr 120px 0;}
+  .wrow{grid-template-columns:56px 120px 1fr 0;}
   .wthumb{width:120px;}
   .wthumb img{width:120px;}
   .wm{display:none;overflow:hidden;width:0;padding:0;}
@@ -598,7 +594,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
-  .wrow{grid-template-columns:56px 1fr !important;}
+  .wrow{grid-template-columns:48px 80px 1fr !important;}
   .wm{display:none !important;}
   .wthumb{display:none !important;}
   #hero-slides{height:380px !important;}
@@ -1023,16 +1019,16 @@ function renderWorks() {
 ${WORKS_LIST.map(w => `
   <div class="wrow" data-t="${w.type}">
     <div class="wy">${w.year}</div>
-    <div class="wb">
-      <p class="wt">${w.title}</p>
-      <p class="wd">${w.desc}</p>
-      <p class="wr">${w.role}</p>
-    </div>
     <div class="wthumb">
       ${w.image
         ? `<img src="${w.image}" alt="${w.title}" loading="lazy">`
         : `<div class="wthumb-none"></div>`
       }
+    </div>
+    <div class="wb">
+      <p class="wt">${w.title}</p>
+      <p class="wd">${w.desc}</p>
+      <p class="wr">${w.role}</p>
     </div>
     <div class="wm">
       <span class="wtype">${w.type}</span>
