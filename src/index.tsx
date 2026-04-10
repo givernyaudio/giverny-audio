@@ -159,35 +159,23 @@ img{display:block;max-width:100%;}
 }
 
 /* ── ABOUT ── */
-.about-grid{
-  display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;
-}
-.about-icon{
-  display:flex;flex-direction:column;gap:4px;padding-top:6px;
-}
-.cube-row{display:flex;gap:4px;}
-.cube{
-  width:48px;height:48px;
-  border:1.5px solid #999;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:700;color:#555;
-  background:#e8e6e1;
-  flex-shrink:0;
+.about-body{
+  max-width:760px;
 }
 .about-body p{
-  font-size:13.5px;color:#444;line-height:2;margin-bottom:12px;
+  font-size:14px;color:#444;line-height:2.1;margin-bottom:14px;
 }
 .about-body .en-catch{
-  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:#666;margin-top:20px;margin-bottom:4px;
+  font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#555;margin-top:28px;margin-bottom:6px;line-height:1.8;
 }
 .about-body .en-sub{
-  font-size:11px;color:#888;line-height:1.9;
+  font-size:12px;color:#888;line-height:1.95;max-width:680px;
 }
-.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px;}
 .skill-tag{
-  font-size:10px;letter-spacing:.1em;
-  border:1px solid #bbb;padding:3px 10px;color:#666;
+  font-size:11px;letter-spacing:.08em;
+  border:1px solid #bbb;padding:4px 12px;color:#666;
   background:#ede9e3;
 }
 
@@ -431,7 +419,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .about-grid{grid-template-columns:1fr;}
   .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
   .sns-item{border-bottom:1px solid #ccc;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
@@ -456,7 +443,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .tab-bar-in{padding:0 16px;}
   .tab-btn{padding:0 14px;font-size:10px;}
   .eq-tbl td:nth-child(2){display:none;}
-  .about-grid{grid-template-columns:1fr;}
 }
 `
 
@@ -626,7 +612,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 <section id="about" style="background:#f0eeeb;">
   <div class="page sec fade">
     <p class="sec-label">About</p>
-    <div class="about-grid">
+    <div class="about-section">
       <div class="about-body">
         <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
         通常のBGM制作・効果音制作はもちろん、<br>
