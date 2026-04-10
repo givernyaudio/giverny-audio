@@ -1,1069 +1,602 @@
 import { Hono } from 'hono'
-import { serveStatic } from 'hono/cloudflare-workers'
 
 const app = new Hono()
 
-app.use('/static/*', serveStatic({ root: './' }))
-
-// favicon をインラインで返す
 app.get('/favicon.svg', (c) => {
   c.header('Content-Type', 'image/svg+xml')
-  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#111"/><text x="16" y="22" text-anchor="middle" font-size="13" fill="#c0a060" font-family="serif" font-weight="bold">SF</text></svg>`)
+  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="12" fill="#ffffff" font-family="sans-serif" font-weight="bold">SF</text></svg>`)
 })
 app.get('/favicon.ico', (c) => c.redirect('/favicon.svg', 301))
 
 app.get('/', (c) => c.html(renderHome()))
 app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
 
-// ─────────────────────────────────────────
-// SHARED LAYOUT
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  SHARED CSS & LAYOUT
+// ─────────────────────────────
+const CSS = `
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:#f0eeeb;
+  color:#333;
+  font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;
+  font-size:14px;
+  font-weight:300;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+
+/* ── HEADER ── */
+#hd{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:#2d2d2d;
+  height:56px;
+  display:flex;align-items:center;
+}
+.hd-in{
+  width:100%;max-width:1200px;margin:0 auto;
+  padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-size:18px;font-weight:700;color:#fff;
+  letter-spacing:0.18em;text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-sub{
+  font-size:8px;color:#aaa;letter-spacing:0.12em;
+  line-height:1.5;font-weight:300;text-transform:uppercase;
+}
+.gnav{display:flex;gap:0;list-style:none;}
+.gnav a{
+  display:block;padding:0 18px;
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  color:#bbb;font-weight:400;
+  line-height:56px;
+  transition:color .18s,background .18s;
+}
+.gnav a:hover,.gnav a.cur{color:#fff;background:rgba(255,255,255,.06);}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
+.ham span{display:block;width:22px;height:1px;background:#bbb;}
+
+/* mobile menu */
+#mmenu{
+  display:none;position:fixed;inset:0;background:#2d2d2d;z-index:199;
+  flex-direction:column;align-items:center;justify-content:center;gap:36px;
+}
+#mmenu.open{display:flex;}
+#mmenu a{font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:#bbb;transition:color .2s;}
+#mmenu a:hover{color:#fff;}
+#mc{position:absolute;top:18px;right:24px;background:none;border:none;color:#888;font-size:20px;cursor:pointer;}
+
+/* ── HERO ── */
+.hero{
+  position:relative;
+  width:100%;
+  padding-top:56px; /* header offset */
+  overflow:hidden;
+}
+.hero-img{
+  width:100%;height:520px;
+  object-fit:cover;object-position:center 40%;
+  display:block;
+}
+/* フォールバック：画像がない場合のグラデーション背景 */
+.hero-bg{
+  width:100%;height:520px;
+  background:linear-gradient(160deg,#1a1a2e 0%,#2d2d3d 40%,#3d3530 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 50%,rgba(255,255,255,.04) 0%,transparent 70%),
+    repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(255,255,255,.015) 60px),
+    repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(255,255,255,.015) 60px);
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.42);
+}
+.hero-text{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:#fff;
+  padding:20px;gap:4px;
+}
+.hero-text p{
+  font-size:clamp(16px,3.2vw,30px);
+  font-weight:300;letter-spacing:0.08em;
+  line-height:1.7;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+}
+
+/* fallback hero copy */
+.hero-copy{
+  position:relative;z-index:1;text-align:center;color:#fff;padding:20px;
+}
+.hero-copy p{
+  font-size:clamp(16px,3vw,28px);font-weight:300;letter-spacing:.08em;
+  line-height:1.8;text-shadow:0 1px 8px rgba(0,0,0,.6);
+}
+
+/* ── BODY WRAPPER ── */
+.page{max-width:1200px;margin:0 auto;padding:0 40px;}
+
+/* ── SECTION ── */
+.sec{padding:72px 0;}
+.sec-label{
+  font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#2d2d2d;
+  border-bottom:1px solid #b0a898;
+  padding-bottom:10px;
+  margin-bottom:40px;
+}
+.sec-title{
+  font-size:clamp(18px,2.5vw,24px);font-weight:400;
+  color:#222;letter-spacing:.06em;
+  margin-bottom:28px;line-height:1.4;
+}
+
+/* ── ABOUT ── */
+.about-grid{
+  display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start;
+}
+.about-icon{
+  display:flex;flex-direction:column;gap:4px;padding-top:6px;
+}
+.cube-row{display:flex;gap:4px;}
+.cube{
+  width:48px;height:48px;
+  border:1.5px solid #999;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#555;
+  background:#e8e6e1;
+  flex-shrink:0;
+}
+.about-body p{
+  font-size:13.5px;color:#444;line-height:2;margin-bottom:12px;
+}
+.about-body .en-catch{
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:#666;margin-top:20px;margin-bottom:4px;
+}
+.about-body .en-sub{
+  font-size:11px;color:#888;line-height:1.9;
+}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+.skill-tag{
+  font-size:10px;letter-spacing:.1em;
+  border:1px solid #bbb;padding:3px 10px;color:#666;
+  background:#ede9e3;
+}
+
+/* ── SNS ── */
+.sns-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid #ccc;
+  border-right:none;border-bottom:none;
+}
+.sns-item{
+  border-right:1px solid #ccc;border-bottom:1px solid #ccc;
+  padding:22px 20px;
+  display:flex;align-items:center;gap:14px;
+  background:#fff;
+  transition:background .18s;
+}
+.sns-item:hover{background:#f7f5f0;}
+.sns-icon{
+  width:38px;height:38px;flex-shrink:0;
+  border:1px solid #ccc;background:#f0eeeb;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:#666;
+}
+.sns-name{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#333;margin-bottom:2px;}
+.sns-handle{font-size:11px;color:#888;}
+.sns-note{font-size:10px;color:#aaa;margin-top:1px;}
+
+/* store pickup */
+.pickup-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-top:48px;margin-bottom:16px;
+}
+.pickup-more{font-size:11px;letter-spacing:.12em;color:#888;text-transform:uppercase;transition:color .18s;}
+.pickup-more:hover{color:#333;}
+.pickup-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid #ccc;border-right:none;border-bottom:none;
+}
+.pickup-item{
+  border-right:1px solid #ccc;border-bottom:1px solid #ccc;
+  padding:22px 20px;background:#fff;
+}
+.pickup-cat{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#888;margin-bottom:6px;}
+.pickup-title{font-size:13px;color:#222;font-weight:500;line-height:1.5;margin-bottom:6px;}
+.pickup-sub{font-size:11px;color:#aaa;}
+.pickup-price{font-size:14px;color:#555;margin-top:8px;font-weight:500;}
+
+/* ── SERVICES ── */
+.svc-table{
+  border:1px solid #ccc;border-bottom:none;width:100%;
+}
+.svc-row{
+  display:grid;grid-template-columns:200px 1fr;
+  border-bottom:1px solid #ccc;
+  background:#fff;
+}
+.svc-row:hover{background:#faf9f6;}
+.svc-left{
+  padding:22px 24px;border-right:1px solid #ccc;
+}
+.svc-en{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:3px;}
+.svc-ja{font-size:11px;color:#999;}
+.svc-right{
+  padding:22px 28px;font-size:13px;color:#555;line-height:1.95;
+}
+.svc-right strong{color:#333;font-weight:500;}
+
+.price-note{
+  margin-top:2px;padding:20px 24px;
+  background:#fff;border:1px solid #ccc;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.price-note p{font-size:12px;color:#777;}
+.btn-contact{
+  display:inline-block;padding:10px 26px;
+  border:1px solid #999;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#555;background:#fff;transition:all .2s;cursor:pointer;white-space:nowrap;
+}
+.btn-contact:hover{background:#333;color:#fff;border-color:#333;}
+
+/* ── CONTACT ── */
+.contact-box{
+  background:#fff;border:1px solid #ccc;
+  padding:52px 48px;text-align:center;
+}
+.contact-title{font-size:18px;color:#222;font-weight:400;letter-spacing:.06em;margin-bottom:14px;}
+.contact-body{font-size:13px;color:#777;line-height:2;margin-bottom:32px;}
+.contact-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.btn-main{
+  display:inline-block;padding:12px 32px;
+  background:#2d2d2d;color:#fff;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  transition:background .2s;
+}
+.btn-main:hover{background:#444;}
+.btn-sub{
+  display:inline-block;padding:12px 32px;
+  border:1px solid #bbb;color:#777;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  transition:all .2s;background:#fff;
+}
+.btn-sub:hover{border-color:#555;color:#333;}
+
+/* ── FOOTER ── */
+#ft{
+  background:#2d2d2d;
+  padding:32px 40px;margin-top:0;
+}
+.ft-in{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.ft-copy{font-size:11px;color:#666;letter-spacing:.1em;}
+.ft-nav{display:flex;gap:20px;list-style:none;}
+.ft-nav a{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#666;transition:color .18s;}
+.ft-nav a:hover{color:#aaa;}
+
+/* ── TABS ── */
+.tab-bar{
+  background:#2d2d2d;
+  position:sticky;top:56px;z-index:100;
+  border-bottom:1px solid #444;
+}
+.tab-bar-in{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;}
+.tab-btn{
+  padding:0 24px;line-height:48px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#888;background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color .18s;
+  text-decoration:none;display:block;
+}
+.tab-btn:hover{color:#ddd;}
+.tab-btn.on{color:#fff;border-bottom-color:#fff;}
+
+.back-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:#888;margin-bottom:32px;transition:color .2s;
+}
+.back-link:hover{color:#333;}
+.back-link::before{content:'← ';}
+
+/* ── WORKS ── */
+.wf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:28px;}
+.fb{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 14px;border:1px solid #ccc;color:#888;background:#fff;cursor:pointer;transition:all .18s;
+}
+.fb:hover,.fb.on{color:#333;border-color:#888;background:#f7f5f0;}
+
+.works-tbl{border:1px solid #ccc;border-bottom:none;width:100%;}
+.wrow{
+  display:grid;grid-template-columns:72px 1fr 160px;
+  border-bottom:1px solid #ccc;background:#fff;
+}
+.wrow:hover{background:#faf9f6;}
+.wy{padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;border-right:1px solid #e8e6e1;}
+.wb{padding:22px 24px;border-right:1px solid #e8e6e1;}
+.wt{font-size:14px;font-weight:500;color:#222;margin-bottom:4px;}
+.wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
+.wr{font-size:11px;color:#aaa;}
+.wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;}
+.wtype{
+  display:inline-block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  border:1px solid #ccc;padding:2px 8px;color:#888;
+}
+.wplat{font-size:11px;color:#aaa;}
+
+/* ── EQUIPMENT ── */
+.eq-sec{margin-bottom:48px;}
+.eq-cat{
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:#888;padding-bottom:10px;
+  border-bottom:1px solid #ccc;margin-bottom:1px;
+}
+.eq-tbl{width:100%;border-collapse:collapse;}
+.eq-tbl tr{background:#fff;border-bottom:1px solid #e8e6e1;}
+.eq-tbl tr:hover{background:#faf9f6;}
+.eq-tbl td{padding:13px 18px;font-size:13px;}
+.eq-tbl td:first-child{color:#333;font-weight:400;width:280px;border-right:1px solid #e8e6e1;}
+.eq-tbl td:nth-child(2){color:#888;width:200px;border-right:1px solid #e8e6e1;font-size:12px;}
+.eq-tbl td:last-child{color:#aaa;font-size:11px;letter-spacing:.06em;}
+
+/* ── STORE ── */
+.store-plats{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid #ccc;border-right:none;border-bottom:none;
+  margin-bottom:36px;
+}
+.sp-item{
+  border-right:1px solid #ccc;border-bottom:1px solid #ccc;
+  padding:20px 24px;background:#fff;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .18s;
+}
+.sp-item:hover{background:#faf9f6;}
+.sp-name{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#333;margin-bottom:3px;}
+.sp-url{font-size:11px;color:#aaa;}
+.sp-arrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:color .18s;}
+.sp-item:hover .sp-arrow{color:#555;}
+
+.store-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid #ccc;border-right:none;border-bottom:none;
+  margin-bottom:28px;
+}
+.si{
+  border-right:1px solid #ccc;border-bottom:1px solid #ccc;
+  padding:24px 20px;background:#fff;
+}
+.si-cat{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#888;margin-bottom:8px;}
+.si-title{font-size:13px;color:#222;font-weight:500;line-height:1.5;margin-bottom:8px;}
+.si-desc{font-size:12px;color:#888;line-height:1.9;margin-bottom:12px;}
+.si-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;}
+.si-tag{font-size:10px;color:#aaa;border:1px solid #ddd;padding:2px 7px;letter-spacing:.05em;}
+.si-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid #eee;}
+.si-price{font-size:14px;color:#444;font-weight:500;}
+.si-count{font-size:10px;color:#bbb;margin-top:2px;}
+.si-buy{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 14px;border:1px solid #ccc;color:#888;
+  background:#fff;transition:all .18s;
+}
+.si-buy:hover{border-color:#888;color:#333;}
+
+.store-note{
+  background:#fff;border:1px solid #ccc;padding:24px 28px;
+}
+.sn-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555;margin-bottom:12px;}
+.store-note ul{list-style:none;}
+.store-note li{font-size:12px;color:#888;padding:3px 0 3px 14px;position:relative;}
+.store-note li::before{content:'—';position:absolute;left:0;color:#ccc;}
+
+/* ── DIVIDER ── */
+hr.div{border:none;border-top:1px solid #ccc;margin:0;}
+
+/* ── FADE ── */
+.fade{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease;}
+.fade.in{opacity:1;transform:none;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .about-grid{grid-template-columns:140px 1fr;gap:28px;}
+  .sns-grid{grid-template-columns:1fr 1fr;}
+  .pickup-grid{grid-template-columns:1fr 1fr;}
+  .svc-row{grid-template-columns:1fr;}
+  .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
+  .store-grid{grid-template-columns:1fr 1fr;}
+  .wrow{grid-template-columns:64px 1fr;}
+  .wm{display:none;}
+}
+@media(max-width:640px){
+  .page{padding:0 20px;}
+  .hd-in{padding:0 16px;}
+  .gnav{display:none;}
+  .ham{display:flex;}
+  .hero-img,.hero-bg{height:380px;}
+  .hero-text p{font-size:14px;}
+  .sns-grid{grid-template-columns:1fr;}
+  .pickup-grid{grid-template-columns:1fr;}
+  .store-grid{grid-template-columns:1fr;}
+  .store-plats{grid-template-columns:1fr;}
+  .contact-box{padding:32px 20px;}
+  .tab-bar-in{padding:0 16px;}
+  .tab-btn{padding:0 14px;font-size:10px;}
+  .eq-tbl td:nth-child(2){display:none;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-icon{display:none;}
+}
+`
+
 function layout(title: string, body: string) {
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --black:   #0c0c0c;
-      --bg:      #111111;
-      --surface: #181818;
-      --line:    #2a2a2a;
-      --line2:   #333333;
-      --text:    #d8d8d8;
-      --muted:   #707070;
-      --white:   #f0f0f0;
-      --accent:  #c0a060;   /* ゴールド系 — 落ち着いたワンポイント */
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--text);
-      font-family: 'Noto Sans JP', sans-serif;
-      font-weight: 300;
-      font-size: 14px;
-      line-height: 1.9;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; }
-
-    /* ── HEADER ── */
-    #header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(12,12,12,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--line);
-      height: 60px;
-      display: flex;
-      align-items: center;
-    }
-    .header-inner {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .logo {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: var(--white);
-    }
-    .logo span {
-      color: var(--accent);
-    }
-    .gnav {
-      display: flex;
-      gap: 36px;
-      list-style: none;
-    }
-    .gnav a {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color 0.2s;
-      padding-bottom: 2px;
-      border-bottom: 1px solid transparent;
-    }
-    .gnav a:hover,
-    .gnav a.active {
-      color: var(--white);
-      border-bottom-color: var(--accent);
-    }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 1px;
-      background: var(--muted);
-      transition: background 0.2s;
-    }
-    .hamburger:hover span { background: var(--white); }
-
-    /* ── MOBILE MENU ── */
-    #mobile-menu {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(12,12,12,0.98);
-      z-index: 99;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 40px;
-    }
-    #mobile-menu.open { display: flex; }
-    #mobile-menu a {
-      font-size: 13px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    #mobile-menu a:hover { color: var(--white); }
-    #mobile-close {
-      position: absolute;
-      top: 20px; right: 28px;
-      background: none; border: none;
-      color: var(--muted);
-      font-size: 22px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    /* ── MAIN ── */
-    #main { padding-top: 60px; }
-
-    /* ── SECTION COMMONS ── */
-    .section {
-      padding: 96px 32px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .section-sm {
-      padding: 72px 32px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .section-full {
-      padding: 96px 32px;
-    }
-
-    .section-label {
-      display: inline-block;
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Noto Serif JP', serif;
-      font-size: clamp(22px, 3vw, 30px);
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.06em;
-      margin-bottom: 48px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    hr.divider {
-      border: none;
-      border-top: 1px solid var(--line);
-      margin: 0;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: calc(100vh - 60px);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 32px 80px;
-      max-width: 1100px;
-      margin: 0 auto;
-      position: relative;
-    }
-    .hero-eyecatch {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-60%);
-      width: min(48vw, 520px);
-      opacity: 0.07;
-      pointer-events: none;
-      user-select: none;
-      font-family: 'Noto Serif JP', serif;
-      font-size: min(18vw, 200px);
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      line-height: 1;
-      text-align: right;
-    }
-    .hero-sub {
-      font-size: 11px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .hero-title {
-      font-family: 'Noto Serif JP', serif;
-      font-size: clamp(32px, 5vw, 58px);
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.08em;
-      line-height: 1.25;
-      margin-bottom: 32px;
-    }
-    .hero-desc {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 2;
-      max-width: 480px;
-      margin-bottom: 40px;
-    }
-    .hero-scroll {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .hero-scroll::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: var(--muted);
-    }
-
-    /* ── ABOUT ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: start;
-    }
-    .about-name {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.06em;
-      margin-bottom: 6px;
-    }
-    .about-role {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 28px;
-    }
-    .about-text {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 2.1;
-      margin-bottom: 16px;
-    }
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 24px;
-    }
-    .tag {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      border: 1px solid var(--line2);
-      padding: 4px 12px;
-    }
-
-    .about-points {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--line);
-    }
-    .about-point {
-      background: var(--surface);
-      padding: 28px 28px;
-    }
-    .about-point-title {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-    .about-point-text {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.9;
-    }
-
-    /* ── SNS ── */
-    .sns-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-    }
-    .sns-item {
-      background: var(--surface);
-      padding: 28px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: background 0.2s;
-    }
-    .sns-item:hover { background: #202020; }
-    .sns-icon {
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--line2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-    .sns-name {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 3px;
-    }
-    .sns-handle {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .sns-desc {
-      font-size: 10px;
-      color: #555;
-      margin-top: 2px;
-    }
-
-    /* store pickup */
-    .pickup-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-    }
-    .pickup-item {
-      background: var(--surface);
-      padding: 24px;
-    }
-    .pickup-category {
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .pickup-title {
-      font-size: 13px;
-      color: var(--white);
-      font-weight: 500;
-      margin-bottom: 6px;
-      line-height: 1.5;
-    }
-    .pickup-price {
-      font-size: 13px;
-      color: var(--accent);
-      font-family: 'Noto Serif JP', serif;
-      margin-top: 10px;
-    }
-    .pickup-sub {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* ── SERVICES ── */
-    .services-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--line);
-    }
-    .service-row {
-      background: var(--surface);
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 0;
-    }
-    .service-label {
-      padding: 28px 28px;
-      border-right: 1px solid var(--line);
-    }
-    .service-label-en {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .service-label-ja {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .service-body {
-      padding: 28px 32px;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 2;
-    }
-    .service-body strong {
-      color: var(--text);
-      font-weight: 400;
-    }
-
-    /* ── CONTACT ── */
-    .contact-box {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      padding: 56px;
-      text-align: center;
-    }
-    .contact-title {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.06em;
-      margin-bottom: 16px;
-    }
-    .contact-text {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 2;
-      margin-bottom: 36px;
-    }
-    .contact-btns {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 32px;
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-primary {
-      background: var(--white);
-      color: var(--black);
-      border: 1px solid var(--white);
-    }
-    .btn-primary:hover {
-      background: transparent;
-      color: var(--white);
-    }
-    .btn-secondary {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--line2);
-    }
-    .btn-secondary:hover {
-      color: var(--white);
-      border-color: var(--muted);
-    }
-
-    /* ── FOOTER ── */
-    #footer {
-      border-top: 1px solid var(--line);
-      padding: 48px 32px;
-    }
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-copy {
-      font-size: 11px;
-      color: #444;
-      letter-spacing: 0.12em;
-    }
-    .footer-nav {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-    .footer-nav a {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #444;
-      transition: color 0.2s;
-    }
-    .footer-nav a:hover { color: var(--muted); }
-
-    /* ── TABS PAGE ── */
-    .tabs-header {
-      background: var(--black);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 60px;
-      z-index: 50;
-    }
-    .tabs-header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: flex;
-      gap: 0;
-    }
-    .tab-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 18px 28px;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-      background: none;
-      border-left: none;
-      border-right: none;
-      border-top: none;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .tab-btn:hover { color: var(--white); }
-    .tab-btn.active {
-      color: var(--white);
-      border-bottom-color: var(--accent);
-    }
-
-    /* ── WORKS ── */
-    .works-filter {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .filter-btn {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border: 1px solid var(--line2);
-      color: var(--muted);
-      background: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      color: var(--white);
-      border-color: var(--muted);
-    }
-
-    .works-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--line);
-    }
-    .works-row {
-      background: var(--surface);
-      display: grid;
-      grid-template-columns: 80px 1fr 180px;
-      gap: 0;
-      align-items: start;
-    }
-    .works-year {
-      padding: 28px 20px;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      border-right: 1px solid var(--line);
-    }
-    .works-body {
-      padding: 28px 32px;
-      border-right: 1px solid var(--line);
-    }
-    .works-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--white);
-      margin-bottom: 6px;
-      letter-spacing: 0.04em;
-    }
-    .works-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 10px;
-    }
-    .works-role {
-      font-size: 11px;
-      color: #555;
-    }
-    .works-meta {
-      padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .works-type {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid rgba(192,160,96,0.3);
-      padding: 3px 10px;
-      display: inline-block;
-    }
-    .works-platform {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* ── EQUIPMENT ── */
-    .equip-section {
-      margin-bottom: 56px;
-    }
-    .equip-category {
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--accent);
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 1px;
-    }
-    .equip-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--line);
-      gap: 1px;
-    }
-    .equip-table tr {
-      background: var(--surface);
-    }
-    .equip-table tr + tr {
-      border-top: 1px solid var(--line);
-    }
-    .equip-table td {
-      padding: 16px 20px;
-      font-size: 13px;
-    }
-    .equip-table td:first-child {
-      color: var(--white);
-      font-weight: 400;
-      width: 280px;
-      border-right: 1px solid var(--line);
-    }
-    .equip-table td:nth-child(2) {
-      color: var(--muted);
-      width: 180px;
-      border-right: 1px solid var(--line);
-      font-size: 12px;
-    }
-    .equip-table td:last-child {
-      color: #555;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-    }
-
-    /* ── STORE ── */
-    .store-platforms {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--line);
-      margin-bottom: 48px;
-    }
-    .store-platform-item {
-      background: var(--surface);
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: background 0.2s;
-    }
-    .store-platform-item:hover { background: #1e1e1e; }
-    .store-platform-name {
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .store-platform-url {
-      font-size: 11px;
-      color: var(--muted);
-    }
-    .arrow-link {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.2s;
-    }
-    .arrow-link::after {
-      content: '→';
-    }
-    .store-platform-item:hover .arrow-link { color: var(--white); }
-
-    .store-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-      margin-bottom: 40px;
-    }
-    .store-item {
-      background: var(--surface);
-      padding: 28px 24px;
-    }
-    .store-category {
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-    .store-title {
-      font-size: 13px;
-      color: var(--white);
-      font-weight: 500;
-      margin-bottom: 10px;
-      line-height: 1.6;
-    }
-    .store-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.9;
-      margin-bottom: 16px;
-    }
-    .store-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-    .store-tag {
-      font-size: 10px;
-      color: #555;
-      border: 1px solid var(--line);
-      padding: 2px 8px;
-      letter-spacing: 0.08em;
-    }
-    .store-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 16px;
-      border-top: 1px solid var(--line);
-    }
-    .store-price {
-      font-family: 'Noto Serif JP', serif;
-      font-size: 14px;
-      color: var(--accent);
-    }
-    .store-count {
-      font-size: 10px;
-      color: #555;
-      margin-top: 2px;
-    }
-    .store-buy {
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--line2);
-      padding: 6px 14px;
-      transition: all 0.2s;
-    }
-    .store-buy:hover {
-      color: var(--white);
-      border-color: var(--muted);
-    }
-
-    .store-note {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      padding: 28px 32px;
-    }
-    .store-note-title {
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    .store-note ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .store-note li {
-      font-size: 12px;
-      color: var(--muted);
-      padding-left: 16px;
-      position: relative;
-    }
-    .store-note li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: #444;
-    }
-
-    /* ── BACK LINK ── */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 40px;
-      transition: color 0.2s;
-    }
-    .back-link::before { content: '←'; }
-    .back-link:hover { color: var(--white); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .sns-grid { grid-template-columns: 1fr 1fr; }
-      .pickup-grid { grid-template-columns: 1fr; }
-      .works-row { grid-template-columns: 64px 1fr; }
-      .works-meta { display: none; }
-      .store-grid { grid-template-columns: 1fr 1fr; }
-      .service-row { grid-template-columns: 1fr; }
-      .service-label { border-right: none; border-bottom: 1px solid var(--line); }
-    }
-    @media (max-width: 640px) {
-      .section, .section-sm { padding: 64px 20px; }
-      .section-full { padding: 64px 20px; }
-      .hero { padding: 0 20px 64px; }
-      .header-inner { padding: 0 20px; }
-      .gnav { display: none; }
-      .hamburger { display: flex; }
-      .sns-grid { grid-template-columns: 1fr; }
-      .store-grid { grid-template-columns: 1fr; }
-      .store-platforms { grid-template-columns: 1fr; }
-      .contact-box { padding: 40px 24px; }
-      .equip-table td:nth-child(2) { display: none; }
-      .tabs-header-inner { padding: 0 12px; }
-      .tab-btn { padding: 16px 16px; font-size: 10px; }
-    }
-
-    /* ── FADE IN ── */
-    .fade {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade.in { opacity: 1; transform: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${title}</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>${CSS}</style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header id="header">
-  <div class="header-inner">
-    <a href="/" class="logo">Sound<span>Forge</span></a>
-    <nav>
-      <ul class="gnav">
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#sns">SNS</a></li>
-        <li><a href="/#services">Services</a></li>
-        <li><a href="/tabs/works">Works</a></li>
-        <li><a href="/tabs/equipment">Equipment</a></li>
-        <li><a href="/tabs/store">Store</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="hamburger" onclick="document.getElementById('mobile-menu').classList.add('open')" aria-label="メニュー">
+<header id="hd">
+  <div class="hd-in">
+    <a href="/" class="logo">
+      SoundForge
+      <span class="logo-sub">Game Audio<br>Production</span>
+    </a>
+    <nav><ul class="gnav">
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#sns">SNS</a></li>
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/tabs/works">Works</a></li>
+      <li><a href="/tabs/equipment">Equipment</a></li>
+      <li><a href="/tabs/store">Store</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul></nav>
+    <div class="ham" onclick="document.getElementById('mmenu').classList.add('open')">
       <span></span><span></span><span></span>
     </div>
   </div>
 </header>
 
-<!-- MOBILE MENU -->
-<div id="mobile-menu">
-  <button id="mobile-close" onclick="document.getElementById('mobile-menu').classList.remove('open')" aria-label="閉じる">✕</button>
-  <a href="/#about" onclick="document.getElementById('mobile-menu').classList.remove('open')">About</a>
-  <a href="/#sns" onclick="document.getElementById('mobile-menu').classList.remove('open')">SNS</a>
-  <a href="/#services" onclick="document.getElementById('mobile-menu').classList.remove('open')">Services</a>
+<div id="mmenu">
+  <button id="mc" onclick="document.getElementById('mmenu').classList.remove('open')">✕</button>
+  <a href="/#about" onclick="document.getElementById('mmenu').classList.remove('open')">About</a>
+  <a href="/#sns" onclick="document.getElementById('mmenu').classList.remove('open')">SNS</a>
+  <a href="/#services" onclick="document.getElementById('mmenu').classList.remove('open')">Services</a>
   <a href="/tabs/works">Works</a>
   <a href="/tabs/equipment">Equipment</a>
   <a href="/tabs/store">Store</a>
-  <a href="/#contact" onclick="document.getElementById('mobile-menu').classList.remove('open')">Contact</a>
+  <a href="/#contact" onclick="document.getElementById('mmenu').classList.remove('open')">Contact</a>
 </div>
 
-<div id="main">
 ${body}
-</div>
 
-<!-- FOOTER -->
-<footer id="footer">
-  <div class="footer-inner">
-    <p class="footer-copy">© 2024 SoundForge. All Rights Reserved.</p>
-    <nav>
-      <ul class="footer-nav">
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#services">Services</a></li>
-        <li><a href="/tabs/works">Works</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-    </nav>
+<footer id="ft">
+  <div class="ft-in">
+    <p class="ft-copy">© 2024 SoundForge. All Rights Reserved.</p>
+    <nav><ul class="ft-nav">
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/tabs/works">Works</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul></nav>
   </div>
 </footer>
 
 <script>
-  // Fade in
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.07});
+document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 
-  // Smooth anchor
-  document.querySelectorAll('a[href^="/#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      if (window.location.pathname !== '/') return;
-      e.preventDefault();
-      const id = a.getAttribute('href').slice(2);
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+document.querySelectorAll('a[href^="/#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    if(window.location.pathname!=='/') return;
+    e.preventDefault();
+    const id=a.getAttribute('href').slice(2);
+    const el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
   });
+});
 </script>
 </body>
 </html>`
 }
 
-// ─────────────────────────────────────────
-// HOME PAGE
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  HOME
+// ─────────────────────────────
 function renderHome() {
   const body = `
 <!-- HERO -->
-<div style="max-width:1100px; margin:0 auto; position:relative; overflow:hidden;">
-  <div class="hero">
-    <div class="hero-eyecatch" aria-hidden="true">SOUND</div>
-    <p class="hero-sub">Game Audio Production</p>
-    <h1 class="hero-title">Sound Design<br>for Games.</h1>
-    <p class="hero-desc">ゲームBGM・効果音・サウンドデザインを<br>ワンストップで制作する個人スタジオ。<br>インディーから商業タイトルまで対応。</p>
-    <span class="hero-scroll">Scroll</span>
+<div class="hero" style="padding-top:56px;">
+  <!-- 背景：スタジオ雰囲気の暗いグラデーション -->
+  <div class="hero-bg">
+    <!-- グリッドライン装飾 -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:80px 80px;"></div>
+    <!-- 機材シルエット風の装飾 -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(0deg,rgba(0,0,0,.5) 0%,transparent 100%);"></div>
+    <div class="hero-copy">
+      <p>BGM Composition</p>
+      <p>Sound Effects</p>
+      <p>Sound Design</p>
+      <p>Audio Implementation</p>
+      <p style="margin-top:8px;font-size:clamp(11px,1.8vw,15px);opacity:.65;letter-spacing:.2em;text-transform:uppercase;">Game Audio Production — Solo Studio</p>
+    </div>
   </div>
 </div>
-<hr class="divider">
 
 <!-- ABOUT -->
-<section id="about">
-  <div class="section fade">
-    <p class="section-label">About</p>
-    <h2 class="section-title">プロフィール</h2>
+<section id="about" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <p class="sec-label">About</p>
     <div class="about-grid">
-      <div>
-        <p class="about-name">田中 悠樹</p>
-        <p class="about-role">Sound Designer &amp; Composer</p>
-        <p class="about-text">
-          ゲームオーディオ専門の個人クリエイター。<br>
-          インディーゲームから商業タイトルまで、プレイヤーを没入させる音楽と効果音を制作しています。
-        </p>
-        <p class="about-text">
-          DAWはAbleton LiveおよびReaperを使用。オーケストラ・シンセ・アンビエント・電子音楽など幅広いジャンルに対応しています。効果音はフィールドレコーディングした独自素材を多数活用。Wwise / Unity Audioなど、ゲームエンジンへのオーディオ実装サポートも承ります。
-        </p>
-        <p class="about-text">
-          GAME SOUND TO REALIZE YOUR VISION.<br>
-          FULFILLS ALL YOUR AUDIO NEEDS.
-        </p>
-        <div class="tag-list">
-          <span class="tag">Ableton Live</span>
-          <span class="tag">Reaper</span>
-          <span class="tag">Wwise</span>
-          <span class="tag">FMOD Studio</span>
-          <span class="tag">Unity Audio</span>
-          <span class="tag">Field Recording</span>
-          <span class="tag">iZotope RX</span>
+      <div class="about-icon">
+        <div class="cube-row">
+          <div class="cube">A</div><div class="cube">B</div>
+        </div>
+        <div class="cube-row">
+          <div class="cube">O</div><div class="cube">U</div>
+        </div>
+        <div class="cube-row">
+          <div class="cube">T</div>
         </div>
       </div>
-      <div class="about-points">
-        <div class="about-point">
-          <p class="about-point-title">BGM / Music</p>
-          <p class="about-point-text">ゲームの世界観に合わせたオリジナルBGMを制作。バトル・探索・タウン・エンディングなど全シーンに対応。ループ設計、スティンガー制作も可能です。</p>
-        </div>
-        <div class="about-point">
-          <p class="about-point-title">Sound Effects</p>
-          <p class="about-point-text">UI音・攻撃音・魔法・環境音・フォーリーなど、ゲームに必要なすべての効果音を制作。フィールドレコーディング素材も豊富に活用します。</p>
-        </div>
-        <div class="about-point">
-          <p class="about-point-title">Sound Design</p>
-          <p class="about-point-text">アンビエント・インタラクティブサウンド・アダプティブミュージックなど、ゲーム体験を強化するサウンドデザインを提供します。</p>
+      <div class="about-body">
+        <p>SoundForge はゲームオーディオ専門の個人制作スタジオです。<br>
+        通常のBGM制作・効果音制作はもちろん、<br>
+        豊富なゲーム制作経験を活かし、多様なオーディオ制作（BGM・SE・サウンドデザイン・ボイス収録）を提供します。</p>
+        <p>フィールドレコーディング・アダプティブBGM設計・Wwise / FMOD 実装サポートまで、<br>
+        ゲームオーディオをワンストップで対応可能。<br>
+        インディーゲームから商業タイトルまで、プレイヤーを没入させるサウンドを制作します。</p>
+        <p class="en-catch">Game Sound To Realize Your Vision.<br>Fulfills All Your Audio Needs.</p>
+        <p class="en-sub">Solo game audio studio specializing in BGM composition, sound effects, sound design, and audio implementation. Providing comprehensive audio production services from indie to commercial game titles using Ableton Live, Reaper, Wwise, and field recording equipment.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Ableton Live</span>
+          <span class="skill-tag">Reaper</span>
+          <span class="skill-tag">Wwise</span>
+          <span class="skill-tag">FMOD Studio</span>
+          <span class="skill-tag">Unity Audio</span>
+          <span class="skill-tag">iZotope RX</span>
+          <span class="skill-tag">Field Recording</span>
         </div>
       </div>
     </div>
   </div>
 </section>
-<hr class="divider">
 
-<!-- SNS / ACCOUNTS -->
-<section id="sns">
-  <div class="section fade">
-    <p class="section-label">Official Accounts</p>
-    <h2 class="section-title">SNS・販売ページ</h2>
+<hr class="div">
+
+<!-- SNS / OFFICIAL ACCOUNTS -->
+<section id="sns" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <p class="sec-label">Official Account</p>
     <div class="sns-grid">
       <a href="https://twitter.com/" target="_blank" rel="noopener" class="sns-item">
         <div class="sns-icon">𝕏</div>
         <div>
           <p class="sns-name">X / Twitter</p>
           <p class="sns-handle">@soundforge_game</p>
-          <p class="sns-desc">制作進捗・新作情報など</p>
+          <p class="sns-note">制作進捗・新作情報 随時更新</p>
         </div>
       </a>
       <a href="https://youtube.com/" target="_blank" rel="noopener" class="sns-item">
@@ -1071,7 +604,7 @@ function renderHome() {
         <div>
           <p class="sns-name">YouTube</p>
           <p class="sns-handle">SoundForge Channel</p>
-          <p class="sns-desc">楽曲試聴・制作メイキング動画</p>
+          <p class="sns-note">楽曲試聴・メイキング動画</p>
         </div>
       </a>
       <a href="https://soundcloud.com/" target="_blank" rel="noopener" class="sns-item">
@@ -1079,7 +612,7 @@ function renderHome() {
         <div>
           <p class="sns-name">SoundCloud</p>
           <p class="sns-handle">soundforge-music</p>
-          <p class="sns-desc">楽曲ポートフォリオ</p>
+          <p class="sns-note">楽曲ポートフォリオ</p>
         </div>
       </a>
       <a href="https://booth.pm/" target="_blank" rel="noopener" class="sns-item">
@@ -1087,7 +620,7 @@ function renderHome() {
         <div>
           <p class="sns-name">BOOTH</p>
           <p class="sns-handle">soundforge.booth.pm</p>
-          <p class="sns-desc">BGM・SE素材パック販売</p>
+          <p class="sns-note">BGM・SE素材パック販売</p>
         </div>
       </a>
       <a href="https://itch.io/" target="_blank" rel="noopener" class="sns-item">
@@ -1095,7 +628,7 @@ function renderHome() {
         <div>
           <p class="sns-name">itch.io</p>
           <p class="sns-handle">soundforge.itch.io</p>
-          <p class="sns-desc">ゲーム向け素材販売</p>
+          <p class="sns-note">ゲーム向け素材販売</p>
         </div>
       </a>
       <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="sns-item">
@@ -1103,31 +636,30 @@ function renderHome() {
         <div>
           <p class="sns-name">Instagram</p>
           <p class="sns-handle">@soundforge_game</p>
-          <p class="sns-desc">制作風景・機材紹介</p>
+          <p class="sns-note">制作風景・機材紹介</p>
         </div>
       </a>
     </div>
 
-    <!-- Store pickup -->
-    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-top:56px; margin-bottom:20px;">
-      <p class="section-label" style="margin:0;">販売コンテンツ — Pickup</p>
-      <a href="/tabs/store" class="arrow-link" style="font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:8px; transition:color 0.2s;" onmouseover="this.style.color='var(--white)'" onmouseout="this.style.color='var(--muted)'">すべて見る →</a>
+    <div class="pickup-head">
+      <p class="sec-label" style="margin-bottom:0;">販売コンテンツ — Pickup</p>
+      <a href="/tabs/store" class="pickup-more">View All Store →</a>
     </div>
     <div class="pickup-grid">
       <div class="pickup-item">
-        <p class="pickup-category">BGM Pack</p>
+        <p class="pickup-cat">BGM Pack</p>
         <p class="pickup-title">Fantasy RPG BGM Pack Vol.1</p>
         <p class="pickup-sub">20曲収録 / ループ対応 / 商用利用可</p>
         <p class="pickup-price">¥2,980</p>
       </div>
       <div class="pickup-item">
-        <p class="pickup-category">SE Pack</p>
+        <p class="pickup-cat">SE Pack</p>
         <p class="pickup-title">Battle Sound Effects Pack</p>
         <p class="pickup-sub">100+音源 / WAV 48kHz/24bit</p>
         <p class="pickup-price">¥1,480</p>
       </div>
       <div class="pickup-item">
-        <p class="pickup-category">Ambient</p>
+        <p class="pickup-cat">Ambient</p>
         <p class="pickup-title">Dark Ambient &amp; Horror Pack</p>
         <p class="pickup-sub">15曲 + 環境音50音源</p>
         <p class="pickup-price">¥3,480</p>
@@ -1135,96 +667,93 @@ function renderHome() {
     </div>
   </div>
 </section>
-<hr class="divider">
+
+<hr class="div">
 
 <!-- SERVICES -->
-<section id="services">
-  <div class="section fade">
-    <p class="section-label">Services</p>
-    <h2 class="section-title">サービス</h2>
-    <div class="services-list">
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">BGM Composition</p>
-          <p class="service-label-ja">BGM・楽曲制作</p>
+<section id="services" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <p class="sec-label">Services</p>
+    <div class="svc-table">
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">BGM Composition</p>
+          <p class="svc-ja">BGM・楽曲制作</p>
         </div>
-        <div class="service-body">
-          ゲームのジャンル・世界観に合わせたオリジナルBGMを制作します。バトル・フィールド・タウン・エンディングなど、シーンに応じた楽曲を提供。<strong>ループ設計済み</strong>で納品。スティンガー・ジングルも対応。Wwise / FMOD との連携も可能です。
-        </div>
-      </div>
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">Sound Effects</p>
-          <p class="service-label-ja">効果音制作</p>
-        </div>
-        <div class="service-body">
-          攻撃・魔法・UI・足音・環境音など、ゲームに必要なSEをワンストップで制作。フィールドレコーディング素材も活用した<strong>リアリティのある音</strong>を提供します。WAV / OGG / MP3 各種フォーマット対応。バリエーション・ランダム再生セットにも対応。
+        <div class="svc-right">
+          ゲームのジャンル・世界観に合わせたオリジナルBGMを制作します。バトル・フィールド・タウン・エンディングなど全シーン対応。<strong>ループ設計済み</strong>で納品。スティンガー・ジングルも対応。Wwise / FMOD との連携も可能です。
         </div>
       </div>
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">Sound Design</p>
-          <p class="service-label-ja">サウンドデザイン</p>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Sound Effects</p>
+          <p class="svc-ja">効果音制作</p>
         </div>
-        <div class="service-body">
+        <div class="svc-right">
+          攻撃・魔法・UI・足音・環境音など、ゲームに必要なSEをワンストップで制作。フィールドレコーディング素材も活用した<strong>リアリティのある音</strong>を提供。WAV / OGG / MP3 各種フォーマット対応。バリエーション・ランダム再生セットにも対応します。
+        </div>
+      </div>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Sound Design</p>
+          <p class="svc-ja">サウンドデザイン</p>
+        </div>
+        <div class="svc-right">
           アンビエント・インタラクティブサウンド・アダプティブミュージックなど、<strong>ゲーム体験を深める</strong>サウンドデザインを提供。3Dオーディオ設計やミドルウェアを活用したインタラクティブなオーディオ構築も対応します。
         </div>
       </div>
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">Voice / Narration</p>
-          <p class="service-label-ja">ボイス・ナレーション収録</p>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Voice / Narration</p>
+          <p class="svc-ja">ボイス・ナレーション</p>
         </div>
-        <div class="service-body">
-          ナレーション収録・ボイスディレクション。宅録・スタジオ収録いずれも対応。iZotope RXによるノイズ除去・整音まで一貫して対応します。多言語収録はご相談ください。
+        <div class="svc-right">
+          ナレーション収録・ボイスディレクション。宅録・スタジオ収録いずれも対応。iZotope RX によるノイズ除去・整音まで一貫して対応します。多言語収録はご相談ください。
         </div>
       </div>
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">Audio Implementation</p>
-          <p class="service-label-ja">オーディオ実装サポート</p>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Audio Implementation</p>
+          <p class="svc-ja">オーディオ実装サポート</p>
         </div>
-        <div class="service-body">
+        <div class="svc-right">
           Unity / Unreal Engine へのオーディオ実装をサポート。Wwise・FMOD の設定、インタラクティブオーディオの構築、<strong>パフォーマンス最適化</strong>まで対応します。
         </div>
       </div>
-      <div class="service-row">
-        <div class="service-label">
-          <p class="service-label-en">Asset Sales</p>
-          <p class="service-label-ja">素材パック販売</p>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Asset Sales</p>
+          <p class="svc-ja">素材パック販売</p>
         </div>
-        <div class="service-body">
-          BOOTH・itch.io にてゲーム向けBGM・SEパックを販売中。個人・インディー開発者向けのリーズナブルな素材も多数取り揃えています。<a href="/tabs/store" style="color:var(--accent); border-bottom:1px solid rgba(192,160,96,0.4);">Store ページ</a>をご覧ください。
+        <div class="svc-right">
+          BOOTH・itch.io にてゲーム向けBGM・SEパックを販売中。個人・インディー開発者向けのリーズナブルな素材も多数。
+          <a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
         </div>
       </div>
     </div>
-
-    <div style="margin-top:24px; background:var(--surface); border:1px solid var(--line); padding:28px 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;">
-      <div>
-        <p style="font-size:12px; color:var(--white); margin-bottom:4px;">料金について</p>
-        <p style="font-size:12px; color:var(--muted);">制作規模・曲数・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。</p>
-      </div>
-      <a href="/#contact" class="btn btn-secondary">お問い合わせ</a>
+    <div class="price-note">
+      <p>料金は制作規模・曲数・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。まずはお気軽にご相談ください。</p>
+      <a href="/#contact" class="btn-contact">お問い合わせ</a>
     </div>
   </div>
 </section>
-<hr class="divider">
+
+<hr class="div">
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="section fade">
-    <p class="section-label">Contact</p>
-    <h2 class="section-title">お問い合わせ</h2>
+<section id="contact" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <p class="sec-label">Contact</p>
     <div class="contact-box">
       <p class="contact-title">お仕事のご依頼・ご相談はこちらから</p>
-      <p class="contact-text">
+      <p class="contact-body">
         BGM制作・効果音・サウンドデザインのご依頼、<br>
         素材パックに関するご質問など、お気軽にご連絡ください。<br>
         通常2〜3営業日以内にご返信いたします。
       </p>
       <div class="contact-btns">
-        <a href="mailto:info@soundforge.jp" class="btn btn-primary">メールで問い合わせる</a>
-        <a href="https://twitter.com/" target="_blank" rel="noopener" class="btn btn-secondary">X / Twitter DM</a>
+        <a href="mailto:info@soundforge.jp" class="btn-main">メールで問い合わせる</a>
+        <a href="https://twitter.com/" target="_blank" rel="noopener" class="btn-sub">X / Twitter DM</a>
       </div>
     </div>
   </div>
@@ -1233,21 +762,20 @@ function renderHome() {
   return layout('SoundForge | Game Audio Production', body)
 }
 
-// ─────────────────────────────────────────
-// TAB PAGE
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  TAB PAGE
+// ─────────────────────────────
 function renderTabPage(tab: string) {
   const tabs = [
     { id: 'works', label: 'Works' },
     { id: 'equipment', label: 'Equipment' },
     { id: 'store', label: 'Store' },
   ]
-  const titles: Record<string, string> = {
+  const titleMap: Record<string, string> = {
     works: 'Works | SoundForge',
     equipment: 'Equipment | SoundForge',
     store: 'Store | SoundForge',
   }
-
   let content = ''
   if (tab === 'works') content = renderWorks()
   else if (tab === 'equipment') content = renderEquipment()
@@ -1255,24 +783,26 @@ function renderTabPage(tab: string) {
   else content = renderWorks()
 
   const body = `
-<div class="tabs-header">
-  <div class="tabs-header-inner">
-    ${tabs.map(t => `<a href="/tabs/${t.id}" class="tab-btn${t.id === tab ? ' active' : ''}">${t.label}</a>`).join('')}
+<div class="tab-bar">
+  <div class="tab-bar-in">
+    ${tabs.map(t => `<a href="/tabs/${t.id}" class="tab-btn${t.id === tab ? ' on' : ''}">${t.label}</a>`).join('')}
   </div>
 </div>
-<div class="section fade">
-  <a href="/" class="back-link">Top</a>
-  ${content}
+<div style="background:#f0eeeb;min-height:60vh;">
+  <div class="page sec fade">
+    <a href="/" class="back-link">Top</a>
+    ${content}
+  </div>
 </div>
 `
-  return layout(titles[tab] || 'SoundForge', body)
+  return layout(titleMap[tab] || 'SoundForge', body)
 }
 
-// ─────────────────────────────────────────
-// WORKS
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  WORKS
+// ─────────────────────────────
 function renderWorks() {
-  const works = [
+  const list = [
     { year: '2024', title: 'Echoes of the Abyss', type: 'RPG', platform: 'PC / Steam', role: 'BGM全曲制作・SE制作', desc: 'ダークファンタジーRPG。オーケストラとシンセを融合させた異世界感のあるサウンドトラック。' },
     { year: '2023', title: 'Stellar Drift', type: 'Action', platform: 'PC / Switch', role: 'BGM・アンビエント制作', desc: 'SF横スクロールアクション。電子音楽とオーケストラを組み合わせた疾走感のあるサウンド。' },
     { year: '2023', title: 'Sengoku Chronicles', type: 'Strategy', platform: 'PC / Mobile', role: 'BGM・SE全収録', desc: '戦国時代ストラテジー。和楽器を中心にオーケストラも取り入れた重厚な楽曲群。' },
@@ -1280,54 +810,49 @@ function renderWorks() {
     { year: '2022', title: 'Pixel Sports Club', type: 'Sports', platform: 'Mobile', role: 'BGM・SE制作', desc: 'カジュアルスポーツゲーム。明るく親しみやすいBGMと爽快感のある効果音。' },
     { year: '2021', title: 'Mindfield', type: 'Puzzle', platform: 'PC / Mobile', role: 'BGM・UI音制作', desc: 'ロジックパズル。集中力を高めるアンビエント系BGMとシンプルなUI音。' },
   ]
-
   return `
-<p class="section-label">Works</p>
-<h2 class="section-title">実績</h2>
-<div class="works-filter" id="wf">
-  <button class="filter-btn active" onclick="filterW('all',this)">All</button>
-  <button class="filter-btn" onclick="filterW('RPG',this)">RPG</button>
-  <button class="filter-btn" onclick="filterW('Action',this)">Action</button>
-  <button class="filter-btn" onclick="filterW('Horror',this)">Horror</button>
-  <button class="filter-btn" onclick="filterW('Strategy',this)">Strategy</button>
+<p class="sec-label">Works</p>
+<div class="wf" id="wf">
+  <button class="fb on" onclick="fw('all',this)">All</button>
+  <button class="fb" onclick="fw('RPG',this)">RPG</button>
+  <button class="fb" onclick="fw('Action',this)">Action</button>
+  <button class="fb" onclick="fw('Horror',this)">Horror</button>
+  <button class="fb" onclick="fw('Strategy',this)">Strategy</button>
 </div>
-<div class="works-list" id="wl">
-  ${works.map(w => `
-  <div class="works-row" data-type="${w.type}">
-    <div class="works-year">${w.year}</div>
-    <div class="works-body">
-      <p class="works-title">${w.title}</p>
-      <p class="works-desc">${w.desc}</p>
-      <p class="works-role">${w.role}</p>
+<div class="works-tbl" id="wl">
+${list.map(w => `
+  <div class="wrow" data-t="${w.type}">
+    <div class="wy">${w.year}</div>
+    <div class="wb">
+      <p class="wt">${w.title}</p>
+      <p class="wd">${w.desc}</p>
+      <p class="wr">${w.role}</p>
     </div>
-    <div class="works-meta">
-      <span class="works-type">${w.type}</span>
-      <p class="works-platform">${w.platform}</p>
+    <div class="wm">
+      <span class="wtype">${w.type}</span>
+      <p class="wplat">${w.platform}</p>
     </div>
   </div>`).join('')}
 </div>
 <script>
-function filterW(type, btn) {
-  document.querySelectorAll('#wl .works-row').forEach(r => {
-    r.style.display = (type === 'all' || r.dataset.type === type) ? '' : 'none';
-  });
-  document.querySelectorAll('#wf .filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+function fw(t,b){
+  document.querySelectorAll('#wl .wrow').forEach(r=>{r.style.display=(t==='all'||r.dataset.t===t)?'':'none';});
+  document.querySelectorAll('#wf .fb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
 }
 </script>`
 }
 
-// ─────────────────────────────────────────
-// EQUIPMENT
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  EQUIPMENT
+// ─────────────────────────────
 function renderEquipment() {
   return `
-<p class="section-label">Equipment</p>
-<h2 class="section-title">機材リスト</h2>
+<p class="sec-label">Equipment</p>
 
-<div class="equip-section">
-  <p class="equip-category">DAW / Software</p>
-  <table class="equip-table">
+<div class="eq-sec">
+  <p class="eq-cat">DAW / Software</p>
+  <table class="eq-tbl">
     <tr><td>Ableton Live 12 Suite</td><td>Ableton</td><td>BGM制作・電子音楽</td></tr>
     <tr><td>Reaper 7</td><td>Cockos</td><td>SE制作・整音</td></tr>
     <tr><td>Wwise 2023</td><td>Audiokinetic</td><td>ゲームエンジン連携</td></tr>
@@ -1336,9 +861,9 @@ function renderEquipment() {
   </table>
 </div>
 
-<div class="equip-section">
-  <p class="equip-category">Plugins / Instruments</p>
-  <table class="equip-table">
+<div class="eq-sec">
+  <p class="eq-cat">Plugins / Instruments</p>
+  <table class="eq-tbl">
     <tr><td>Spitfire BBCSO Pro</td><td>Spitfire Audio</td><td>オーケストラ音源</td></tr>
     <tr><td>Kontakt 7</td><td>Native Instruments</td><td>サンプラー</td></tr>
     <tr><td>Serum</td><td>Xfer Records</td><td>シンセサイザー</td></tr>
@@ -1350,9 +875,9 @@ function renderEquipment() {
   </table>
 </div>
 
-<div class="equip-section">
-  <p class="equip-category">Hardware</p>
-  <table class="equip-table">
+<div class="eq-sec">
+  <p class="eq-cat">Hardware</p>
+  <table class="eq-tbl">
     <tr><td>MacBook Pro 16" M3 Max</td><td>Apple</td><td>メインPC</td></tr>
     <tr><td>Apollo Twin X Duo</td><td>Universal Audio</td><td>オーディオインターフェース</td></tr>
     <tr><td>Neumann TLM 103</td><td>Neumann</td><td>コンデンサーマイク</td></tr>
@@ -1363,9 +888,9 @@ function renderEquipment() {
   </table>
 </div>
 
-<div class="equip-section">
-  <p class="equip-category">Field Recording</p>
-  <table class="equip-table">
+<div class="eq-sec">
+  <p class="eq-cat">Field Recording</p>
+  <table class="eq-tbl">
     <tr><td>Zoom H6</td><td>Zoom</td><td>6ch フィールドレコーダー</td></tr>
     <tr><td>Sony PCM-D100</td><td>Sony</td><td>ハイレゾフィールドレコーダー</td></tr>
     <tr><td>Sennheiser MKH 416</td><td>Sennheiser</td><td>ショットガンマイク</td></tr>
@@ -1374,61 +899,48 @@ function renderEquipment() {
 </div>`
 }
 
-// ─────────────────────────────────────────
-// STORE
-// ─────────────────────────────────────────
+// ─────────────────────────────
+//  STORE
+// ─────────────────────────────
 function renderStore() {
   const items = [
-    { category: 'BGM Pack', title: 'Fantasy RPG BGM Pack Vol.1', desc: 'ファンタジーRPG向け20曲収録。タウン・フィールド・ダンジョン・ボス戦など全シーン対応。ループ設計済み。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3', '20 tracks'], price: '¥2,980', count: '20 tracks' },
-    { category: 'SE Pack', title: 'Battle Sound Effects Pack', desc: '剣・魔法・弓・爆発など戦闘系SE100音源以上収録。各カテゴリ複数バリエーションあり。', tags: ['商用利用可', 'バリエーション多数', 'WAV 48kHz/24bit'], price: '¥1,480', count: '100+ SE' },
-    { category: 'Ambient', title: 'Dark Ambient & Horror Pack', desc: 'ホラー・ダークファンタジー向けアンビエント15曲＋環境音50音源。フィールドレコーディング素材加工版も収録。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3 + OGG'], price: '¥3,480', count: '15 BGM + 50 SE' },
-    { category: 'BGM Pack', title: 'Cyberpunk / Sci-Fi BGM Pack', desc: '近未来・サイバーパンク世界観の電子音楽BGM15曲。アクション〜アンビエントまで幅広くカバー。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3'], price: '¥2,480', count: '15 tracks' },
-    { category: 'Field Rec', title: 'Nature & Ambient Field Recordings', desc: '森・川・海・雨など自然環境音のフィールドレコーディング素材集。ゲーム環境音・リラクゼーション用途に。', tags: ['商用利用可', '高音質WAV', 'ループ版付き'], price: '¥1,980', count: '40+ loops' },
-    { category: 'UI / SE', title: 'Casual Game UI Sound Pack', desc: 'ボタン音・通知音・成功・失敗・レベルアップなどカジュアルゲーム向けUI音80音源。', tags: ['商用利用可', 'WAV + MP3', 'ロイヤリティフリー'], price: '¥980', count: '80 SE' },
+    { cat: 'BGM Pack', title: 'Fantasy RPG BGM Pack Vol.1', desc: 'ファンタジーRPG向け20曲収録。タウン・フィールド・ダンジョン・ボス戦など全シーン対応。ループ設計済み。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3'], price: '¥2,980', count: '20 tracks' },
+    { cat: 'SE Pack', title: 'Battle Sound Effects Pack', desc: '剣・魔法・弓・爆発など戦闘系SE100音源以上収録。各カテゴリ複数バリエーションあり。', tags: ['商用利用可', 'バリエーション多数', 'WAV 48kHz/24bit'], price: '¥1,480', count: '100+ SE' },
+    { cat: 'Ambient', title: 'Dark Ambient & Horror Pack', desc: 'ホラー・ダークファンタジー向けアンビエント15曲＋環境音50音源。フィールドレコーディング素材加工版も収録。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3 + OGG'], price: '¥3,480', count: '15 BGM + 50 SE' },
+    { cat: 'BGM Pack', title: 'Cyberpunk / Sci-Fi BGM Pack', desc: '近未来・サイバーパンク世界観の電子音楽BGM15曲。アクション〜アンビエントまで幅広くカバー。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3'], price: '¥2,480', count: '15 tracks' },
+    { cat: 'Field Rec', title: 'Nature & Ambient Field Recordings', desc: '森・川・海・雨など自然環境音のフィールドレコーディング素材集。ゲーム環境音用途に最適。', tags: ['商用利用可', '高音質WAV', 'ループ版付き'], price: '¥1,980', count: '40+ loops' },
+    { cat: 'UI / SE', title: 'Casual Game UI Sound Pack', desc: 'ボタン音・通知音・成功・失敗・レベルアップなどカジュアルゲーム向けUI音80音源。', tags: ['商用利用可', 'WAV + MP3', 'ロイヤリティフリー'], price: '¥980', count: '80 SE' },
   ]
-
   return `
-<p class="section-label">Store</p>
-<h2 class="section-title">販売コンテンツ</h2>
-
-<div class="store-platforms">
-  <a href="https://booth.pm/" target="_blank" rel="noopener" class="store-platform-item">
-    <div>
-      <p class="store-platform-name">BOOTH</p>
-      <p class="store-platform-url">soundforge.booth.pm</p>
-    </div>
-    <span class="arrow-link">Open</span>
+<p class="sec-label">Store</p>
+<div class="store-plats">
+  <a href="https://booth.pm/" target="_blank" rel="noopener" class="sp-item">
+    <div><p class="sp-name">BOOTH</p><p class="sp-url">soundforge.booth.pm</p></div>
+    <span class="sp-arrow">Open →</span>
   </a>
-  <a href="https://itch.io/" target="_blank" rel="noopener" class="store-platform-item">
-    <div>
-      <p class="store-platform-name">itch.io</p>
-      <p class="store-platform-url">soundforge.itch.io</p>
-    </div>
-    <span class="arrow-link">Open</span>
+  <a href="https://itch.io/" target="_blank" rel="noopener" class="sp-item">
+    <div><p class="sp-name">itch.io</p><p class="sp-url">soundforge.itch.io</p></div>
+    <span class="sp-arrow">Open →</span>
   </a>
 </div>
-
 <div class="store-grid">
-  ${items.map(item => `
-  <div class="store-item">
-    <p class="store-category">${item.category}</p>
-    <p class="store-title">${item.title}</p>
-    <p class="store-desc">${item.desc}</p>
-    <div class="store-tags">
-      ${item.tags.map(t => `<span class="store-tag">${t}</span>`).join('')}
-    </div>
-    <div class="store-footer">
+${items.map(item => `
+  <div class="si">
+    <p class="si-cat">${item.cat}</p>
+    <p class="si-title">${item.title}</p>
+    <p class="si-desc">${item.desc}</p>
+    <div class="si-tags">${item.tags.map(t => `<span class="si-tag">${t}</span>`).join('')}</div>
+    <div class="si-foot">
       <div>
-        <p class="store-price">${item.price}</p>
-        <p class="store-count">${item.count}</p>
+        <p class="si-price">${item.price}</p>
+        <p class="si-count">${item.count}</p>
       </div>
-      <a href="https://booth.pm/" target="_blank" rel="noopener" class="store-buy">購入する</a>
+      <a href="https://booth.pm/" target="_blank" rel="noopener" class="si-buy">購入する</a>
     </div>
   </div>`).join('')}
 </div>
-
 <div class="store-note">
-  <p class="store-note-title">ご購入前に</p>
+  <p class="sn-title">ご購入前に</p>
   <ul>
     <li>全商品は商用利用可能です（ライセンス詳細は各商品ページをご確認ください）</li>
     <li>再販・再配布・二次配布は禁止です</li>
