@@ -2,6 +2,22 @@ import { Hono } from 'hono'
 
 const app = new Hono()
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ SNS / 販売サイト URL 設定
+//  ★ ここのURLを書き換えるだけで全ページに反映されます
+// ═══════════════════════════════════════════════════════════════════════
+const SNS_LINKS = {
+  x:         'https://twitter.com/',          // X (Twitter) プロフィールURL
+  youtube:   'https://youtube.com/',          // YouTube チャンネルURL
+  booth:     'https://booth.pm/',             // BOOTH ショップURL
+  instagram: 'https://www.instagram.com/',    // Instagram プロフィールURL
+  facebook:  'https://www.facebook.com/',     // Facebook ページURL
+}
+const STORE_LINKS = {
+  booth:  'https://booth.pm/',                // BOOTH ショップURL（Store ページ購入ボタン）
+  itchio: 'https://itch.io/',                 // itch.io ショップURL
+}
+
 app.get('/favicon.svg', (c) => {
   c.header('Content-Type', 'image/svg+xml')
   return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="10" fill="#ffffff" font-family="sans-serif" font-weight="bold">GA</text></svg>`)
@@ -415,8 +431,9 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .about-grid{grid-template-columns:140px 1fr;gap:28px;}
-  .sns-grid{grid-template-columns:1fr 1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
+  .sns-item{border-bottom:1px solid #ccc;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
@@ -431,7 +448,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .ham{display:flex;}
   #hero-slides{height:380px !important;}
   .hero-text p{font-size:14px;}
-  .sns-grid{grid-template-columns:1fr;}
+  .sns-grid{grid-template-columns:1fr 1fr;}
   .pickup-grid{grid-template-columns:1fr;}
   .store-grid{grid-template-columns:1fr;}
   .store-plats{grid-template-columns:1fr;}
@@ -440,7 +457,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .tab-btn{padding:0 14px;font-size:10px;}
   .eq-tbl td:nth-child(2){display:none;}
   .about-grid{grid-template-columns:1fr;}
-  .about-icon{display:none;}
 }
 `
 
@@ -611,17 +627,6 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
   <div class="page sec fade">
     <p class="sec-label">About</p>
     <div class="about-grid">
-      <div class="about-icon">
-        <div class="cube-row">
-          <div class="cube">A</div><div class="cube">B</div>
-        </div>
-        <div class="cube-row">
-          <div class="cube">O</div><div class="cube">U</div>
-        </div>
-        <div class="cube-row">
-          <div class="cube">T</div>
-        </div>
-      </div>
       <div class="about-body">
         <p>Giverny Audio はゲームオーディオ専門の個人制作スタジオです。<br>
         通常のBGM制作・効果音制作はもちろん、<br>
@@ -652,54 +657,62 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
   <div class="page sec fade">
     <p class="sec-label">Official Account</p>
     <div class="sns-grid">
-      <a href="https://twitter.com/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">𝕏</div>
-        <div>
-          <p class="sns-name">X / Twitter</p>
-          <p class="sns-handle">@giverny_audio</p>
-          <p class="sns-note">制作進捗・新作情報 随時更新</p>
+
+      <!-- X (Twitter) -->
+      <a href="${SNS_LINKS.x}" target="_blank" rel="noopener" class="sns-item">
+        <div class="sns-icon-wrap">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117Z" fill="#333"/>
+          </svg>
         </div>
+        <p class="sns-name">X</p>
       </a>
-      <a href="https://youtube.com/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">▶</div>
-        <div>
-          <p class="sns-name">YouTube</p>
-          <p class="sns-handle">Giverny Audio Channel</p>
-          <p class="sns-note">楽曲試聴・メイキング動画</p>
+
+      <!-- YouTube -->
+      <a href="${SNS_LINKS.youtube}" target="_blank" rel="noopener" class="sns-item">
+        <div class="sns-icon-wrap">
+          <svg width="44" height="30" viewBox="0 0 44 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="30" rx="6" fill="#333"/>
+            <path d="M18 9.5v11l11-5.5-11-5.5Z" fill="#fff"/>
+          </svg>
         </div>
+        <p class="sns-name">YouTube</p>
       </a>
-      <a href="https://soundcloud.com/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">◉</div>
-        <div>
-          <p class="sns-name">SoundCloud</p>
-          <p class="sns-handle">giverny-audio</p>
-          <p class="sns-note">楽曲ポートフォリオ</p>
+
+      <!-- BOOTH -->
+      <a href="${SNS_LINKS.booth}" target="_blank" rel="noopener" class="sns-item">
+        <div class="sns-icon-wrap">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="40" height="40" rx="4" stroke="#333" stroke-width="2" fill="none"/>
+            <text x="22" y="28" text-anchor="middle" font-size="12" font-weight="700" font-family="sans-serif" letter-spacing="0.5" fill="#333">BOOTH</text>
+          </svg>
         </div>
+        <p class="sns-name">BOOTH</p>
       </a>
-      <a href="https://booth.pm/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">⊡</div>
-        <div>
-          <p class="sns-name">BOOTH</p>
-          <p class="sns-handle">givernyaudio.booth.pm</p>
-          <p class="sns-note">BGM・SE素材パック販売</p>
+
+      <!-- Instagram -->
+      <a href="${SNS_LINKS.instagram}" target="_blank" rel="noopener" class="sns-item">
+        <div class="sns-icon-wrap">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#333" stroke-width="1.8" fill="none"/>
+            <circle cx="12" cy="12" r="4.5" stroke="#333" stroke-width="1.8" fill="none"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="#333"/>
+          </svg>
         </div>
+        <p class="sns-name">Instagram</p>
       </a>
-      <a href="https://itch.io/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">⊕</div>
-        <div>
-          <p class="sns-name">itch.io</p>
-          <p class="sns-handle">givernyaudio.itch.io</p>
-          <p class="sns-note">ゲーム向け素材販売</p>
+
+      <!-- Facebook -->
+      <a href="${SNS_LINKS.facebook}" target="_blank" rel="noopener" class="sns-item">
+        <div class="sns-icon-wrap">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="#333" stroke-width="1.8" fill="none"/>
+            <path d="M13.5 8H15V5.5H13C11.067 5.5 10 6.567 10 8.5V10H8.5V12.5H10V19H12.5V12.5H14.5L15 10H12.5V8.5C12.5 8.224 12.724 8 13 8H13.5Z" fill="#333"/>
+          </svg>
         </div>
+        <p class="sns-name">Facebook</p>
       </a>
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon">◻</div>
-        <div>
-          <p class="sns-name">Instagram</p>
-          <p class="sns-handle">@giverny_audio</p>
-          <p class="sns-note">制作風景・機材紹介</p>
-        </div>
-      </a>
+
     </div>
 
     <div class="pickup-head">
@@ -814,7 +827,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
       </p>
       <div class="contact-btns">
         <a href="mailto:info@givernyaudio.jp" class="btn-main">メールで問い合わせる</a>
-        <a href="https://twitter.com/" target="_blank" rel="noopener" class="btn-sub">X / Twitter DM</a>
+        <a href="${SNS_LINKS.x}" target="_blank" rel="noopener" class="btn-sub">X / Twitter DM</a>
       </div>
     </div>
   </div>
@@ -975,11 +988,11 @@ function renderStore() {
   return `
 <p class="sec-label">Store</p>
 <div class="store-plats">
-  <a href="https://booth.pm/" target="_blank" rel="noopener" class="sp-item">
+  <a href="${STORE_LINKS.booth}" target="_blank" rel="noopener" class="sp-item">
     <div><p class="sp-name">BOOTH</p><p class="sp-url">givernyaudio.booth.pm</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
-  <a href="https://itch.io/" target="_blank" rel="noopener" class="sp-item">
+  <a href="${STORE_LINKS.itchio}" target="_blank" rel="noopener" class="sp-item">
     <div><p class="sp-name">itch.io</p><p class="sp-url">givernyaudio.itch.io</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
@@ -996,7 +1009,7 @@ ${items.map(item => `
         <p class="si-price">${item.price}</p>
         <p class="si-count">${item.count}</p>
       </div>
-      <a href="https://booth.pm/" target="_blank" rel="noopener" class="si-buy">購入する</a>
+      <a href="${STORE_LINKS.booth}" target="_blank" rel="noopener" class="si-buy">購入する</a>
     </div>
   </div>`).join('')}
 </div>
