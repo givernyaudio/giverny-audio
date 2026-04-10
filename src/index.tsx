@@ -15,12 +15,36 @@ const app = new Hono()
 const ABOUT_IMAGE = '/about/about-photo.jpg'  // About セクションの画像パス
 
 const SNS_LINKS = {
-  x:         'https://twitter.com/',          // X (Twitter) プロフィールURL
-  youtube:   'https://youtube.com/',          // YouTube チャンネルURL
-  booth:     'https://booth.pm/',             // BOOTH ショップURL
-  instagram: 'https://www.instagram.com/',    // Instagram プロフィールURL
   facebook:  'https://www.facebook.com/',     // Facebook ページURL
+  youtube:   'https://youtube.com/',          // YouTube チャンネルURL
+  instagram: 'https://www.instagram.com/',    // Instagram プロフィールURL
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ YouTube 動画リスト設定
+//  ★ 動画を追加・編集・削除する場合はここを編集してください
+//  ★ 各フィールド:
+//     id    = YouTube 動画ID（URLの末尾部分 例: 'Z-5vfMtC5mY'）
+//     title = 動画のタイトル（サムネイル下に表示）
+// ═══════════════════════════════════════════════════════════════════════
+const YOUTUBE_VIDEOS = [
+  {
+    id:    'Z-5vfMtC5mY',
+    title: '',
+  },
+  {
+    id:    'TsNkvgTvLzI',
+    title: '',
+  },
+  {
+    id:    'gei4wcR1t7M',
+    title: '',
+  },
+  {
+    id:    'H3uwIpRXfXE',
+    title: '',
+  },
+]
 const STORE_LINKS = {
   booth:  'https://booth.pm/',                // BOOTH ショップURL（Store ページ購入ボタン）
   itchio: 'https://itch.io/',                 // itch.io ショップURL
@@ -351,6 +375,7 @@ img{display:block;max-width:100%;}
   display:flex;align-items:center;gap:14px;
   background:#fff;
   transition:background .18s;
+  text-decoration:none;
 }
 .sns-item:hover{background:#f7f5f0;}
 .sns-icon{
@@ -362,6 +387,49 @@ img{display:block;max-width:100%;}
 .sns-name{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#333;margin-bottom:2px;}
 .sns-handle{font-size:11px;color:#888;}
 .sns-note{font-size:10px;color:#aaa;margin-top:1px;}
+
+/* ── YouTube 動画グリッド ── */
+.yt-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:32px;
+}
+.yt-card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+}
+.yt-card:hover .yt-thumb img{opacity:.85;}
+.yt-card:hover .yt-play{opacity:1;}
+.yt-thumb{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  background:#222;
+}
+.yt-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:opacity .2s;
+}
+.yt-play{
+  position:absolute;
+  inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.75;
+  transition:opacity .2s;
+  pointer-events:none;
+}
+.yt-play svg{width:48px;height:48px;}
+.yt-title{
+  font-size:11px;
+  color:#555;
+  margin-top:6px;
+  line-height:1.5;
+}
 
 /* store pickup */
 .pickup-head{
@@ -619,6 +687,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .about-img-wrap img{height:260px;}
   .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
   .sns-item{border-bottom:1px solid #ccc;}
+  .yt-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
@@ -642,6 +711,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   #hero-slides{height:380px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
+  .yt-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
   .pickup-grid{grid-template-columns:1fr;}
   .store-grid{grid-template-columns:1fr;}
   .store-plats{grid-template-columns:1fr;}
@@ -856,14 +926,15 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
     <p class="sec-label">Official Account</p>
     <div class="sns-grid">
 
-      <!-- X (Twitter) -->
-      <a href="${SNS_LINKS.x}" target="_blank" rel="noopener" class="sns-item">
+      <!-- Facebook -->
+      <a href="${SNS_LINKS.facebook}" target="_blank" rel="noopener" class="sns-item">
         <div class="sns-icon-wrap">
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117Z" fill="#333"/>
+            <circle cx="12" cy="12" r="10" stroke="#333" stroke-width="1.8" fill="none"/>
+            <path d="M13.5 8H15V5.5H13C11.067 5.5 10 6.567 10 8.5V10H8.5V12.5H10V19H12.5V12.5H14.5L15 10H12.5V8.5C12.5 8.224 12.724 8 13 8H13.5Z" fill="#333"/>
           </svg>
         </div>
-        <p class="sns-name">X</p>
+        <p class="sns-name">Facebook</p>
       </a>
 
       <!-- YouTube -->
@@ -875,17 +946,6 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
           </svg>
         </div>
         <p class="sns-name">YouTube</p>
-      </a>
-
-      <!-- BOOTH -->
-      <a href="${SNS_LINKS.booth}" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon-wrap">
-          <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="40" height="40" rx="4" stroke="#333" stroke-width="2" fill="none"/>
-            <text x="22" y="28" text-anchor="middle" font-size="12" font-weight="700" font-family="sans-serif" letter-spacing="0.5" fill="#333">BOOTH</text>
-          </svg>
-        </div>
-        <p class="sns-name">BOOTH</p>
       </a>
 
       <!-- Instagram -->
@@ -900,17 +960,23 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         <p class="sns-name">Instagram</p>
       </a>
 
-      <!-- Facebook -->
-      <a href="${SNS_LINKS.facebook}" target="_blank" rel="noopener" class="sns-item">
-        <div class="sns-icon-wrap">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="#333" stroke-width="1.8" fill="none"/>
-            <path d="M13.5 8H15V5.5H13C11.067 5.5 10 6.567 10 8.5V10H8.5V12.5H10V19H12.5V12.5H14.5L15 10H12.5V8.5C12.5 8.224 12.724 8 13 8H13.5Z" fill="#333"/>
-          </svg>
-        </div>
-        <p class="sns-name">Facebook</p>
-      </a>
+    </div>
 
+    <!-- YouTube 動画グリッド -->
+    <div class="yt-grid">
+      ${YOUTUBE_VIDEOS.map(v => `
+      <a class="yt-card" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+        <div class="yt-thumb">
+          <img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+          <div class="yt-play">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="24" height="24" rx="4" fill="rgba(0,0,0,0.65)"/>
+              <path d="M9 7.5v9l8-4.5-8-4.5Z" fill="#fff"/>
+            </svg>
+          </div>
+        </div>
+        ${v.title ? `<p class="yt-title">${v.title}</p>` : ''}
+      </a>`).join('')}
     </div>
 
   </div>
