@@ -75,6 +75,8 @@ const PICKUP_ITEMS = [
 //               ファイル名のみを指定 (例: 'works-01.jpg')。
 //               パスは自動で /works/ が付与されます。
 //               画像なしの場合は '' (空文字) にしてください
+//     url      = タイトルクリック時のリンク先URL (例: 'https://example.com')
+//               不要な場合は '' (空文字) にしてください
 // ═══════════════════════════════════════════════════════════════════════
 const WORKS_LIST = [
   // ↓ 新しい実績をここに追加（先頭が最新として一番上に表示されます）
@@ -86,6 +88,7 @@ const WORKS_LIST = [
     type:     'Immersive',
     platform: 'Event',
     image:    'works-03.jpg',
+    url:      '',
   },
   {
     year:     '2025',
@@ -95,6 +98,7 @@ const WORKS_LIST = [
     type:     'Music',
     platform: 'CD',
     image:    'works-07.jpg',
+    url:      '',
   },
   {
     year:     '2024 ~',
@@ -104,6 +108,7 @@ const WORKS_LIST = [
     type:     'Simulation',
     platform: 'Mobile',
     image:    'works-01.jpg',
+    url:      '',
   },
   {
     year:     '2024',
@@ -113,6 +118,7 @@ const WORKS_LIST = [
     type:     'RPG',
     platform: 'PS4 / Switch / Windows',
     image:    'works-04.jpg',
+    url:      '',
   },
   {
     year:     '2024 ~',
@@ -122,6 +128,7 @@ const WORKS_LIST = [
     type:     'RPG',
     platform: 'Mobile',
     image:    'works-05.png',
+    url:      '',
   },
   {
     year:     '2024',
@@ -131,6 +138,7 @@ const WORKS_LIST = [
     type:     'RPG',
     platform: 'PS4 / Switch',
     image:    'works-06.jpg',
+    url:      '',
   },
 ]
 
@@ -475,6 +483,8 @@ img{display:block;max-width:100%;}
 }
 .wb{padding:22px 24px;border-right:1px solid #e8e6e1;}
 .wt{font-size:14px;font-weight:500;color:#222;margin-bottom:6px;}
+.wt a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;}
+.wt a:hover{border-bottom-color:#aaa;}
 .wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
 .wr{font-size:11px;color:#aaa;}
 .wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;justify-content:center;}
@@ -493,6 +503,8 @@ img{display:block;max-width:100%;}
   display:flex;align-items:center;justify-content:center;
   background:#e8e6e1;
   position:relative;flex-shrink:0;
+  align-self:center;
+  margin:10px 0;
 }
 .wthumb img{
   width:100%;height:100%;
@@ -1036,7 +1048,7 @@ ${WORKS_LIST.map(w => `
       }
     </div>
     <div class="wb">
-      <p class="wt">${w.title}</p>
+      <p class="wt">${w.url ? `<a href="${w.url}" target="_blank" rel="noopener">${w.title}</a>` : w.title}</p>
       <p class="wd">${w.desc}</p>
       <p class="wr">${w.role}</p>
     </div>
