@@ -61,6 +61,77 @@ const PICKUP_ITEMS = [
   // ← 商品を追加する場合は上記の形式でここに追加
 ]
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ Works（実績）一覧 設定
+//  ★ 新しい実績を追加する場合: 配列の先頭に追加してください（新しいものが上に表示されます）
+//  ★ 各フィールド:
+//     year     = 制作年 (例: '2024')
+//     title    = タイトル名
+//     desc     = 説明文
+//     role     = 担当内容 (例: 'BGM全曲制作・SE制作')
+//     type     = ジャンル — フィルターに使用 (例: 'RPG', 'Action', 'Horror', 'Strategy')
+//     platform = プラットフォーム (例: 'PC / Steam')
+//     image    = サムネイル画像パス。画像は public/works/ に置いてパスを指定。
+//               画像なしの場合は '' (空文字) にしてください
+// ═══════════════════════════════════════════════════════════════════════
+const WORKS_LIST = [
+  // ↓ 新しい実績をここに追加（先頭が最新として一番上に表示されます）
+  {
+    year:     '2024',
+    title:    'Echoes of the Abyss',
+    desc:     'ダークファンタジーRPG。オーケストラとシンセを融合させた異世界感のあるサウンドトラック。',
+    role:     'BGM全曲制作・SE制作',
+    type:     'RPG',
+    platform: 'PC / Steam',
+    image:    '/works/works-01.jpg',  // public/works/ に画像を置く
+  },
+  {
+    year:     '2023',
+    title:    'Stellar Drift',
+    desc:     'SF横スクロールアクション。電子音楽とオーケストラを組み合わせた疾走感のあるサウンド。',
+    role:     'BGM・アンビエント制作',
+    type:     'Action',
+    platform: 'PC / Switch',
+    image:    '',
+  },
+  {
+    year:     '2023',
+    title:    'Sengoku Chronicles',
+    desc:     '戦国時代ストラテジー。和楽器を中心にオーケストラも取り入れた重厚な楽曲群。',
+    role:     'BGM・SE全収録',
+    type:     'Strategy',
+    platform: 'PC / Mobile',
+    image:    '',
+  },
+  {
+    year:     '2022',
+    title:    'Phantom Protocol',
+    desc:     'サイコロジカルホラー。フィールドレコーディング素材を加工した不安を煽るサウンドデザイン。',
+    role:     'アンビエント・SE制作',
+    type:     'Horror',
+    platform: 'PC',
+    image:    '',
+  },
+  {
+    year:     '2022',
+    title:    'Pixel Sports Club',
+    desc:     'カジュアルスポーツゲーム。明るく親しみやすいBGMと爽快感のある効果音。',
+    role:     'BGM・SE制作',
+    type:     'Sports',
+    platform: 'Mobile',
+    image:    '',
+  },
+  {
+    year:     '2021',
+    title:    'Mindfield',
+    desc:     'ロジックパズル。集中力を高めるアンビエント系BGMとシンプルなUI音。',
+    role:     'BGM・UI音制作',
+    type:     'Puzzle',
+    platform: 'PC / Mobile',
+    image:    '',
+  },
+]
+
 app.get('/favicon.svg', (c) => {
   c.header('Content-Type', 'image/svg+xml')
   return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="10" fill="#ffffff" font-family="sans-serif" font-weight="bold">GA</text></svg>`)
@@ -388,21 +459,44 @@ img{display:block;max-width:100%;}
 
 .works-tbl{border:1px solid #ccc;border-bottom:none;width:100%;}
 .wrow{
-  display:grid;grid-template-columns:72px 1fr 160px;
+  display:grid;
+  grid-template-columns:72px 1fr 160px 160px;
   border-bottom:1px solid #ccc;background:#fff;
+  align-items:stretch;
 }
 .wrow:hover{background:#faf9f6;}
-.wy{padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;border-right:1px solid #e8e6e1;}
+.wy{
+  padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;
+  border-right:1px solid #e8e6e1;
+  display:flex;align-items:center;justify-content:center;
+}
 .wb{padding:22px 24px;border-right:1px solid #e8e6e1;}
-.wt{font-size:14px;font-weight:500;color:#222;margin-bottom:4px;}
+.wt{font-size:14px;font-weight:500;color:#222;margin-bottom:6px;}
 .wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
 .wr{font-size:11px;color:#aaa;}
-.wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;}
+.wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;border-right:1px solid #e8e6e1;justify-content:center;}
 .wtype{
   display:inline-block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
   border:1px solid #ccc;padding:2px 8px;color:#888;
 }
 .wplat{font-size:11px;color:#aaa;}
+/* サムネイル列 */
+.wthumb{
+  width:160px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:#e8e6e1;
+  position:relative;
+}
+.wthumb img{
+  width:160px;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.wthumb-none{
+  width:160px;height:100%;min-height:80px;
+  background:#e8e6e1;
+  display:flex;align-items:center;justify-content:center;
+}
 
 /* ── EQUIPMENT ── */
 .eq-sec{margin-bottom:48px;}
@@ -486,7 +580,9 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
   .store-grid{grid-template-columns:1fr 1fr;}
-  .wrow{grid-template-columns:64px 1fr;}
+  .wrow{grid-template-columns:64px 1fr 120px;}
+  .wthumb{width:120px;}
+  .wthumb img{width:120px;}
   .wm{display:none;}
 }
 @media(max-width:640px){
@@ -497,6 +593,9 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
+  .wrow{grid-template-columns:56px 1fr !important;}
+  .wm{display:none !important;}
+  .wthumb{display:none !important;}
   #hero-slides{height:380px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
@@ -908,25 +1007,15 @@ function renderTabPage(tab: string) {
 //  WORKS
 // ─────────────────────────────
 function renderWorks() {
-  const list = [
-    { year: '2024', title: 'Echoes of the Abyss', type: 'RPG', platform: 'PC / Steam', role: 'BGM全曲制作・SE制作', desc: 'ダークファンタジーRPG。オーケストラとシンセを融合させた異世界感のあるサウンドトラック。' },
-    { year: '2023', title: 'Stellar Drift', type: 'Action', platform: 'PC / Switch', role: 'BGM・アンビエント制作', desc: 'SF横スクロールアクション。電子音楽とオーケストラを組み合わせた疾走感のあるサウンド。' },
-    { year: '2023', title: 'Sengoku Chronicles', type: 'Strategy', platform: 'PC / Mobile', role: 'BGM・SE全収録', desc: '戦国時代ストラテジー。和楽器を中心にオーケストラも取り入れた重厚な楽曲群。' },
-    { year: '2022', title: 'Phantom Protocol', type: 'Horror', platform: 'PC', role: 'アンビエント・SE制作', desc: 'サイコロジカルホラー。フィールドレコーディング素材を加工した不安を煽るサウンドデザイン。' },
-    { year: '2022', title: 'Pixel Sports Club', type: 'Sports', platform: 'Mobile', role: 'BGM・SE制作', desc: 'カジュアルスポーツゲーム。明るく親しみやすいBGMと爽快感のある効果音。' },
-    { year: '2021', title: 'Mindfield', type: 'Puzzle', platform: 'PC / Mobile', role: 'BGM・UI音制作', desc: 'ロジックパズル。集中力を高めるアンビエント系BGMとシンプルなUI音。' },
-  ]
+  // フィルターボタン用: WORKS_LIST に含まれるジャンルを自動収集
+  const types = ['All', ...Array.from(new Set(WORKS_LIST.map(w => w.type)))]
   return `
 <p class="sec-label">Works</p>
 <div class="wf" id="wf">
-  <button class="fb on" onclick="fw('all',this)">All</button>
-  <button class="fb" onclick="fw('RPG',this)">RPG</button>
-  <button class="fb" onclick="fw('Action',this)">Action</button>
-  <button class="fb" onclick="fw('Horror',this)">Horror</button>
-  <button class="fb" onclick="fw('Strategy',this)">Strategy</button>
+  ${types.map((t, i) => `<button class="fb${i === 0 ? ' on' : ''}" onclick="fw('${t === 'All' ? 'all' : t}',this)">${t}</button>`).join('')}
 </div>
 <div class="works-tbl" id="wl">
-${list.map(w => `
+${WORKS_LIST.map(w => `
   <div class="wrow" data-t="${w.type}">
     <div class="wy">${w.year}</div>
     <div class="wb">
@@ -938,11 +1027,19 @@ ${list.map(w => `
       <span class="wtype">${w.type}</span>
       <p class="wplat">${w.platform}</p>
     </div>
+    <div class="wthumb">
+      ${w.image
+        ? `<img src="${w.image}" alt="${w.title}" loading="lazy">`
+        : `<div class="wthumb-none"></div>`
+      }
+    </div>
   </div>`).join('')}
 </div>
 <script>
 function fw(t,b){
-  document.querySelectorAll('#wl .wrow').forEach(r=>{r.style.display=(t==='all'||r.dataset.t===t)?'':'none';});
+  document.querySelectorAll('#wl .wrow').forEach(r=>{
+    r.style.display=(t==='all'||r.dataset.t===t)?'grid':'none';
+  });
   document.querySelectorAll('#wf .fb').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
 }
