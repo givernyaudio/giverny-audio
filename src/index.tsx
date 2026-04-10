@@ -297,7 +297,7 @@ app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
 // ─────────────────────────────
 const CSS = `
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;height:100%;}
 body{
   background:#f0eeeb;
   color:#333;
@@ -306,7 +306,11 @@ body{
   font-weight:400;
   line-height:1.9;
   -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
+#ft{margin-top:auto;}
 a{color:inherit;text-decoration:none;}
 img{display:block;max-width:100%;}
 
@@ -1227,7 +1231,7 @@ function renderTabPage(tab: string) {
     ${tabs.map(t => `<a href="/tabs/${t.id}" class="tab-btn${t.id === tab ? ' on' : ''}">${t.label}</a>`).join('')}
   </div>
 </div>
-<div style="background:#f0eeeb;min-height:60vh;">
+<div style="background:#f0eeeb;flex:1;">
   <div class="page sec fade">
     <a href="/" class="back-link">Top</a>
     ${content}
