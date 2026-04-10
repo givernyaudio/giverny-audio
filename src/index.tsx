@@ -26,6 +26,41 @@ const STORE_LINKS = {
   itchio: 'https://itch.io/',                 // itch.io ショップURL
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ 販売コンテンツ Pickup 設定
+//  ★ 商品を追加・編集・削除する場合はここを編集してください
+//  ★ 各フィールド:
+//     cat   = カテゴリ表示 (例: 'BGM Pack', 'SE Pack', 'Ambient')
+//     title = 商品名
+//     sub   = 短い説明文
+//     price = 価格 (例: '¥2,980')
+//     url   = 購入ページのURL
+// ═══════════════════════════════════════════════════════════════════════
+const PICKUP_ITEMS = [
+  {
+    cat:   'SE Pack',
+    title: 'Battle Sound Effects Pack',
+    sub:   '100+音源 / WAV 48kHz/24bit',
+    price: '¥1,480',
+    url:   STORE_LINKS.booth,
+  },
+  {
+    cat:   'Ambient',
+    title: 'Dark Ambient & Horror Pack',
+    sub:   '15曲 + 環境音50音源',
+    price: '¥3,480',
+    url:   STORE_LINKS.booth,
+  },
+  {
+    cat:   'BGM Pack',
+    title: 'Fantasy RPG BGM Pack Vol.1',
+    sub:   '20曲収録 / ループ対応 / 商用利用可',
+    price: '¥2,980',
+    url:   STORE_LINKS.booth,
+  },
+  // ← 商品を追加する場合は上記の形式でここに追加
+]
+
 app.get('/favicon.svg', (c) => {
   c.header('Content-Type', 'image/svg+xml')
   return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="10" fill="#ffffff" font-family="sans-serif" font-weight="bold">GA</text></svg>`)
@@ -737,30 +772,6 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 
     </div>
 
-    <div class="pickup-head">
-      <p class="sec-label" style="margin-bottom:0;">販売コンテンツ — Pickup</p>
-      <a href="/tabs/store" class="pickup-more">View All Store →</a>
-    </div>
-    <div class="pickup-grid">
-      <div class="pickup-item">
-        <p class="pickup-cat">BGM Pack</p>
-        <p class="pickup-title">Fantasy RPG BGM Pack Vol.1</p>
-        <p class="pickup-sub">20曲収録 / ループ対応 / 商用利用可</p>
-        <p class="pickup-price">¥2,980</p>
-      </div>
-      <div class="pickup-item">
-        <p class="pickup-cat">SE Pack</p>
-        <p class="pickup-title">Battle Sound Effects Pack</p>
-        <p class="pickup-sub">100+音源 / WAV 48kHz/24bit</p>
-        <p class="pickup-price">¥1,480</p>
-      </div>
-      <div class="pickup-item">
-        <p class="pickup-cat">Ambient</p>
-        <p class="pickup-title">Dark Ambient &amp; Horror Pack</p>
-        <p class="pickup-sub">15曲 + 環境音50音源</p>
-        <p class="pickup-price">¥3,480</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -773,63 +784,62 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
     <div class="svc-table">
       <div class="svc-row">
         <div class="svc-left">
-          <p class="svc-en">BGM Composition</p>
-          <p class="svc-ja">BGM・楽曲制作</p>
-        </div>
-        <div class="svc-right">
-          ゲームのジャンル・世界観に合わせたオリジナルBGMを制作します。バトル・フィールド・タウン・エンディングなど全シーン対応。<strong>ループ設計済み</strong>で納品。スティンガー・ジングルも対応。Wwise / FMOD との連携も可能です。
-        </div>
-      </div>
-      <div class="svc-row">
-        <div class="svc-left">
-          <p class="svc-en">Sound Effects</p>
-          <p class="svc-ja">効果音制作</p>
-        </div>
-        <div class="svc-right">
-          攻撃・魔法・UI・足音・環境音など、ゲームに必要なSEをワンストップで制作。フィールドレコーディング素材も活用した<strong>リアリティのある音</strong>を提供。WAV / OGG / MP3 各種フォーマット対応。バリエーション・ランダム再生セットにも対応します。
-        </div>
-      </div>
-      <div class="svc-row">
-        <div class="svc-left">
           <p class="svc-en">Sound Design</p>
           <p class="svc-ja">サウンドデザイン</p>
         </div>
         <div class="svc-right">
-          アンビエント・インタラクティブサウンド・アダプティブミュージックなど、<strong>ゲーム体験を深める</strong>サウンドデザインを提供。3Dオーディオ設計やミドルウェアを活用したインタラクティブなオーディオ構築も対応します。
+          ゲーム、映画、アニメ、PVなどの効果音を制作。<br>
+          ハイエンドクラスのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
+          Unity/Unreal, Wwise/ADX2の実装実績があり、ゲームエンジンやミドルウェア組み込みも幅広く対応可能。
         </div>
       </div>
       <div class="svc-row">
         <div class="svc-left">
-          <p class="svc-en">Voice / Narration</p>
-          <p class="svc-ja">ボイス・ナレーション</p>
+          <p class="svc-en">Audio Recording</p>
+          <p class="svc-ja">音声収録</p>
         </div>
         <div class="svc-right">
-          ナレーション収録・ボイスディレクション。宅録・スタジオ収録いずれも対応。iZotope RX によるノイズ除去・整音まで一貫して対応します。多言語収録はご相談ください。
-        </div>
-      </div>
-      <div class="svc-row">
-        <div class="svc-left">
-          <p class="svc-en">Audio Implementation</p>
-          <p class="svc-ja">オーディオ実装サポート</p>
-        </div>
-        <div class="svc-right">
-          Unity / Unreal Engine へのオーディオ実装をサポート。Wwise・FMOD の設定、インタラクティブオーディオの構築、<strong>パフォーマンス最適化</strong>まで対応します。
+          iZotope RXによるノイズ除去・整音からゲームエンジン・ミドルウェアへの実装まで一貫して対応いたします。<br>
+          また、キャストやスタジオのブッキング、ボイスディレクションも対応が可能ですので、音声収録の全てをご依頼いただく事が可能です。
         </div>
       </div>
       <div class="svc-row">
         <div class="svc-left">
           <p class="svc-en">Asset Sales</p>
-          <p class="svc-ja">素材パック販売</p>
+          <p class="svc-ja">素材販売</p>
         </div>
         <div class="svc-right">
-          BOOTH・itch.io にてゲーム向けBGM・SEパックを販売中。個人・インディー開発者向けのリーズナブルな素材も多数。
-          <a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
+          BOOTH / itch.io / Gumroad にて効果音素材や環境音、IRデータを販売中。<br>
+          高品質のマイク/レコーダーで録音した効果音素材、サラウンド・Ambisonicsで録音された環境音、高品質の2ndAmbisonicsで収集したイマーシブ対応のIRデータです。<br>
+          詳しくは、<a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
         </div>
       </div>
     </div>
     <div class="price-note">
-      <p>料金は制作規模・曲数・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。まずはお気軽にご相談ください。</p>
+      <p>料金は制作規模・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。まずはお気軽にご相談ください。</p>
       <a href="/#contact" class="btn-contact">お問い合わせ</a>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- 販売コンテンツ PICKUP
+     ★ 商品の追加・編集は src/index.tsx の PICKUP_ITEMS 配列を編集してください -->
+<section id="pickup" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <div class="pickup-head">
+      <p class="sec-label" style="margin-bottom:0;">販売コンテンツ — Pickup</p>
+      <a href="/tabs/store" class="pickup-more">View All Store →</a>
+    </div>
+    <div class="pickup-grid">
+      ${PICKUP_ITEMS.map(item => `
+      <a href="${item.url}" target="_blank" rel="noopener" class="pickup-item" style="text-decoration:none;display:block;">
+        <p class="pickup-cat">${item.cat}</p>
+        <p class="pickup-title">${item.title}</p>
+        <p class="pickup-sub">${item.sub}</p>
+        <p class="pickup-price">${item.price}</p>
+      </a>`).join('')}
     </div>
   </div>
 </section>
