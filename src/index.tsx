@@ -53,8 +53,8 @@ img{display:block;max-width:100%;}
   display:flex;align-items:center;
 }
 .hd-in{
-  width:100%;max-width:1200px;margin:0 auto;
-  padding:0 28px;
+  width:100%;max-width:1100px;margin:0 auto;
+  padding:0 clamp(16px,8vw,120px);
   display:flex;align-items:center;justify-content:space-between;
 }
 .logo{
@@ -141,7 +141,7 @@ img{display:block;max-width:100%;}
 }
 
 /* ── BODY WRAPPER ── */
-.page{max-width:1120px;margin:0 auto;padding:0 80px;}
+.page{max-width:1100px;margin:0 auto;padding:0 clamp(24px,8vw,120px);}
 
 /* ── SECTION ── */
 .sec{padding:88px 0;}
@@ -286,10 +286,10 @@ img{display:block;max-width:100%;}
 /* ── FOOTER ── */
 #ft{
   background:#2d2d2d;
-  padding:32px 40px;margin-top:0;
+  padding:32px clamp(16px,8vw,120px);margin-top:0;
 }
 .ft-in{
-  max-width:1200px;margin:0 auto;
+  max-width:1100px;margin:0 auto;
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
 }
 .ft-copy{font-size:11px;color:#666;letter-spacing:.1em;}
@@ -303,7 +303,7 @@ img{display:block;max-width:100%;}
   position:sticky;top:56px;z-index:100;
   border-bottom:1px solid #444;
 }
-.tab-bar-in{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;}
+.tab-bar-in{max-width:1100px;margin:0 auto;padding:0 clamp(16px,8vw,120px);display:flex;}
 .tab-btn{
   padding:0 24px;line-height:48px;
   font-size:11px;letter-spacing:.16em;text-transform:uppercase;
@@ -423,7 +423,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
-  .page{padding:0 40px;}
   .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
   .sns-item{border-bottom:1px solid #ccc;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
@@ -434,7 +433,6 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wm{display:none;}
 }
 @media(max-width:640px){
-  .page{padding:0 24px;}
   .sec{padding:56px 0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
