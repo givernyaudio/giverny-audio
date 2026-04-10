@@ -78,12 +78,12 @@ const WORKS_LIST = [
   // ↓ 新しい実績をここに追加（先頭が最新として一番上に表示されます）
   {
     year:     '2024',
-    title:    'Echoes of the Abyss',
-    desc:     'ダークファンタジーRPG。オーケストラとシンセを融合させた異世界感のあるサウンドトラック。',
-    role:     'BGM全曲制作・SE制作',
-    type:     'RPG',
-    platform: 'PC / Steam',
-    image:    '/works/works-01.jpg',  // public/works/ に画像を置く
+    title:    'キャプテン翼〜たたかえドリームチーム〜',
+    desc:     '『キャプテン翼』の世界中で愛される対戦型サッカーシミュレーションゲーム！',
+    role:     'サウンドディレクション、SE制作、サウンド実装（Wwise/Unity）、ボイスディレクション',
+    type:     'Simulation',
+    platform: 'iOS / Android',
+    image:    '/works/works-01.jpg',
   },
   {
     year:     '2023',
