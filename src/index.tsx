@@ -71,64 +71,66 @@ const PICKUP_ITEMS = [
 //     role     = 担当内容 (例: 'BGM全曲制作・SE制作')
 //     type     = ジャンル — フィルターに使用 (例: 'RPG', 'Action', 'Horror', 'Strategy')
 //     platform = プラットフォーム (例: 'PC / Steam')
-//     image    = サムネイル画像パス。画像は public/works/ に置いてパスを指定。
+//     image    = サムネイル画像ファイル名。ファイルを public/works/ に置き、
+//               ファイル名のみを指定 (例: 'works-01.jpg')。
+//               パスは自動で /works/ が付与されます。
 //               画像なしの場合は '' (空文字) にしてください
 // ═══════════════════════════════════════════════════════════════════════
 const WORKS_LIST = [
   // ↓ 新しい実績をここに追加（先頭が最新として一番上に表示されます）
   {
-    year:     '2024',
+    year:     '2025',
+    title:    '動き出す妖怪展 NAGOYA / TOKYO',
+    desc:     '日本が誇る妖怪美術に最先端の映像技術と立体造形で没入できる世界初のイマーシブ体感型デジタルアートミュージアム',
+    role:     'SE制作、サラウンドミックス',
+    type:     'Immersive',
+    platform: 'Event',
+    image:    'works-03.jpg',
+  },
+  {
+    year:     '2025',
+    title:    'Imy feat. Kotoha “追憶のファインダー”',
+    desc:     '作曲家『みゅー』×イラストレーター『おにねこ』による音楽プロジェクト。',
+    role:     'フィールドレコーディング、ボイス整音',
+    type:     'Music',
+    platform: 'CD',
+    image:    'works-07.jpg',
+  },
+  {
+    year:     '2024 ~',
     title:    'キャプテン翼〜たたかえドリームチーム〜',
     desc:     '『キャプテン翼』の世界中で愛される対戦型サッカーシミュレーションゲーム！',
     role:     'サウンドディレクション、SE制作、サウンド実装（Wwise/Unity）、ボイスディレクション',
     type:     'Simulation',
-    platform: 'iOS / Android',
-    image:    '/works/works-01.jpg',
-  },
-  {
-    year:     '2023',
-    title:    'Stellar Drift',
-    desc:     'SF横スクロールアクション。電子音楽とオーケストラを組み合わせた疾走感のあるサウンド。',
-    role:     'BGM・アンビエント制作',
-    type:     'Action',
-    platform: 'PC / Switch',
-    image:    '',
-  },
-  {
-    year:     '2023',
-    title:    'Sengoku Chronicles',
-    desc:     '戦国時代ストラテジー。和楽器を中心にオーケストラも取り入れた重厚な楽曲群。',
-    role:     'BGM・SE全収録',
-    type:     'Strategy',
-    platform: 'PC / Mobile',
-    image:    '',
-  },
-  {
-    year:     '2022',
-    title:    'Phantom Protocol',
-    desc:     'サイコロジカルホラー。フィールドレコーディング素材を加工した不安を煽るサウンドデザイン。',
-    role:     'アンビエント・SE制作',
-    type:     'Horror',
-    platform: 'PC',
-    image:    '',
-  },
-  {
-    year:     '2022',
-    title:    'Pixel Sports Club',
-    desc:     'カジュアルスポーツゲーム。明るく親しみやすいBGMと爽快感のある効果音。',
-    role:     'BGM・SE制作',
-    type:     'Sports',
     platform: 'Mobile',
-    image:    '',
+    image:    'works-01.jpg',
   },
   {
-    year:     '2021',
-    title:    'Mindfield',
-    desc:     'ロジックパズル。集中力を高めるアンビエント系BGMとシンプルなUI音。',
-    role:     'BGM・UI音制作',
-    type:     'Puzzle',
-    platform: 'PC / Mobile',
-    image:    '',
+    year:     '2024',
+    title:    'ゴーヘルゴー つきおとしてこ',
+    desc:     '地獄の沙汰もカネしかない。地獄送りが収入源！儲けて戦う“つきおとしてく”RPG',
+    role:     'サウンドディレクション、SE制作、サウンド実装（ADX2 / Unreal）、ボイス整音',
+    type:     'RPG',
+    platform: 'PS4 / Switch / Windows',
+    image:    'works-04.jpg',
+  },
+  {
+    year:     '2024 ~',
+    title:    'GRAND SUMMONERS',
+    desc:     '最大4人で遊べるリアルタイムバトルが熱い、ドット絵アクションRPG',
+    role:     'サウンドディレクション、SE制作、BGM制作、サウンド実装（ADX2）、ボイス整音',
+    type:     'RPG',
+    platform: 'Mobile',
+    image:    'works-05.png',
+  },
+  {
+    year:     '2024',
+    title:    '結城友奈は勇者である 花結いのきらめき',
+    desc:     'タカヒロ企画・原案による『勇者であるシリーズ』を題材としたスマートフォンおよびPCブラウザ用ゲーム',
+    role:     'SE制作',
+    type:     'RPG',
+    platform: 'PS4 / Switch',
+    image:    'works-06.jpg',
   },
 ]
 
@@ -1021,7 +1023,7 @@ ${WORKS_LIST.map(w => `
     <div class="wy">${w.year}</div>
     <div class="wthumb">
       ${w.image
-        ? `<img src="${w.image}" alt="${w.title}" loading="lazy">`
+        ? `<img src="/works/${w.image}" alt="${w.title}" loading="lazy">`
         : `<div class="wthumb-none"></div>`
       }
     </div>
