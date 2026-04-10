@@ -830,15 +830,15 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。</p>
         <p>専門的な知識と積み重ねてきた技術を活かし、クライアントのビジョンに寄り添いながら、質の高いオーディオを提供することを大切にしています。<br>
         ゲームからイマーシブコンテンツまで、幅広い分野での制作実績をもとに、プレイヤーや体験者をその世界へ自然と引き込むサウンドをお届けします。</p>
-        <p class="en-catch">Game Sound To Realize Your Vision.<br>Fulfills All Your Audio Needs.</p>
+        <p class="en-catch">Giverny Audio <br>is a studio specializing in game audio and sound design.</p>
         <p class="en-sub">With a track record spanning games and immersive content, we craft sound that draws players and audiences deeper into the experience. From BGM and sound effects to voice direction and audio implementation.</p>
         <div class="skill-tags">
           <span class="skill-tag">Reaper</span>
           <span class="skill-tag">Wwise</span>
-          <span class="skill-tag">FMOD Studio</span>
-          <span class="skill-tag">Unity Audio</span>
-          <span class="skill-tag">iZotope RX</span>
-          <span class="skill-tag">Field Recording</span>
+          <span class="skill-tag">ADX2</span>
+          <span class="skill-tag">Unity</span>
+          <span class="skill-tag">Unreal</span>
+          <span class="skill-tag">Field Recording / Foley</span>
         </div>
       </div>
 
