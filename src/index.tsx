@@ -1050,16 +1050,16 @@ function renderTabPage(tab: string) {
 //  WORKS
 // ─────────────────────────────
 function renderWorks() {
-  // フィルターボタン用: WORKS_LIST に含まれるジャンルを自動収集
-  const types = ['All', ...Array.from(new Set(WORKS_LIST.map(w => w.type)))]
+  // フィルターボタン用: WORKS_LIST に含まれる year を自動収集（重複除去・降順ソート）
+  const years = ['All', ...Array.from(new Set(WORKS_LIST.map(w => w.year))).sort((a, b) => b.localeCompare(a))]
   return `
 <p class="sec-label">Works</p>
 <div class="wf" id="wf">
-  ${types.map((t, i) => `<button class="fb${i === 0 ? ' on' : ''}" onclick="fw('${t === 'All' ? 'all' : t}',this)">${t}</button>`).join('')}
+  ${years.map((y, i) => `<button class="fb${i === 0 ? ' on' : ''}" onclick="fw('${y === 'All' ? 'all' : y}',this)">${y}</button>`).join('')}
 </div>
 <div class="works-tbl" id="wl">
 ${WORKS_LIST.map(w => `
-  <div class="wrow" data-t="${w.type}">
+  <div class="wrow" data-y="${w.year}">
     <div class="wy">${w.year}</div>
     <div class="wthumb">
       ${w.image
@@ -1079,9 +1079,9 @@ ${WORKS_LIST.map(w => `
   </div>`).join('')}
 </div>
 <script>
-function fw(t,b){
+function fw(y,b){
   document.querySelectorAll('#wl .wrow').forEach(r=>{
-    r.style.display=(t==='all'||r.dataset.t===t)?'grid':'none';
+    r.style.display=(y==='all'||r.dataset.y===y)?'grid':'none';
   });
   document.querySelectorAll('#wf .fb').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
