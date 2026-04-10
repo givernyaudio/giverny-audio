@@ -141,16 +141,16 @@ img{display:block;max-width:100%;}
 }
 
 /* ── BODY WRAPPER ── */
-.page{max-width:1200px;margin:0 auto;padding:0 40px;}
+.page{max-width:1120px;margin:0 auto;padding:0 80px;}
 
 /* ── SECTION ── */
-.sec{padding:72px 0;}
+.sec{padding:88px 0;}
 .sec-label{
-  font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
   color:#2d2d2d;
   border-bottom:1px solid #b0a898;
-  padding-bottom:10px;
-  margin-bottom:40px;
+  padding-bottom:12px;
+  margin-bottom:52px;
 }
 .sec-title{
   font-size:clamp(18px,2.5vw,24px);font-weight:400;
@@ -160,23 +160,27 @@ img{display:block;max-width:100%;}
 
 /* ── ABOUT ── */
 .about-body{
-  max-width:760px;
+  max-width:720px;
 }
 .about-body p{
-  font-size:14px;color:#444;line-height:2.1;margin-bottom:14px;
+  font-size:14px;color:#444;line-height:2.2;margin-bottom:0;
+}
+.about-body p + p{
+  margin-top:18px;
 }
 .about-body .en-catch{
   font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#555;margin-top:28px;margin-bottom:6px;line-height:1.8;
+  color:#555;margin-top:48px;margin-bottom:8px;line-height:2.0;
 }
 .about-body .en-sub{
-  font-size:12px;color:#888;line-height:1.95;max-width:680px;
+  font-size:12px;color:#aaa;line-height:2.0;max-width:640px;
+  margin-top:4px;
 }
-.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:24px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:28px;}
 .skill-tag{
   font-size:11px;letter-spacing:.08em;
-  border:1px solid #bbb;padding:4px 12px;color:#666;
-  background:#ede9e3;
+  border:1px solid #bbb;padding:4px 14px;color:#777;
+  background:transparent;
 }
 
 /* ── SNS ── */
@@ -419,6 +423,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
+  .page{padding:0 40px;}
   .sns-grid{grid-template-columns:repeat(3,1fr);border-bottom:none;}
   .sns-item{border-bottom:1px solid #ccc;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
@@ -429,7 +434,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wm{display:none;}
 }
 @media(max-width:640px){
-  .page{padding:0 20px;}
+  .page{padding:0 24px;}
+  .sec{padding:56px 0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
