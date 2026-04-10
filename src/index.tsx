@@ -37,9 +37,9 @@ body{
   background:#f0eeeb;
   color:#333;
   font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;
-  font-size:14px;
-  font-weight:300;
-  line-height:1.85;
+  font-size:15px;
+  font-weight:400;
+  line-height:1.9;
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit;text-decoration:none;}
@@ -49,30 +49,29 @@ img{display:block;max-width:100%;}
 #hd{
   position:fixed;top:0;left:0;right:0;z-index:200;
   background:#2d2d2d;
-  height:56px;
+  height:64px;
   display:flex;align-items:center;
 }
 .hd-in{
   width:100%;max-width:1100px;margin:0 auto;
   padding:0 clamp(16px,8vw,120px);
   display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
 }
 .logo{
-  font-size:18px;font-weight:700;color:#fff;
+  font-size:clamp(13px,1.8vw,17px);font-weight:700;color:#fff;
   letter-spacing:0.18em;text-transform:uppercase;
-  display:flex;align-items:center;gap:10px;
-}
-.logo-sub{
-  font-size:8px;color:#aaa;letter-spacing:0.12em;
-  line-height:1.5;font-weight:300;text-transform:uppercase;
+  white-space:nowrap;
+  flex-shrink:0;
 }
 .gnav{display:flex;gap:0;list-style:none;}
 .gnav a{
-  display:block;padding:0 18px;
-  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  display:block;padding:0 clamp(8px,1.2vw,18px);
+  font-size:clamp(9px,1vw,11px);letter-spacing:0.12em;text-transform:uppercase;
   color:#bbb;font-weight:400;
-  line-height:56px;
+  line-height:64px;
   transition:color .18s,background .18s;
+  white-space:nowrap;
 }
 .gnav a:hover,.gnav a.cur{color:#fff;background:rgba(255,255,255,.06);}
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;}
@@ -92,7 +91,7 @@ img{display:block;max-width:100%;}
 .hero{
   position:relative;
   width:100%;
-  padding-top:56px; /* header offset */
+  padding-top:64px; /* header offset */
   overflow:hidden;
 }
 .hero-img{
@@ -146,10 +145,10 @@ img{display:block;max-width:100%;}
 /* ── SECTION ── */
 .sec{padding:88px 0;}
 .sec-label{
-  font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
-  color:#2d2d2d;
-  border-bottom:1px solid #b0a898;
-  padding-bottom:12px;
+  font-size:13px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:#1a1a1a;
+  border-bottom:2px solid #999;
+  padding-bottom:14px;
   margin-bottom:52px;
 }
 .sec-title{
@@ -160,26 +159,26 @@ img{display:block;max-width:100%;}
 
 /* ── ABOUT ── */
 .about-body{
-  max-width:720px;
+  max-width:740px;
 }
 .about-body p{
-  font-size:14px;color:#444;line-height:2.2;margin-bottom:0;
+  font-size:15px;font-weight:400;color:#333;line-height:2.2;margin-bottom:0;
 }
 .about-body p + p{
-  margin-top:18px;
+  margin-top:20px;
 }
 .about-body .en-catch{
-  font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:#555;margin-top:48px;margin-bottom:8px;line-height:2.0;
+  font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:#444;margin-top:52px;margin-bottom:10px;line-height:2.0;
 }
 .about-body .en-sub{
-  font-size:12px;color:#aaa;line-height:2.0;max-width:640px;
+  font-size:13px;font-weight:400;color:#888;line-height:2.0;max-width:640px;
   margin-top:4px;
 }
-.skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:28px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px;}
 .skill-tag{
-  font-size:11px;letter-spacing:.08em;
-  border:1px solid #bbb;padding:4px 14px;color:#777;
+  font-size:12px;letter-spacing:.08em;
+  border:1px solid #bbb;padding:5px 16px;color:#555;font-weight:400;
   background:transparent;
 }
 
@@ -300,7 +299,7 @@ img{display:block;max-width:100%;}
 /* ── TABS ── */
 .tab-bar{
   background:#2d2d2d;
-  position:sticky;top:56px;z-index:100;
+  position:sticky;top:64px;z-index:100;
   border-bottom:1px solid #444;
 }
 .tab-bar-in{max-width:1100px;margin:0 auto;padding:0 clamp(16px,8vw,120px);display:flex;}
@@ -466,10 +465,7 @@ function layout(title: string, body: string) {
 
 <header id="hd">
   <div class="hd-in">
-    <a href="/" class="logo">
-      Giverny Audio
-      <span class="logo-sub">Game Audio<br>Sound Design</span>
-    </a>
+    <a href="/" class="logo">Giverny Audio</a>
     <nav><ul class="gnav">
       <li><a href="/#about">About</a></li>
       <li><a href="/#sns">SNS</a></li>
