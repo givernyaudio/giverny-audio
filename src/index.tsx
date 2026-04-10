@@ -464,6 +464,11 @@ img{display:block;max-width:100%;}
   border-bottom:1px solid #ccc;background:#fff;
   align-items:stretch;
 }
+/* 列順: 年 | テキスト | サムネ | ジャンル */
+.wrow > .wy      { order:1; }
+.wrow > .wb      { order:2; }
+.wrow > .wthumb  { order:3; }
+.wrow > .wm      { order:4; }
 .wrow:hover{background:#faf9f6;}
 .wy{
   padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;
@@ -474,7 +479,7 @@ img{display:block;max-width:100%;}
 .wt{font-size:14px;font-weight:500;color:#222;margin-bottom:6px;}
 .wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
 .wr{font-size:11px;color:#aaa;}
-.wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;border-right:1px solid #e8e6e1;justify-content:center;}
+.wm{padding:22px 16px;display:flex;flex-direction:column;gap:6px;justify-content:center;}
 .wtype{
   display:inline-block;font-size:9px;letter-spacing:.16em;text-transform:uppercase;
   border:1px solid #ccc;padding:2px 8px;color:#888;
@@ -580,10 +585,10 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
   .store-grid{grid-template-columns:1fr 1fr;}
-  .wrow{grid-template-columns:64px 1fr 120px;}
+  .wrow{grid-template-columns:64px 1fr 120px 0;}
   .wthumb{width:120px;}
   .wthumb img{width:120px;}
-  .wm{display:none;}
+  .wm{display:none;overflow:hidden;width:0;padding:0;}
 }
 @media(max-width:640px){
   .sec{padding:56px 0;}
@@ -1023,15 +1028,15 @@ ${WORKS_LIST.map(w => `
       <p class="wd">${w.desc}</p>
       <p class="wr">${w.role}</p>
     </div>
-    <div class="wm">
-      <span class="wtype">${w.type}</span>
-      <p class="wplat">${w.platform}</p>
-    </div>
     <div class="wthumb">
       ${w.image
         ? `<img src="${w.image}" alt="${w.title}" loading="lazy">`
         : `<div class="wthumb-none"></div>`
       }
+    </div>
+    <div class="wm">
+      <span class="wtype">${w.type}</span>
+      <p class="wplat">${w.platform}</p>
     </div>
   </div>`).join('')}
 </div>
