@@ -464,18 +464,18 @@ img{display:block;max-width:100%;}
   border-bottom:1px solid #ccc;background:#fff;
   align-items:stretch;
 }
-/* 列順: 年 | テキスト | サムネ | ジャンル */
+/* 列順: 年 | サムネ | テキスト | ジャンル */
 .wrow > .wy      { order:1; }
-.wrow > .wb      { order:2; }
-.wrow > .wthumb  { order:3; }
+.wrow > .wthumb  { order:2; }
+.wrow > .wb      { order:3; }
 .wrow > .wm      { order:4; }
 .wrow:hover{background:#faf9f6;}
 .wy{
   padding:22px 16px;font-size:11px;color:#aaa;letter-spacing:.06em;
-  border-right:1px solid #e8e6e1;
+  border-right:none;
   display:flex;align-items:center;justify-content:center;
 }
-.wb{padding:22px 24px;border-right:1px solid #e8e6e1;}
+.wb{padding:22px 24px;border-right:1px solid #e8e6e1;border-left:1px solid #e8e6e1;}
 .wt{font-size:14px;font-weight:500;color:#222;margin-bottom:6px;}
 .wd{font-size:12px;color:#888;line-height:1.85;margin-bottom:6px;}
 .wr{font-size:11px;color:#aaa;}
