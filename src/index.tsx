@@ -6,6 +6,14 @@ const app = new Hono()
 //  ★ SNS / 販売サイト URL 設定
 //  ★ ここのURLを書き換えるだけで全ページに反映されます
 // ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ About セクション 画像設定
+//  ★ 画像を差し替える場合:
+//     1. public/about/ フォルダに新しい画像ファイルを置く
+//     2. 下記パスを書き換えるだけで反映されます
+// ═══════════════════════════════════════════════════════════════════════
+const ABOUT_IMAGE = '/about/about-photo.jpg'  // About セクションの画像パス
+
 const SNS_LINKS = {
   x:         'https://twitter.com/',          // X (Twitter) プロフィールURL
   youtube:   'https://youtube.com/',          // YouTube チャンネルURL
@@ -167,7 +175,7 @@ img{display:block;max-width:100%;}
   margin:0 auto;
 }
 .about-img-wrap{
-  position:sticky;top:88px;
+  position:static;
 }
 .about-img-wrap img{
   width:100%;height:360px;
@@ -632,9 +640,11 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
     <p class="sec-label">About</p>
     <div class="about-2col">
 
-      <!-- 左列: 写真 -->
+      <!-- 左列: 写真
+           ★ 画像差し替えは src/index.tsx の ABOUT_IMAGE 定数を変更
+           ★ 画像ファイルは public/about/ フォルダに置く -->
       <div class="about-img-wrap">
-        <img src="/about/about-photo.jpg" alt="Field recording in nature">
+        <img src="${ABOUT_IMAGE}" alt="Giverny Audio - Studio Photo">
       </div>
 
       <!-- 右列: テキスト -->
