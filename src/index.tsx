@@ -485,18 +485,18 @@ img{display:block;max-width:100%;}
 .wplat{font-size:11px;color:#aaa;}
 /* サムネイル列 */
 .wthumb{
-  width:160px;overflow:hidden;
+  width:160px;height:90px;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
   background:#e8e6e1;
-  position:relative;
+  position:relative;flex-shrink:0;
 }
 .wthumb img{
-  width:160px;height:100%;
+  width:160px;height:90px;
   object-fit:cover;object-position:center;
   display:block;
 }
 .wthumb-none{
-  width:160px;height:100%;min-height:80px;
+  width:160px;height:90px;
   background:#e8e6e1;
   display:flex;align-items:center;justify-content:center;
 }
@@ -584,8 +584,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
   .store-grid{grid-template-columns:1fr 1fr;}
   .wrow{grid-template-columns:56px 120px 1fr 0;}
-  .wthumb{width:120px;}
-  .wthumb img{width:120px;}
+  .wthumb{width:120px;height:68px;}
+  .wthumb img{width:120px;height:68px;}
   .wm{display:none;overflow:hidden;width:0;padding:0;}
 }
 @media(max-width:640px){
