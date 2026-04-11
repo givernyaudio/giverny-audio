@@ -51,39 +51,38 @@ const STORE_LINKS = {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-//  ★ 販売コンテンツ Pickup 設定
+//  ★ 商品一覧設定（Store ページ・トップ Pickup 共通）
 //  ★ 商品を追加・編集・削除する場合はここを編集してください
 //  ★ 各フィールド:
-//     cat   = カテゴリ表示 (例: 'BGM Pack', 'SE Pack', 'Ambient')
-//     title = 商品名
-//     sub   = 短い説明文
-//     price = 価格 (例: '¥2,980')
-//     url   = 購入ページのURL
+//     title  = 商品名（カード上部に大きく表示）
+//     count  = 収録数など (例: '20 tracks', '100+ SE') → タイトル右横に表示
+//     price  = 価格 (例: '¥2,980') → タイトル下に表示
+//     image  = 商品画像ファイル名 (public/store/ 以下に置く。例: '1350.jpg')
+//             ※ 画像なしの場合は '' (空文字)
+//     url    = 購入ページのURL (例: STORE_LINKS.base または直接URL)
+//
+//  ★ 新商品追加テンプレート（コピーして使ってください）:
+//  {
+//    title: '商品名',
+//    count: '収録数など',  // 例: '20 tracks', '100+ SE', '' (非表示)
+//    price: '¥0,000',
+//    image: 'store-02.jpg',   // public/store/ に画像を置く
+//    url:   STORE_LINKS.base, // または STORE_LINKS.gumroad / 直接URL
+//  },
 // ═══════════════════════════════════════════════════════════════════════
-const PICKUP_ITEMS = [
+const STORE_ITEMS = [
   {
-    cat:   'SE Pack',
-    title: 'Battle Sound Effects Pack',
-    sub:   '100+音源 / WAV 48kHz/24bit',
-    price: '¥1,480',
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
     url:   STORE_LINKS.base,
   },
-  {
-    cat:   'Ambient',
-    title: 'Dark Ambient & Horror Pack',
-    sub:   '15曲 + 環境音50音源',
-    price: '¥3,480',
-    url:   STORE_LINKS.base,
-  },
-  {
-    cat:   'BGM Pack',
-    title: 'Fantasy RPG BGM Pack Vol.1',
-    sub:   '20曲収録 / ループ対応 / 商用利用可',
-    price: '¥2,980',
-    url:   STORE_LINKS.base,
-  },
-  // ← 商品を追加する場合は上記の形式でここに追加
+  // ← 新商品をここに追加してください（上のテンプレートをコピー）
 ]
+
+// トップページ Pickup 用（STORE_ITEMS の先頭3件を使用）
+const PICKUP_ITEMS = STORE_ITEMS.slice(0, 3)
 
 // ═══════════════════════════════════════════════════════════════════════
 //  ★ Equipment（機材）一覧 設定
@@ -770,29 +769,90 @@ img{display:block;max-width:100%;}
 .sp-arrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:color .18s;}
 .sp-item:hover .sp-arrow{color:#555;}
 
+/* 商品グリッド */
 .store-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  border:1px solid #ccc;border-right:none;border-bottom:none;
+  gap:20px;
   margin-bottom:28px;
 }
 .si{
-  border-right:1px solid #ccc;border-bottom:1px solid #ccc;
-  padding:24px 20px;background:#fff;
+  background:#fff;
+  border:1px solid #ccc;
+  display:flex;flex-direction:column;
+  transition:box-shadow .2s;
 }
-.si-cat{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#888;margin-bottom:8px;}
-.si-title{font-size:13px;color:#222;font-weight:500;line-height:1.5;margin-bottom:8px;}
-.si-desc{font-size:12px;color:#888;line-height:1.9;margin-bottom:12px;}
-.si-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px;}
-.si-tag{font-size:10px;color:#aaa;border:1px solid #ddd;padding:2px 7px;letter-spacing:.05em;}
-.si-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid #eee;}
-.si-price{font-size:14px;color:#444;font-weight:500;}
-.si-count{font-size:10px;color:#bbb;margin-top:2px;}
+.si:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);}
+/* 商品画像（縦長で大きめ） */
+.si-img{
+  width:100%;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  background:#e8e6e1;
+  flex-shrink:0;
+}
+.si-img img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .3s;
+}
+.si:hover .si-img img{transform:scale(1.03);}
+.si-img-none{
+  width:100%;aspect-ratio:3/4;
+  background:#e8e6e1;
+  display:flex;align-items:center;justify-content:center;
+}
+.si-img-none span{font-size:10px;color:#bbb;letter-spacing:.1em;}
+/* 商品情報エリア */
+.si-body{
+  padding:14px 16px 16px;
+  display:flex;flex-direction:column;
+  flex:1;
+}
+.si-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:8px;margin-bottom:5px;
+}
+.si-title{font-size:13px;color:#222;font-weight:500;line-height:1.5;flex:1;}
+.si-count{font-size:10px;color:#bbb;letter-spacing:.04em;white-space:nowrap;flex-shrink:0;}
+.si-price{font-size:16px;color:#333;font-weight:600;margin-bottom:14px;letter-spacing:.02em;}
 .si-buy{
+  display:block;text-align:center;
+  margin-top:auto;
   font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  padding:6px 14px;border:1px solid #ccc;color:#888;
+  padding:9px 14px;border:1px solid #ccc;color:#888;
   background:#fff;transition:all .18s;
 }
-.si-buy:hover{border-color:#888;color:#333;}
+.si-buy:hover{border-color:#888;color:#333;background:#f7f5f0;}
+
+/* トップPickup */
+.pickup-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-top:48px;margin-bottom:16px;
+}
+.pickup-more{font-size:11px;letter-spacing:.12em;color:#888;text-transform:uppercase;transition:color .18s;}
+.pickup-more:hover{color:#333;}
+.pickup-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.pickup-item{
+  background:#fff;border:1px solid #ccc;
+  display:flex;flex-direction:column;
+}
+.pickup-img{
+  width:100%;aspect-ratio:3/4;overflow:hidden;background:#e8e6e1;flex-shrink:0;
+}
+.pickup-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.pickup-img-none{
+  width:100%;aspect-ratio:3/4;background:#e8e6e1;
+  display:flex;align-items:center;justify-content:center;
+}
+.pickup-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;}
+.pickup-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-bottom:3px;}
+.pickup-title{font-size:12px;color:#222;font-weight:500;line-height:1.5;flex:1;}
+.pickup-count{font-size:10px;color:#bbb;white-space:nowrap;flex-shrink:0;}
+.pickup-price{font-size:13px;color:#555;font-weight:500;}
 
 .store-note{
   background:#fff;border:1px solid #ccc;padding:24px 28px;
@@ -1162,7 +1222,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 <hr class="div">
 
 <!-- 販売コンテンツ PICKUP
-     ★ 商品の追加・編集は src/index.tsx の PICKUP_ITEMS 配列を編集してください -->
+     ★ 商品の追加・編集は src/index.tsx の STORE_ITEMS 配列を編集してください -->
 <section id="pickup" style="background:#f0eeeb;">
   <div class="page sec fade">
     <div class="pickup-head">
@@ -1171,11 +1231,19 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
     </div>
     <div class="pickup-grid">
       ${PICKUP_ITEMS.map(item => `
-      <a href="${item.url}" target="_blank" rel="noopener" class="pickup-item" style="text-decoration:none;display:block;">
-        <p class="pickup-cat">${item.cat}</p>
-        <p class="pickup-title">${item.title}</p>
-        <p class="pickup-sub">${item.sub}</p>
-        <p class="pickup-price">${item.price}</p>
+      <a href="${item.url}" target="_blank" rel="noopener" class="pickup-item">
+        <div class="pickup-img">
+          ${item.image
+            ? `<img src="/store/${item.image}" alt="${item.title}" loading="lazy">`
+            : `<div class="pickup-img-none"></div>`}
+        </div>
+        <div class="pickup-body">
+          <div class="pickup-title-row">
+            <p class="pickup-title">${item.title}</p>
+            ${item.count ? `<span class="pickup-count">${item.count}</span>` : ''}
+          </div>
+          <p class="pickup-price">${item.price}</p>
+        </div>
       </a>`).join('')}
     </div>
   </div>
@@ -1322,14 +1390,6 @@ function eqToggle(i){
 //  STORE
 // ─────────────────────────────
 function renderStore() {
-  const items = [
-    { cat: 'BGM Pack', title: 'Fantasy RPG BGM Pack Vol.1', desc: 'ファンタジーRPG向け20曲収録。タウン・フィールド・ダンジョン・ボス戦など全シーン対応。ループ設計済み。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3'], price: '¥2,980', count: '20 tracks' },
-    { cat: 'SE Pack', title: 'Battle Sound Effects Pack', desc: '剣・魔法・弓・爆発など戦闘系SE100音源以上収録。各カテゴリ複数バリエーションあり。', tags: ['商用利用可', 'バリエーション多数', 'WAV 48kHz/24bit'], price: '¥1,480', count: '100+ SE' },
-    { cat: 'Ambient', title: 'Dark Ambient & Horror Pack', desc: 'ホラー・ダークファンタジー向けアンビエント15曲＋環境音50音源。フィールドレコーディング素材加工版も収録。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3 + OGG'], price: '¥3,480', count: '15 BGM + 50 SE' },
-    { cat: 'BGM Pack', title: 'Cyberpunk / Sci-Fi BGM Pack', desc: '近未来・サイバーパンク世界観の電子音楽BGM15曲。アクション〜アンビエントまで幅広くカバー。', tags: ['商用利用可', 'ループ対応', 'WAV + MP3'], price: '¥2,480', count: '15 tracks' },
-    { cat: 'Field Rec', title: 'Nature & Ambient Field Recordings', desc: '森・川・海・雨など自然環境音のフィールドレコーディング素材集。ゲーム環境音用途に最適。', tags: ['商用利用可', '高音質WAV', 'ループ版付き'], price: '¥1,980', count: '40+ loops' },
-    { cat: 'UI / SE', title: 'Casual Game UI Sound Pack', desc: 'ボタン音・通知音・成功・失敗・レベルアップなどカジュアルゲーム向けUI音80音源。', tags: ['商用利用可', 'WAV + MP3', 'ロイヤリティフリー'], price: '¥980', count: '80 SE' },
-  ]
   return `
 <p class="sec-label">Store</p>
 <div class="store-plats">
@@ -1343,18 +1403,20 @@ function renderStore() {
   </a>
 </div>
 <div class="store-grid">
-${items.map(item => `
+${STORE_ITEMS.map(item => `
   <div class="si">
-    <p class="si-cat">${item.cat}</p>
-    <p class="si-title">${item.title}</p>
-    <p class="si-desc">${item.desc}</p>
-    <div class="si-tags">${item.tags.map(t => `<span class="si-tag">${t}</span>`).join('')}</div>
-    <div class="si-foot">
-      <div>
-        <p class="si-price">${item.price}</p>
-        <p class="si-count">${item.count}</p>
+    <div class="si-img">
+      ${item.image
+        ? `<img src="/store/${item.image}" alt="${item.title}" loading="lazy">`
+        : `<div class="si-img-none"><span>NO IMAGE</span></div>`}
+    </div>
+    <div class="si-body">
+      <div class="si-head">
+        <p class="si-title">${item.title}</p>
+        ${item.count ? `<span class="si-count">${item.count}</span>` : ''}
       </div>
-      <a href="${STORE_LINKS.base}" target="_blank" rel="noopener" class="si-buy">購入する</a>
+      <p class="si-price">${item.price}</p>
+      <a href="${item.url}" target="_blank" rel="noopener" class="si-buy">購入する</a>
     </div>
   </div>`).join('')}
 </div>
