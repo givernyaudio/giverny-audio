@@ -1509,10 +1509,11 @@ ${STORE_ITEMS.map(item => `
     var atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
     var goingDown = e.deltaY > 0;
     var goingUp   = e.deltaY < 0;
-    // 端に達していて同方向 → ページへ委譲（preventDefault しない）
+    // 端に達していて同方向 → ページへ委譲（何もしない）
     if((atBottom && goingDown) || (atTop && goingUp)) return;
-    // それ以外 → 小枠内でのみスクロール、ページへは伝えない
+    // それ以外 → ページへの伝播を止め、小枠を手動スクロール
     e.preventDefault();
+    el.scrollTop += e.deltaY;
   }, { passive: false });
 })();
 </script>
