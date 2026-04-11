@@ -1012,7 +1012,8 @@ function layout(title: string, body: string) {
 <link rel="preload" as="image" href="/hero/hero-01.webp" type="image/webp">
 <link rel="preload" as="image" href="/about/about-photo.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>${CSS}</style>
 </head>
 <body>
@@ -1096,8 +1097,8 @@ function renderHome() {
     <!-- テキストオーバーレイ -->
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.28) 0%,rgba(0,0,0,.52) 100%);z-index:2;"></div>
     <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:0;">
-      <p style="font-size:clamp(18px,3.5vw,38px);font-weight:300;color:#fff;letter-spacing:.05em;line-height:1.5;text-shadow:0 2px 12px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
-      <p style="font-size:clamp(11px,1.6vw,16px);font-weight:300;color:rgba(255,255,255,.72);letter-spacing:.18em;margin-top:18px;text-shadow:0 1px 6px rgba(0,0,0,.5);">Giverny Audio &mdash; Game Audio / Sound Design</p>
+      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(22px,4.2vw,52px);font-weight:300;color:#fff;letter-spacing:.12em;line-height:1.45;text-shadow:0 2px 18px rgba(0,0,0,.55);">光と色のように、音をつくる。</p>
+      <p style="font-family:'Inter','Noto Sans JP',sans-serif;font-size:clamp(10px,1.3vw,14px);font-weight:300;color:rgba(255,255,255,.6);letter-spacing:.42em;text-transform:uppercase;margin-top:24px;text-shadow:0 1px 6px rgba(0,0,0,.4);">Giverny Audio &nbsp;&mdash;&nbsp; Game Audio / Sound Design</p>
     </div>
     <!-- スライドインジケーター -->
     <div id="hero-dots" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
