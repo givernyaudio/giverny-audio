@@ -769,11 +769,24 @@ img{display:block;max-width:100%;}
 .sp-arrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;transition:color .18s;}
 .sp-item:hover .sp-arrow{color:#555;}
 
-/* 商品グリッド */
+/* 商品グリッド（スクロールコンテナ） */
+.store-grid-wrap{
+  max-height:72vh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  margin-bottom:28px;
+  /* カスタムスクロールバー */
+  scrollbar-width:thin;
+  scrollbar-color:#ccc #f0eeeb;
+}
+.store-grid-wrap::-webkit-scrollbar{width:6px;}
+.store-grid-wrap::-webkit-scrollbar-track{background:#f0eeeb;}
+.store-grid-wrap::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+.store-grid-wrap::-webkit-scrollbar-thumb:hover{background:#aaa;}
 .store-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
   gap:20px;
-  margin-bottom:28px;
+  align-content:start;
 }
 .si{
   background:#fff;
@@ -879,6 +892,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .pickup-grid{grid-template-columns:1fr 1fr;}
   .svc-row{grid-template-columns:1fr;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
+  .store-grid-wrap{max-height:68vh;}
   .store-grid{grid-template-columns:1fr 1fr;}
   .wrow{grid-template-columns:56px 120px 1fr 0;}
   .wthumb{width:120px;height:68px;min-width:120px;max-width:120px;min-height:68px;max-height:68px;}
@@ -901,7 +915,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .sns-grid{grid-template-columns:1fr 1fr;}
   .yt-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
   .pickup-grid{grid-template-columns:1fr;}
-  .store-grid{grid-template-columns:1fr;}
+  .store-grid-wrap{max-height:60vh;}
+  .store-grid{grid-template-columns:1fr 1fr;}
   .store-plats{grid-template-columns:1fr;}
   .contact-box{padding:32px 20px;}
   .tab-bar-in{padding:0 16px;}
@@ -1402,7 +1417,7 @@ function renderStore() {
     <span class="sp-arrow">Open →</span>
   </a>
 </div>
-<div class="store-grid">
+<div class="store-grid-wrap"><div class="store-grid">
 ${STORE_ITEMS.map(item => `
   <div class="si">
     <div class="si-img">
@@ -1419,7 +1434,7 @@ ${STORE_ITEMS.map(item => `
       <a href="${item.url}" target="_blank" rel="noopener" class="si-buy">購入する</a>
     </div>
   </div>`).join('')}
-</div>
+</div></div>
 <div class="store-note">
   <p class="sn-title">ご購入前に</p>
   <ul>
