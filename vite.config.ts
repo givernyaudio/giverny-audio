@@ -86,7 +86,7 @@ function patchRoutes(): Plugin {
       const routes = {
         version: 1,
         include: ['/*'],
-        exclude: ['/static/*', '/hero/*', '/about/*', '/works/*', '/store/*', '/favicon.svg', '/favicon.ico']
+        exclude: ['/static/*', '/hero/*', '/about/*', '/works/*', '/store/*', '/favicon.svg', '/favicon.ico', '/Giverny_Audio_Logo_White.png']
       }
       writeFileSync(
         join(process.cwd(), 'dist/_routes.json'),

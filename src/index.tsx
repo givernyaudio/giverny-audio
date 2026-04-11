@@ -922,7 +922,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wrow{grid-template-columns:48px 80px 1fr !important;}
   .wm{display:none !important;}
   .wthumb{display:none !important;}
-  #hero-slides{height:380px !important;}
+  #hero-slides{height:480px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
   .yt-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -1029,16 +1029,20 @@ function renderHome() {
        例: const HERO_IMAGES = ['/hero/hero-01.jpg', '/hero/hero-02.jpg'];
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 <div class="hero" style="padding-top:56px;">
-  <div id="hero-slides" style="position:relative;width:100%;height:520px;overflow:hidden;background:#1a1a1a;">
+  <div id="hero-slides" style="position:relative;width:100%;height:660px;overflow:hidden;background:#1a1a1a;">
     <!-- スライド（JSで生成） -->
-    <!-- テキストオーバーレイ -->
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.28) 0%,rgba(0,0,0,.52) 100%);z-index:2;"></div>
+    <!-- グラデーションオーバーレイ -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.50) 100%);z-index:2;"></div>
+    <!-- ロゴ：中央上寄り -->
     <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:0;">
-      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(22px,4.2vw,52px);font-weight:300;color:#fff;letter-spacing:.12em;line-height:1.45;text-shadow:0 2px 18px rgba(0,0,0,.55);">光と色のように、音をつくる。</p>
-      <p style="font-family:'Inter','Noto Sans JP',sans-serif;font-size:clamp(10px,1.3vw,14px);font-weight:300;color:rgba(255,255,255,.6);letter-spacing:.42em;text-transform:uppercase;margin-top:24px;text-shadow:0 1px 6px rgba(0,0,0,.4);">Giverny Audio &nbsp;&mdash;&nbsp; Game Audio / Sound Design</p>
+      <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(140px,22vw,260px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));margin-bottom:0;">
+    </div>
+    <!-- キャッチコピー：下部固定 -->
+    <div style="position:absolute;bottom:60px;left:0;right:0;z-index:3;text-align:center;padding:0 20px;">
+      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(14px,2.2vw,26px);font-weight:300;color:rgba(255,255,255,.88);letter-spacing:.14em;line-height:1.5;text-shadow:0 2px 14px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
     </div>
     <!-- スライドインジケーター -->
-    <div id="hero-dots" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
+    <div id="hero-dots" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
   </div>
 </div>
 
