@@ -14,6 +14,10 @@ const app = new Hono()
 // ═══════════════════════════════════════════════════════════════════════
 const ABOUT_IMAGE = '/about/about-photo.jpg'  // About セクションの画像パス
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ OFFICIAL ACCOUNT URL 設定
+//  ★ URLを書き換えるだけで全ページに反映されます
+// ═══════════════════════════════════════════════════════════════════════
 const SNS_LINKS = {
   facebook:  'https://www.facebook.com/',     // Facebook ページURL
   youtube:   'https://youtube.com/',          // YouTube チャンネルURL
@@ -1015,8 +1019,8 @@ function layout(title: string, body: string) {
   <div class="hd-in">
     <a href="/" class="logo">Giverny Audio</a>
     <nav><ul class="gnav">
-      <li><a href="/#about">About</a></li>
-      <li><a href="/#sns">SNS</a></li>
+      <li><a href="/">Top</a></li>
+      <li><a href="/#sns">Account</a></li>
       <li><a href="/#services">Services</a></li>
       <li><a href="/tabs/works">Works</a></li>
       <li><a href="/tabs/equipment">Equipment</a></li>
@@ -1031,8 +1035,8 @@ function layout(title: string, body: string) {
 
 <div id="mmenu">
   <button id="mc" onclick="document.getElementById('mmenu').classList.remove('open')">✕</button>
-  <a href="/#about" onclick="document.getElementById('mmenu').classList.remove('open')">About</a>
-  <a href="/#sns" onclick="document.getElementById('mmenu').classList.remove('open')">SNS</a>
+  <a href="/" onclick="document.getElementById('mmenu').classList.remove('open')">Top</a>
+  <a href="/#sns" onclick="document.getElementById('mmenu').classList.remove('open')">Account</a>
   <a href="/#services" onclick="document.getElementById('mmenu').classList.remove('open')">Services</a>
   <a href="/tabs/works">Works</a>
   <a href="/tabs/equipment">Equipment</a>
@@ -1046,7 +1050,7 @@ ${body}
   <div class="ft-in">
     <p class="ft-copy">© 2024 Giverny Audio. All Rights Reserved.</p>
     <nav><ul class="ft-nav">
-      <li><a href="/#about">About</a></li>
+      <li><a href="/">Top</a></li>
       <li><a href="/#services">Services</a></li>
       <li><a href="/tabs/works">Works</a></li>
       <li><a href="/#contact">Contact</a></li>
