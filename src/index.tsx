@@ -838,6 +838,8 @@ img{display:block;max-width:100%;}
   overflow-y:auto;
   overflow-x:hidden;
   margin-bottom:28px;
+  /* 端に達したらページへ即委譲（慣性スクロールの引き継ぎも含む） */
+  overscroll-behavior:contain;
   /* カスタムスクロールバー */
   scrollbar-width:thin;
   scrollbar-color:#ccc #f0eeeb;
@@ -1503,15 +1505,15 @@ ${STORE_ITEMS.map(item => `
   var el = document.getElementById('storeScroll');
   if(!el) return;
   el.addEventListener('wheel', function(e){
-    var atTop    = el.scrollTop === 0;
+    var atTop    = el.scrollTop <= 0;
     var atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
-    // 下端に達していてさらに下、または上端に達していてさらに上 → ページへ委譲
-    if((atBottom && e.deltaY > 0) || (atTop && e.deltaY < 0)){
-      return; // デフォルト動作（ページスクロール）を通す
-    }
-    // それ以外は小枠内でスクロール（ページには伝えない）
-    e.stopPropagation();
-  }, { passive: true });
+    var goingDown = e.deltaY > 0;
+    var goingUp   = e.deltaY < 0;
+    // 端に達していて同方向 → ページへ委譲（preventDefault しない）
+    if((atBottom && goingDown) || (atTop && goingUp)) return;
+    // それ以外 → 小枠内でのみスクロール、ページへは伝えない
+    e.preventDefault();
+  }, { passive: false });
 })();
 </script>
 <div class="store-note">
