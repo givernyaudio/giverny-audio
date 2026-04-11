@@ -1035,7 +1035,7 @@ function renderHome() {
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.50) 100%);z-index:2;"></div>
     <!-- ロゴ：中央上寄り -->
     <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:0;">
-      <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(140px,22vw,260px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));margin-bottom:0;">
+      <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(260px,42vw,520px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));margin-bottom:0;">
     </div>
     <!-- キャッチコピー：下部固定 -->
     <div style="position:absolute;bottom:60px;left:0;right:0;z-index:3;text-align:center;padding:0 20px;">
