@@ -78,6 +78,69 @@ const STORE_ITEMS = [
     image: '1350.jpg',
     url:   STORE_LINKS.base,
   },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
+  {
+    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
+    count: '収録数未定',
+    price: '¥未定',
+    image: '1350.jpg',
+    url:   STORE_LINKS.base,
+  },
   // ← 新商品をここに追加してください（上のテンプレートをコピー）
 ]
 
@@ -1417,7 +1480,7 @@ function renderStore() {
     <span class="sp-arrow">Open →</span>
   </a>
 </div>
-<div class="store-grid-wrap"><div class="store-grid">
+<div class="store-grid-wrap" id="storeScroll"><div class="store-grid">
 ${STORE_ITEMS.map(item => `
   <div class="si">
     <div class="si-img">
@@ -1435,6 +1498,22 @@ ${STORE_ITEMS.map(item => `
     </div>
   </div>`).join('')}
 </div></div>
+<script>
+(function(){
+  var el = document.getElementById('storeScroll');
+  if(!el) return;
+  el.addEventListener('wheel', function(e){
+    var atTop    = el.scrollTop === 0;
+    var atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+    // 下端に達していてさらに下、または上端に達していてさらに上 → ページへ委譲
+    if((atBottom && e.deltaY > 0) || (atTop && e.deltaY < 0)){
+      return; // デフォルト動作（ページスクロール）を通す
+    }
+    // それ以外は小枠内でスクロール（ページには伝えない）
+    e.stopPropagation();
+  }, { passive: true });
+})();
+</script>
 <div class="store-note">
   <p class="sn-title">ご購入前に</p>
   <ul>
