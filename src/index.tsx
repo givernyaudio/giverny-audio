@@ -51,6 +51,12 @@ const STORE_LINKS = {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
+//  ★ お問い合わせメールアドレス設定
+//  ★ アドレスを変更する場合はここを書き換えるだけで反映されます
+// ═══════════════════════════════════════════════════════════════════════
+const CONTACT_EMAIL = 'info@givernyaudio.jp'  // お問い合わせ先メールアドレス
+
+// ═══════════════════════════════════════════════════════════════════════
 //  ★ 商品一覧設定（Store ページ・トップ Pickup 共通）
 //  ★ 商品を追加・編集・削除する場合はここを編集してください
 //  ★ 各フィールド:
@@ -1343,8 +1349,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
         通常2〜3営業日以内にご返信いたします。
       </p>
       <div class="contact-btns">
-        <a href="mailto:info@givernyaudio.jp" class="btn-main">メールで問い合わせる</a>
-        <a href="${SNS_LINKS.x}" target="_blank" rel="noopener" class="btn-sub">X / Twitter DM</a>
+        <a href="mailto:${CONTACT_EMAIL}" class="btn-main">メールで問い合わせる</a>
       </div>
     </div>
   </div>
