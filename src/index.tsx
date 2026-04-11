@@ -1034,9 +1034,9 @@ function renderHome() {
     <!-- グラデーションオーバーレイ -->
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.50) 100%);z-index:2;"></div>
     <!-- ロゴ＋キャッチコピー：中央にまとめて配置 -->
-    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:20px;">
+    <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:8px;">
       <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(220px,36vw,440px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));">
-      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(13px,1.8vw,22px);font-weight:300;color:rgba(255,255,255,.82);letter-spacing:.16em;line-height:1.5;text-shadow:0 2px 14px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
+      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(14px,2.2vw,26px);font-weight:300;color:rgba(255,255,255,.88);letter-spacing:.14em;line-height:1.5;text-shadow:0 2px 14px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
     </div>
     <!-- スライドインジケーター -->
     <div id="hero-dots" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
