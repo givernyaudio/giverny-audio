@@ -46,8 +46,8 @@ const YOUTUBE_VIDEOS = [
   },
 ]
 const STORE_LINKS = {
-  booth:  'https://booth.pm/',                // BOOTH ショップURL（Store ページ購入ボタン）
-  itchio: 'https://itch.io/',                 // itch.io ショップURL
+  base:    'https://givernyaudio.base.shop',    // BASE ショップURL（Store ページ購入ボタン）
+  gumroad: 'https://givernyaudio.gumroad.com/', // Gumroad ショップURL
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -66,21 +66,21 @@ const PICKUP_ITEMS = [
     title: 'Battle Sound Effects Pack',
     sub:   '100+音源 / WAV 48kHz/24bit',
     price: '¥1,480',
-    url:   STORE_LINKS.booth,
+    url:   STORE_LINKS.base,
   },
   {
     cat:   'Ambient',
     title: 'Dark Ambient & Horror Pack',
     sub:   '15曲 + 環境音50音源',
     price: '¥3,480',
-    url:   STORE_LINKS.booth,
+    url:   STORE_LINKS.base,
   },
   {
     cat:   'BGM Pack',
     title: 'Fantasy RPG BGM Pack Vol.1',
     sub:   '20曲収録 / ループ対応 / 商用利用可',
     price: '¥2,980',
-    url:   STORE_LINKS.booth,
+    url:   STORE_LINKS.base,
   },
   // ← 商品を追加する場合は上記の形式でここに追加
 ]
@@ -1333,12 +1333,12 @@ function renderStore() {
   return `
 <p class="sec-label">Store</p>
 <div class="store-plats">
-  <a href="${STORE_LINKS.booth}" target="_blank" rel="noopener" class="sp-item">
-    <div><p class="sp-name">BOOTH</p><p class="sp-url">givernyaudio.booth.pm</p></div>
+  <a href="${STORE_LINKS.base}" target="_blank" rel="noopener" class="sp-item">
+    <div><p class="sp-name">BASE</p><p class="sp-url">givernyaudio.base.shop</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
-  <a href="${STORE_LINKS.itchio}" target="_blank" rel="noopener" class="sp-item">
-    <div><p class="sp-name">itch.io</p><p class="sp-url">givernyaudio.itch.io</p></div>
+  <a href="${STORE_LINKS.gumroad}" target="_blank" rel="noopener" class="sp-item">
+    <div><p class="sp-name">Gumroad</p><p class="sp-url">givernyaudio.gumroad.com</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
 </div>
@@ -1354,7 +1354,7 @@ ${items.map(item => `
         <p class="si-price">${item.price}</p>
         <p class="si-count">${item.count}</p>
       </div>
-      <a href="${STORE_LINKS.booth}" target="_blank" rel="noopener" class="si-buy">購入する</a>
+      <a href="${STORE_LINKS.base}" target="_blank" rel="noopener" class="si-buy">購入する</a>
     </div>
   </div>`).join('')}
 </div>
