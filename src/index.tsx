@@ -12,7 +12,7 @@ const app = new Hono()
 //     1. public/about/ フォルダに新しい画像ファイルを置く
 //     2. 下記パスを書き換えるだけで反映されます
 // ═══════════════════════════════════════════════════════════════════════
-const ABOUT_IMAGE = '/about/about-photo.jpg'  // About セクションの画像パス
+const ABOUT_IMAGE = '/about/about-photo.webp'  // About セクションの画像パス
 
 // ═══════════════════════════════════════════════════════════════════════
 //  ★ OFFICIAL ACCOUNT URL 設定
@@ -67,7 +67,7 @@ const CONTACT_EMAIL = 'info@givernyaudio.jp'  // お問い合わせ先メール�
 //     title  = 商品名（カード上部に大きく表示）
 //     count  = 収録数など (例: '20 tracks', '100+ SE') → タイトル右横に表示
 //     price  = 価格 (例: '¥2,980') → タイトル下に表示
-//     image  = 商品画像ファイル名 (public/store/ 以下に置く。例: '1350.jpg')
+//     image  = 商品画像ファイル名 (public/store/ 以下に置く。例: '1350.webp')
 //             ※ 画像なしの場合は '' (空文字)
 //     url    = 購入ページのURL (例: STORE_LINKS.base または直接URL)
 //
@@ -92,63 +92,63 @@ const STORE_ITEMS = [
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   {
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
-    image: '1350.jpg',
+    image: '1350.webp',
     url:   STORE_LINKS.base,
   },
   // ← 新商品をここに追加してください（上のテンプレートをコピー）
@@ -265,7 +265,7 @@ const EQUIPMENT_LIST = [
 //     type     = ジャンル — フィルターに使用 (例: 'RPG', 'Action', 'Horror', 'Strategy')
 //     platform = プラットフォーム (例: 'PC / Steam')
 //     image    = サムネイル画像ファイル名。ファイルを public/works/ に置き、
-//               ファイル名のみを指定 (例: 'works-01.jpg')。
+//               ファイル名のみを指定 (例: 'works-01.webp')。
 //               パスは自動で /works/ が付与されます。
 //               画像なしの場合は '' (空文字) にしてください
 //     url      = タイトルクリック時のリンク先URL (例: 'https://example.com')
@@ -280,7 +280,7 @@ const WORKS_LIST = [
     role:     'SE制作、サラウンドミックス',
     type:     'Immersive',
     platform: 'Event',
-    image:    'works-03.jpg',
+    image:    'works-03.webp',
     url:      'https://www.yokaiimmersive.com/',
   },
   {
@@ -290,7 +290,7 @@ const WORKS_LIST = [
     role:     'フィールドレコーディング、ボイス整音',
     type:     'Music',
     platform: 'CD :Track 03',
-    image:    'works-07.jpg',
+    image:    'works-07.webp',
     url:      'https://www.diverse.direct/imy/imym-1003/',
   },
   {
@@ -300,7 +300,7 @@ const WORKS_LIST = [
     role:     'サウンドディレクション、SE制作、サウンド実装（Wwise/Unity）、ボイスディレクション',
     type:     'Simulation',
     platform: 'Mobile',
-    image:    'works-01.jpg',
+    image:    'works-01.webp',
     url:      'https://www.tsubasa-dreamteam.com/',
   },
   {
@@ -310,7 +310,7 @@ const WORKS_LIST = [
     role:     'サウンドディレクション、SE制作、サウンド実装（ADX2 / Unreal）、ボイス整音',
     type:     'RPG',
     platform: 'PS4 / Switch / Windows',
-    image:    'works-04.jpg',
+    image:    'works-04.webp',
     url:      'https://www.entergram.co.jp/gohellgo/',
   },
   {
@@ -320,7 +320,7 @@ const WORKS_LIST = [
     role:     'サウンドディレクション、SE制作、BGM制作、サウンド実装（ADX2）、ボイス整音',
     type:     'RPG',
     platform: 'Mobile',
-    image:    'works-05.png',
+    image:    'works-05.webp',
     url:      'https://grandsummoners.com/',
   },
   {
@@ -330,7 +330,7 @@ const WORKS_LIST = [
     role:     'SE制作',
     type:     'RPG',
     platform: 'PS4 / Switch',
-    image:    'works-06.jpg',
+    image:    'works-06.webp',
     url:      'https://www.entergram.co.jp/yuyuyui/',
   },
   {
@@ -340,7 +340,7 @@ const WORKS_LIST = [
     role:     'サウンドディレクション、SE制作、BGM制作',
     type:     'RPG',
     platform: 'PS4 / Switch / Windows',
-    image:    'works-08.jpg',
+    image:    'works-08.webp',
     url:      'https://www.entergram.co.jp/sudama/',
   },
   {
@@ -350,7 +350,7 @@ const WORKS_LIST = [
     role:     'BGM制作',
     type:     'Adventure',
     platform: 'Switch',
-    image:    'works-09.jpg',
+    image:    'works-09.webp',
     url:      'https://www.taito.co.jp/taitoldgamecollection/re_birth',
   },
 ]
@@ -1009,6 +1009,8 @@ function layout(title: string, body: string) {
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>${title}</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preload" as="image" href="/hero/hero-01.webp" type="image/webp">
+<link rel="preload" as="image" href="/about/about-photo.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>${CSS}</style>
@@ -1108,9 +1110,9 @@ function renderHome() {
    public/hero/ に画像を置いてパスを追加するだけでOK
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const HERO_IMAGES = [
-  '/hero/hero-01.jpg',
-  // '/hero/hero-02.jpg',   ← 追加例
-  // '/hero/hero-03.jpg',
+  '/hero/hero-01.webp',
+  // '/hero/hero-02.webp',   ← 追加例
+  // '/hero/hero-03.webp',
 ];
 const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
 
@@ -1170,7 +1172,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
            ★ 画像差し替えは src/index.tsx の ABOUT_IMAGE 定数を変更
            ★ 画像ファイルは public/about/ フォルダに置く -->
       <div class="about-img-wrap">
-        <img src="${ABOUT_IMAGE}" alt="Giverny Audio - Studio Photo">
+        <img src="${ABOUT_IMAGE}" alt="Giverny Audio - Studio Photo" fetchpriority="high">
       </div>
 
       <!-- 右列: テキスト -->
@@ -1324,7 +1326,7 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
       <a href="${item.url}" target="_blank" rel="noopener" class="pickup-item">
         <div class="pickup-img">
           ${item.image
-            ? `<img src="/store/${item.image}" alt="${item.title}" loading="lazy">`
+            ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager" fetchpriority="high">`
             : `<div class="pickup-img-none"></div>`}
         </div>
         <div class="pickup-body">
@@ -1415,7 +1417,7 @@ ${WORKS_LIST.map(w => `
     <div class="wy">${w.year}</div>
     <div class="wthumb">
       ${w.image
-        ? `<img src="/works/${w.image}" alt="${w.title}" loading="lazy">`
+        ? `<img src="/works/${w.image}" alt="${w.title}" loading="eager">`
         : `<div class="wthumb-none"></div>`
       }
     </div>
@@ -1496,7 +1498,7 @@ ${STORE_ITEMS.map(item => `
   <div class="si">
     <div class="si-img">
       ${item.image
-        ? `<img src="/store/${item.image}" alt="${item.title}" loading="lazy">`
+        ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager">`
         : `<div class="si-img-none"><span>NO IMAGE</span></div>`}
     </div>
     <div class="si-body">
