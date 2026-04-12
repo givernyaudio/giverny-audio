@@ -922,7 +922,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wrow{grid-template-columns:48px 80px 1fr !important;}
   .wm{display:none !important;}
   .wthumb{display:none !important;}
-  #hero-slides{height:560px !important;}
+  #hero-slides{height:640px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
   .yt-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -1030,7 +1030,7 @@ function renderHome() {
 <style>
 @keyframes kenburns {
   0%   { transform: scale(1.0); }
-  100% { transform: scale(1.18); }
+  100% { transform: scale(1.15); }
 }
 .hero-slide-bg {
   position: absolute;
@@ -1046,11 +1046,11 @@ function renderHome() {
   opacity: 1;
 }
 .hero-slide-bg.is-zoom {
-  animation: kenburns 7s ease-in forwards;
+  animation: kenburns 12s ease-in forwards;
 }
 </style>
 <div class="hero" style="padding-top:56px;">
-  <div id="hero-slides" style="position:relative;width:100%;height:760px;overflow:hidden;background:#1a1a1a;">
+  <div id="hero-slides" style="position:relative;width:100%;height:900px;overflow:hidden;background:#1a1a1a;">
     <!-- スライド（JSで生成） -->
     <!-- グラデーションオーバーレイ -->
     <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.20) 0%,rgba(0,0,0,.48) 100%);z-index:2;pointer-events:none;"></div>
@@ -1074,7 +1074,7 @@ const HERO_IMAGES = [
   '/hero/hero-02.webp',
   '/hero/hero-03.webp',
 ];
-const HERO_ZOOM_DURATION = 7000;  // ズーム時間(ms)
+const HERO_ZOOM_DURATION = 12000;  // ズーム時間(ms)
 const HERO_FADE_DURATION  = 1600; // フェード時間(ms)
 
 (function(){
