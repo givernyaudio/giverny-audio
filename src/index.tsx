@@ -1040,7 +1040,7 @@ function renderHome() {
   background-repeat: no-repeat;
   opacity: 0;
   z-index: 1;
-  transition: opacity 1.6s ease;
+  transition: opacity 2s ease;
 }
 .hero-slide-bg.is-active {
   opacity: 1;
@@ -1074,21 +1074,21 @@ const HERO_IMAGES = [
   '/hero/hero-02.webp',
   '/hero/hero-03.webp',
 ];
-const HERO_ZOOM_DURATION = 12000;  // ズーム時間(ms)
-const HERO_FADE_DURATION  = 1600; // フェード時間(ms)
+const HERO_ZOOM_DURATION = 12000;  // 1枚あたりの表示時間(ms)
+const HERO_FADE_DURATION  = 2000;  // クロスフェード時間(ms)
 
 (function(){
   const wrap = document.getElementById('hero-slides');
   const dots = document.getElementById('hero-dots');
   if(!wrap || HERO_IMAGES.length === 0) return;
 
-  // スライド要素を生成
+  // スライド要素を生成（後から prepend するので逆順にならないよう appendChild）
   const slides = HERO_IMAGES.map((src, i) => {
     const el = document.createElement('div');
     el.className = 'hero-slide-bg';
     el.style.backgroundImage = 'url(' + src + ')';
     el.dataset.idx = String(i);
-    wrap.prepend(el);
+    wrap.insertBefore(el, wrap.firstChild);
 
     // ドット
     if(HERO_IMAGES.length > 1){
@@ -1101,37 +1101,50 @@ const HERO_FADE_DURATION  = 1600; // フェード時間(ms)
   });
 
   let cur = 0;
-  let timer = null;
+
+  function resetZoom(el){
+    el.classList.remove('is-zoom');
+    void el.offsetWidth; // reflow でアニメーションリセット
+  }
 
   function startZoom(el){
-    // アニメーションをリセットしてから再付与
-    el.classList.remove('is-zoom');
-    void el.offsetWidth; // reflow
     el.classList.add('is-zoom');
   }
 
   function goTo(next){
     const dotEls = dots.querySelectorAll('div');
-    // 現在のスライドをフェードアウト
-    slides[cur].classList.remove('is-active');
-    if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.35)';
+    const prev = cur;
     cur = next;
-    // 次のスライドをフェードイン＋ズーム開始
+
+    // 次スライド：ズームをリセットしてからフェードイン＋ズーム同時開始
+    resetZoom(slides[cur]);
     slides[cur].classList.add('is-active');
     startZoom(slides[cur]);
     if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.9)';
+
+    // 前スライド：フェード時間後にフェードアウト＆ズームリセット
+    setTimeout(() => {
+      slides[prev].classList.remove('is-active');
+      if(dotEls[prev]) dotEls[prev].style.background = 'rgba(255,255,255,0.35)';
+      // 完全に消えてからズームリセット（再利用時にちらつかないよう）
+      setTimeout(() => resetZoom(slides[prev]), HERO_FADE_DURATION + 100);
+    }, HERO_FADE_DURATION);
   }
 
-  // 初期表示
-  goTo(0);
+  // 初期表示：最初のスライドだけズーム開始
+  resetZoom(slides[0]);
+  slides[0].classList.add('is-active');
+  startZoom(slides[0]);
 
-  // ズーム完了のタイミングで次へ
+  // フェード開始タイミング = HERO_ZOOM_DURATION - HERO_FADE_DURATION
+  // → ズームが終わる前にクロスフェードを開始して停止感をなくす
   if(HERO_IMAGES.length > 1){
+    const switchInterval = HERO_ZOOM_DURATION - HERO_FADE_DURATION;
     function scheduleNext(){
-      timer = setTimeout(() => {
+      setTimeout(() => {
         goTo((cur + 1) % HERO_IMAGES.length);
         scheduleNext();
-      }, HERO_ZOOM_DURATION);
+      }, switchInterval);
     }
     scheduleNext();
   }
