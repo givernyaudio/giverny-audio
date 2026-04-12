@@ -922,7 +922,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .wrow{grid-template-columns:48px 80px 1fr !important;}
   .wm{display:none !important;}
   .wthumb{display:none !important;}
-  #hero-slides{height:480px !important;}
+  #hero-slides{height:560px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
   .yt-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -1021,18 +1021,39 @@ document.querySelectorAll('a[href^="/#"]').forEach(a=>{
 // ─────────────────────────────
 function renderHome() {
   const body = `
-<!-- HERO SLIDESHOW
+<!-- HERO SLIDESHOW（Ken Burns ズームイン付き）
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   画像の追加・差し替え方法：
-    1. 画像ファイルを public/hero/ フォルダに置く（例: hero-02.jpg）
+    1. 画像ファイルを public/hero/ フォルダに置く
     2. 下記 JS の HERO_IMAGES 配列にパスを追加するだけ
-       例: const HERO_IMAGES = ['/hero/hero-01.jpg', '/hero/hero-02.jpg'];
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<style>
+@keyframes kenburns {
+  0%   { transform: scale(1.0); }
+  100% { transform: scale(1.18); }
+}
+.hero-slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 1.6s ease;
+}
+.hero-slide-bg.is-active {
+  opacity: 1;
+}
+.hero-slide-bg.is-zoom {
+  animation: kenburns 7s ease-in forwards;
+}
+</style>
 <div class="hero" style="padding-top:56px;">
-  <div id="hero-slides" style="position:relative;width:100%;height:660px;overflow:hidden;background:#1a1a1a;">
+  <div id="hero-slides" style="position:relative;width:100%;height:760px;overflow:hidden;background:#1a1a1a;">
     <!-- スライド（JSで生成） -->
     <!-- グラデーションオーバーレイ -->
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,rgba(0,0,0,.50) 100%);z-index:2;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.20) 0%,rgba(0,0,0,.48) 100%);z-index:2;pointer-events:none;"></div>
     <!-- ロゴ＋キャッチコピー：中央にまとめて配置 -->
     <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:8px;">
       <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(220px,36vw,440px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));">
@@ -1050,10 +1071,11 @@ function renderHome() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const HERO_IMAGES = [
   '/hero/hero-01.webp',
-  // '/hero/hero-02.webp',   ← 追加例
-  // '/hero/hero-03.webp',
+  '/hero/hero-02.webp',
+  '/hero/hero-03.webp',
 ];
-const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
+const HERO_ZOOM_DURATION = 7000;  // ズーム時間(ms)
+const HERO_FADE_DURATION  = 1600; // フェード時間(ms)
 
 (function(){
   const wrap = document.getElementById('hero-slides');
@@ -1061,16 +1083,9 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
   if(!wrap || HERO_IMAGES.length === 0) return;
 
   // スライド要素を生成
-  HERO_IMAGES.forEach((src, i) => {
+  const slides = HERO_IMAGES.map((src, i) => {
     const el = document.createElement('div');
-    el.style.cssText = [
-      'position:absolute','inset:0',
-      'background-size:cover','background-position:center',
-      'background-repeat:no-repeat',
-      'transition:opacity 1.4s ease',
-      'opacity:' + (i === 0 ? '1' : '0'),
-      'z-index:1'
-    ].join(';');
+    el.className = 'hero-slide-bg';
     el.style.backgroundImage = 'url(' + src + ')';
     el.dataset.idx = String(i);
     wrap.prepend(el);
@@ -1082,21 +1097,43 @@ const HERO_INTERVAL = 5000; // 切り替え間隔（ミリ秒）
       d.addEventListener('click', () => goTo(i));
       dots.appendChild(d);
     }
+    return el;
   });
 
   let cur = 0;
+  let timer = null;
+
+  function startZoom(el){
+    // アニメーションをリセットしてから再付与
+    el.classList.remove('is-zoom');
+    void el.offsetWidth; // reflow
+    el.classList.add('is-zoom');
+  }
+
   function goTo(next){
-    const slides = wrap.querySelectorAll('[data-idx]');
     const dotEls = dots.querySelectorAll('div');
-    slides[cur].style.opacity = '0';
+    // 現在のスライドをフェードアウト
+    slides[cur].classList.remove('is-active');
     if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.35)';
     cur = next;
-    slides[cur].style.opacity = '1';
+    // 次のスライドをフェードイン＋ズーム開始
+    slides[cur].classList.add('is-active');
+    startZoom(slides[cur]);
     if(dotEls[cur]) dotEls[cur].style.background = 'rgba(255,255,255,0.9)';
   }
 
+  // 初期表示
+  goTo(0);
+
+  // ズーム完了のタイミングで次へ
   if(HERO_IMAGES.length > 1){
-    setInterval(() => goTo((cur + 1) % HERO_IMAGES.length), HERO_INTERVAL);
+    function scheduleNext(){
+      timer = setTimeout(() => {
+        goTo((cur + 1) % HERO_IMAGES.length);
+        scheduleNext();
+      }, HERO_ZOOM_DURATION);
+    }
+    scheduleNext();
   }
 })();
 </script>
