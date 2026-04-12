@@ -1067,29 +1067,31 @@ const HERO_IMAGES = [
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    設定値
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const HERO_DISPLAY  = 10000; // 1枚の表示時間(ms) ※フェード込み
-const HERO_FADE     = 2000;  // クロスフェード時間(ms)
-const HERO_SCALE_FROM = 1.0;
-const HERO_SCALE_TO   = 1.15;
+const HERO_ZOOM_DURATION = 12000; // ズーム全体時間(ms)
+const HERO_FADE_DURATION =  2000; // クロスフェード時間(ms)
+const HERO_SCALE_START   =  1.00;
+const HERO_SCALE_END     =  1.15;
 
 (function(){
   const wrap = document.getElementById('hero-slides');
   const dots = document.getElementById('hero-dots');
   if(!wrap || HERO_IMAGES.length === 0) return;
 
-  // スライド要素を生成
+  const N = HERO_IMAGES.length;
+
+  /* ── スライド要素を生成 ── */
   const slides = HERO_IMAGES.map((src, i) => {
     const el = document.createElement('div');
     el.className = 'hero-slide-bg';
     el.style.backgroundImage = 'url(' + src + ')';
-    el.style.transform = 'scale(' + HERO_SCALE_FROM + ')';
     el.style.opacity = '0';
+    el.style.transform = 'scale(' + HERO_SCALE_START + ')';
     wrap.insertBefore(el, wrap.firstChild);
 
-    if(HERO_IMAGES.length > 1){
+    if(N > 1){
       const d = document.createElement('div');
       d.style.cssText = 'width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:background .3s;';
-      d.addEventListener('click', () => jumpTo(i));
+      d.addEventListener('click', () => goTo(i));
       dots.appendChild(d);
     }
     return el;
@@ -1097,95 +1099,100 @@ const HERO_SCALE_TO   = 1.15;
 
   const dotEls = Array.from(dots.querySelectorAll('div'));
 
-  // 各スライドの状態管理
-  // startTime: rAFループ内でズーム開始時刻を記録
-  // fadeStart: フェード開始時刻
-  // state: 'idle' | 'zooming' | 'fadeout'
-  const state = HERO_IMAGES.map(() => ({ startTime: 0, fadeStart: 0, phase: 'idle' }));
-
+  /* ── 状態 ── */
+  // phase: 'idle' | 'in' | 'hold' | 'out'
+  // startTime: phaseが変わった時刻
+  const state = HERO_IMAGES.map(() => ({ phase: 'idle', startTime: 0 }));
   let cur = 0;
-  let nextScheduled = false;
 
   function setDot(i, active){
-    if(dotEls[i]) dotEls[i].style.background = active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)';
+    if(dotEls[i]) dotEls[i].style.background = active ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,.35)';
   }
 
-  function activate(i, now){
-    state[i].startTime = now;
-    state[i].fadeStart = 0;
-    state[i].phase = 'zooming';
+  /* スライド i を時刻 t に起動 */
+  function startSlide(i, t){
+    // スケールをリセット（前回の残留値をクリア）
+    slides[i].style.transform = 'scale(' + HERO_SCALE_START + ')';
+    slides[i].style.opacity = '0';
+    state[i].phase = 'in';
+    state[i].startTime = t;
     setDot(i, true);
   }
 
-  function jumpTo(i){
+  /* ドットクリックなどで手動切替 */
+  function goTo(i){
+    if(i === cur) return;
+    const now = performance.now();
     const prev = cur;
     cur = i;
-    const now = performance.now();
-    // 前のスライドをフェードアウト開始
-    state[prev].phase = 'fadeout';
-    state[prev].fadeStart = now;
+    // 現在スライドを即時フェードアウト開始
+    state[prev].phase = 'out';
+    state[prev].startTime = now;
     setDot(prev, false);
-    // 新スライドをズーム開始
-    activate(i, now);
+    // 新スライドを起動
+    startSlide(i, now);
   }
 
-  // rAF メインループ
-  let lastNow = 0;
+  /* ── rAF メインループ ── */
   function tick(now){
     requestAnimationFrame(tick);
 
     slides.forEach((el, i) => {
       const s = state[i];
-      if(s.phase === 'idle'){
-        el.style.opacity = '0';
-        el.style.transform = 'scale(' + HERO_SCALE_FROM + ')';
-        return;
-      }
+      if(s.phase === 'idle') return;
 
-      const elapsed = now - s.startTime; // ズーム開始からの経過時間
+      const elapsed = now - s.startTime;
 
-      if(s.phase === 'zooming'){
-        // スケール：線形で SCALE_FROM → SCALE_TO（HERO_DISPLAY ms かけて）
-        const zp = Math.min(elapsed / HERO_DISPLAY, 1);
-        const scale = HERO_SCALE_FROM + (HERO_SCALE_TO - HERO_SCALE_FROM) * zp;
+      if(s.phase === 'in'){
+        /* フェードイン (0 → HERO_FADE_DURATION) */
+        const opacity = Math.min(elapsed / HERO_FADE_DURATION, 1);
+        el.style.opacity = String(opacity);
+
+        /* ズーム: 全HERO_ZOOM_DURATIONかけてSCALE_START→SCALE_END */
+        const zp = Math.min(elapsed / HERO_ZOOM_DURATION, 1);
+        const scale = HERO_SCALE_START + (HERO_SCALE_END - HERO_SCALE_START) * zp;
         el.style.transform = 'scale(' + scale + ')';
 
-        // フェードイン（最初の HERO_FADE ms でopacity 0→1）
-        const fp = Math.min(elapsed / HERO_FADE, 1);
-        el.style.opacity = String(fp);
-
-        // HERO_DISPLAY - HERO_FADE 経過したら次スライドをフェードイン開始
-        if(elapsed >= HERO_DISPLAY - HERO_FADE && !nextScheduled && i === cur && HERO_IMAGES.length > 1){
-          nextScheduled = true;
-          const next = (cur + 1) % HERO_IMAGES.length;
-          // 次スライドをアクティブ化（クロスフェード開始）
-          cur = next;
-          activate(next, now + (HERO_DISPLAY - HERO_FADE) - elapsed + now - now); // ≒ now
-          activate(next, now);
-          // 自分はフェードアウトへ
-          s.phase = 'fadeout';
-          s.fadeStart = now;
-          setDot(i, false);
-          nextScheduled = false;
+        /* フェードイン完了後は hold フェーズへ */
+        if(elapsed >= HERO_FADE_DURATION){
+          s.phase = 'hold';
+          /* holdのstartTimeはズームの起点を保持（ズームを継続するため） */
+          /* startTimeはそのまま（ズーム計算はelapsedで統一） */
         }
-      }
+      } else if(s.phase === 'hold'){
+        /* ズーム継続 */
+        const zp = Math.min(elapsed / HERO_ZOOM_DURATION, 1);
+        const scale = HERO_SCALE_START + (HERO_SCALE_END - HERO_SCALE_START) * zp;
+        el.style.transform = 'scale(' + scale + ')';
+        el.style.opacity = '1';
 
-      if(s.phase === 'fadeout'){
-        const fo = now - s.fadeStart;
-        const op = Math.max(1 - fo / HERO_FADE, 0);
-        el.style.opacity = String(op);
-        // ズームは最後に達した値で止める（違和感なし）
-        if(op <= 0){
+        /* HERO_ZOOM_DURATION - HERO_FADE_DURATION 経過 → 次スライドをフェードイン開始 */
+        if(i === cur && N > 1 && elapsed >= HERO_ZOOM_DURATION - HERO_FADE_DURATION){
+          const next = (cur + 1) % N;
+          cur = next;
+          startSlide(next, now);
+          /* 自分はフェードアウトへ（fadeStartを記録） */
+          s.phase = 'out';
+          s.startTime = now;
+          setDot(i, false);
+        }
+      } else if(s.phase === 'out'){
+        /* フェードアウト */
+        const opacity = Math.max(1 - elapsed / HERO_FADE_DURATION, 0);
+        el.style.opacity = String(opacity);
+        /* ズームは止めずに最後のスケール値をキープ（変化させない） */
+
+        if(opacity <= 0){
           s.phase = 'idle';
           el.style.opacity = '0';
-          el.style.transform = 'scale(' + HERO_SCALE_FROM + ')'; // リセット
+          /* スケールリセットはstartSlide時に行う */
         }
       }
     });
   }
 
-  // 初期スライド開始
-  activate(0, performance.now());
+  /* 初期化 */
+  startSlide(0, performance.now());
   requestAnimationFrame(tick);
 })();
 </script>
