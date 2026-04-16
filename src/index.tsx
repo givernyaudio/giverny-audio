@@ -19,9 +19,9 @@ const ABOUT_IMAGE = '/about/about-photo.webp'  // About セクションの画像
 //  ★ URLを書き換えるだけで全ページに反映されます
 // ═══════════════════════════════════════════════════════════════════════
 const SNS_LINKS = {
-  facebook:  'https://www.facebook.com/',     // Facebook ページURL
-  youtube:   'https://youtube.com/',          // YouTube チャンネルURL
-  instagram: 'https://www.instagram.com/',    // Instagram プロフィールURL
+  facebook:  'https://www.facebook.com/rsb35279/',     // Facebook ページURL
+  youtube:   'https://youtube.com/@givernyaudio',      // YouTube チャンネルURL
+  instagram: 'https://www.instagram.com/yusuke3',      // Instagram プロフィールURL
 }
 
 // ═══════════════════════════════════════════════════════════════════════
