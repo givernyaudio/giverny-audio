@@ -292,8 +292,7 @@ const WORKS_LIST = [
   },
 ]
 
-app.get('/favicon.svg', (c) => c.redirect('/favicon-64.png', 301))
-app.get('/favicon.ico', (c) => c.redirect('/favicon-64.png', 301))
+// favicon は静的ファイルとして dist/ から直接配信（_routes.json の exclude 経由）
 
 app.get('/', (c) => c.html(renderHome()))
 app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
@@ -996,6 +995,7 @@ function layout(title: string, body: string) {
 <title>Giverny Audio</title>
 <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/favicon-64.png">
 <link rel="shortcut icon" href="/favicon-64.png">
 <link rel="preload" as="image" href="/hero/hero-01.webp" type="image/webp">
 <link rel="preload" as="image" href="/about/about-photo.webp" type="image/webp">
