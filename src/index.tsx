@@ -292,11 +292,8 @@ const WORKS_LIST = [
   },
 ]
 
-app.get('/favicon.svg', (c) => {
-  c.header('Content-Type', 'image/svg+xml')
-  return c.body(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#2d2d2d"/><text x="16" y="22" text-anchor="middle" font-size="10" fill="#ffffff" font-family="sans-serif" font-weight="bold">GA</text></svg>`)
-})
-app.get('/favicon.ico', (c) => c.redirect('/favicon.svg', 301))
+app.get('/favicon.svg', (c) => c.redirect('/favicon-64.png', 301))
+app.get('/favicon.ico', (c) => c.redirect('/favicon-64.png', 301))
 
 app.get('/', (c) => c.html(renderHome()))
 app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
@@ -996,8 +993,10 @@ function layout(title: string, body: string) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>${title}</title>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Giverny Audio</title>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="shortcut icon" href="/favicon-64.png">
 <link rel="preload" as="image" href="/hero/hero-01.webp" type="image/webp">
 <link rel="preload" as="image" href="/about/about-photo.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1351,7 +1350,7 @@ function renderHome() {
           <p class="svc-ja">素材販売</p>
         </div>
         <div class="svc-right">
-          BOOTH / itch.io / Gumroad にて効果音素材や環境音、IRデータを販売中。<br>
+          BASE / GUMROAD にて効果音素材や環境音、IRデータを販売中。<br>
           ハイエンドマイク/レコーダーで録音した高品質な効果音素材。<br>
           サラウンド・Ambisonicsで録音された環境音、イマーシブ対応のIRデータも取り揃えています。<br>
           詳しくは、<a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
