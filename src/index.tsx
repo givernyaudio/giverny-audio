@@ -1418,66 +1418,66 @@ function renderHome() {
 <!-- CONTACT MODAL -->
 <div id="contact-modal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
   <!-- オーバーレイ -->
-  <div id="contact-overlay" onclick="closeContactModal()" style="position:absolute;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);"></div>
+  <div id="contact-overlay" onclick="closeContactModal()" style="position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);"></div>
   <!-- モーダル本体 -->
-  <div style="position:relative;z-index:1;width:min(560px,92vw);max-height:90vh;overflow-y:auto;background:#0f1e2e;border-radius:12px;padding:40px 36px 36px;box-shadow:0 24px 80px rgba(0,0,0,.6);">
+  <div style="position:relative;z-index:1;width:min(560px,92vw);max-height:90vh;overflow-y:auto;background:#fff;padding:44px 40px 40px;box-shadow:0 20px 60px rgba(0,0,0,.22);">
     <!-- 閉じるボタン -->
-    <button onclick="closeContactModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;" aria-label="閉じる">✕</button>
+    <button onclick="closeContactModal()" style="position:absolute;top:14px;right:18px;background:none;border:none;color:#999;font-size:20px;cursor:pointer;line-height:1;padding:4px 6px;transition:color .2s;" onmouseover="this.style.color='#333'" onmouseout="this.style.color='#999'" aria-label="閉じる">✕</button>
     <!-- タイトル -->
-    <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:400;color:#e8e4de;letter-spacing:.08em;margin-bottom:28px;">お問い合わせ</h2>
+    <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:11px;font-weight:700;color:#1a1a1a;letter-spacing:.2em;text-transform:uppercase;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #ddd;">Contact</h2>
 
     <!-- 送信完了メッセージ -->
-    <div id="contact-thanks" style="display:none;text-align:center;padding:32px 0;">
-      <p style="font-size:22px;margin-bottom:12px;">✅</p>
-      <p style="color:#4ce0b3;font-size:15px;margin-bottom:8px;">送信しました</p>
-      <p style="color:#aaa;font-size:13px;">お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。</p>
+    <div id="contact-thanks" style="display:none;text-align:center;padding:40px 0;">
+      <p style="font-size:28px;margin-bottom:16px;">✓</p>
+      <p style="color:#333;font-size:14px;letter-spacing:.06em;margin-bottom:8px;">送信しました</p>
+      <p style="color:#888;font-size:12px;line-height:2;">お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。</p>
     </div>
 
     <!-- フォーム -->
-    <form id="contact-form" onsubmit="submitContactForm(event)" style="display:flex;flex-direction:column;gap:20px;">
+    <form id="contact-form" onsubmit="submitContactForm(event)" style="display:flex;flex-direction:column;gap:22px;">
       <!-- お名前 -->
       <div>
-        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">お名前 <span style="color:#e05a5a;">*</span></label>
-        <input name="name" type="text" required placeholder="" autocomplete="name"
-          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
-          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">お名前 <span style="color:#999;font-weight:400;">*</span></label>
+        <input name="name" type="text" required autocomplete="name"
+          style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit;"
+          onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'">
       </div>
       <!-- メールアドレス -->
       <div>
-        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">Eメールアドレス <span style="color:#e05a5a;">*</span></label>
-        <input name="email" type="email" required placeholder="" autocomplete="email"
-          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
-          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">E-mail <span style="color:#999;font-weight:400;">*</span></label>
+        <input name="email" type="email" required autocomplete="email"
+          style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit;"
+          onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'">
       </div>
       <!-- カテゴリー -->
       <div>
-        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:10px;">カテゴリー</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 8px;">
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Category</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
           ${['サウンド制作','音声収録','製品購入','その他'].map((cat,i) => `
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#c8d8e4;">
-            <input type="radio" name="category" value="${cat}" ${i===0?'checked':''} style="accent-color:#4ce0b3;width:16px;height:16px;cursor:pointer;">
-            ${cat}
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;color:#444;padding:8px 10px;border:1px solid #ddd;background:#f8f7f5;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#888'" onmouseout="this.style.borderColor='#ddd'">
+            <input type="radio" name="category" value="${cat}" ${i===0?'checked':''} style="accent-color:#2d2d2d;width:14px;height:14px;cursor:pointer;flex-shrink:0;">
+            <span>${cat}</span>
           </label>`).join('')}
         </div>
       </div>
       <!-- 件名 -->
       <div>
-        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">件名 <span style="color:#e05a5a;">*</span></label>
-        <input name="subject" type="text" required placeholder=""
-          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
-          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">件名 <span style="color:#999;font-weight:400;">*</span></label>
+        <input name="subject" type="text" required
+          style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit;"
+          onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'">
       </div>
       <!-- 本文 -->
       <div>
-        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">本文 <span style="color:#e05a5a;">*</span></label>
-        <textarea name="message" required rows="5" placeholder=""
-          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color .2s;"
-          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'"></textarea>
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">本文 <span style="color:#999;font-weight:400;">*</span></label>
+        <textarea name="message" required rows="5"
+          style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color .2s;"
+          onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'"></textarea>
       </div>
       <!-- 送信ボタン -->
       <button type="submit" id="contact-submit-btn"
-        style="background:#4ce0b3;color:#0a1a28;border:none;border-radius:6px;padding:14px;font-size:15px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:background .2s;width:100%;"
-        onmouseover="this.style.background='#38c49a'" onmouseout="this.style.background='#4ce0b3'">送信</button>
+        style="background:#2d2d2d;color:#fff;border:none;padding:14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s;width:100%;font-family:inherit;"
+        onmouseover="this.style.background='#444'" onmouseout="this.style.background='#2d2d2d'">Send</button>
     </form>
   </div>
 </div>
