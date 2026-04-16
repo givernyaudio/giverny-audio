@@ -58,7 +58,7 @@ const STORE_LINKS = {
 //  ★ お問い合わせメールアドレス設定
 //  ★ アドレスを変更する場合はここを書き換えるだけで反映されます
 // ═══════════════════════════════════════════════════════════════════════
-const CONTACT_EMAIL = 'info@givernyaudio.jp'  // お問い合わせ先メールアドレス
+const CONTACT_EMAIL = 'k-toon@givernyaudio.com'  // お問い合わせ先メールアドレス
 
 // ═══════════════════════════════════════════════════════════════════════
 //  ★ 商品一覧設定（Store ページ・トップ Pickup 共通）
@@ -111,7 +111,7 @@ const EQUIPMENT_LIST = [
       { name: 'Reaper',         maker: 'Cockos' },
       { name: 'Nunedo 12',      maker: 'Steinberg' },
       { name: 'WaveLab Pro 12', maker: 'Steinberg' },
-      { name: 'FMOD Studio',    maker: 'iZotope RX 11' },
+      { name: 'RX11',           maker: 'iZotope' },
     ],
   },
   {
@@ -573,9 +573,10 @@ img{display:block;max-width:100%;}
 .svc-row:hover{background:#faf9f6;}
 .svc-left{
   padding:22px 24px;border-right:1px solid #ccc;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
-.svc-en{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:3px;}
-.svc-ja{font-size:11px;color:#999;}
+.svc-en{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:4px;text-align:center;}
+.svc-ja{font-size:12px;color:#999;text-align:center;}
 .svc-right{
   padding:22px 28px;font-size:13px;color:#555;line-height:1.95;
 }
