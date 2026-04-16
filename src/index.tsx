@@ -1454,7 +1454,7 @@ function renderHome() {
         <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Category</label>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
           ${['サウンド制作','音声収録','製品購入','その他'].map((cat,i) => `
-          <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;color:#444;padding:8px 10px;border:1px solid #ddd;background:#f8f7f5;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#888'" onmouseout="this.style.borderColor='#ddd'">
+          <label style="display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;color:#444;padding:9px 4px;border:1px solid #ddd;background:#f8f7f5;transition:border-color .2s;white-space:nowrap;" onmouseover="this.style.borderColor='#888'" onmouseout="this.style.borderColor='#ddd'">
             <input type="radio" name="category" value="${cat}" ${i===0?'checked':''} style="accent-color:#2d2d2d;width:14px;height:14px;cursor:pointer;flex-shrink:0;">
             <span>${cat}</span>
           </label>`).join('')}
@@ -1477,7 +1477,7 @@ function renderHome() {
       <!-- 送信ボタン -->
       <button type="submit" id="contact-submit-btn"
         style="background:#2d2d2d;color:#fff;border:none;padding:14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s;width:100%;font-family:inherit;"
-        onmouseover="this.style.background='#444'" onmouseout="this.style.background='#2d2d2d'">Send</button>
+        onmouseover="this.style.background='#444'" onmouseout="this.style.background='#2d2d2d'">送信</button>
     </form>
   </div>
 </div>
