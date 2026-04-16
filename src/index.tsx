@@ -1506,29 +1506,32 @@ async function submitContactForm(e){
 
   var form = document.getElementById('contact-form');
   var fd   = new FormData(form);
+
+  // Web3Forms: ブラウザから直接送信（サーバー不要）
   var payload = {
+    access_key: 'REPLACE_WITH_WEB3FORMS_KEY',
     name:     fd.get('name'),
     email:    fd.get('email'),
-    category: fd.get('category'),
-    subject:  fd.get('subject'),
-    message:  fd.get('message'),
+    subject:  '[Giverny Audio] [' + fd.get('category') + '] ' + fd.get('subject'),
+    message:  'カテゴリー: ' + fd.get('category') + '\\n\\n' + fd.get('message'),
+    from_name: 'Giverny Audio Contact Form',
   };
 
   try {
-    var res = await fetch('/api/contact', {
+    var res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload),
     });
     var json = await res.json();
-    if(res.ok && json.success){
+    if(json.success){
       form.style.display = 'none';
       document.getElementById('contact-thanks').style.display = 'block';
       setTimeout(closeContactModal, 3000);
     } else {
       btn.disabled = false;
       btn.textContent = '送信';
-      alert(json.error || '送信に失敗しました。しばらく経ってから再度お試しください。');
+      alert(json.message || '送信に失敗しました。しばらく経ってから再度お試しください。');
     }
   } catch(err){
     btn.disabled = false;
