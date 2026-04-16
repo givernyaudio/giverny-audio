@@ -21,7 +21,7 @@ const ABOUT_IMAGE = '/about/about-photo.webp'  // About セクションの画像
 const SNS_LINKS = {
   facebook:  'https://www.facebook.com/rsb35279/',     // Facebook ページURL
   youtube:   'https://youtube.com/@givernyaudio',      // YouTube チャンネルURL
-  instagram: 'https://www.instagram.com/yusuke3',      // Instagram プロフィールURL
+  instagram: 'https://www.instagram.com/yusuke35279/',   // Instagram プロフィールURL
 }
 
 // ═══════════════════════════════════════════════════════════════════════
