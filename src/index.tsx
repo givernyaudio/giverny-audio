@@ -1039,7 +1039,7 @@ ${body}
 
 <footer id="ft">
   <div class="ft-in">
-    <p class="ft-copy">© 2024 Giverny Audio. All Rights Reserved.</p>
+    <p class="ft-copy">© 2026 Giverny Audio. All Rights Reserved.</p>
     <nav><ul class="ft-nav">
       <li><a href="/">Top</a></li>
       <li><a href="/#services">Services</a></li>
