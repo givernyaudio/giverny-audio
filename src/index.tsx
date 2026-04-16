@@ -302,6 +302,57 @@ app.get('/', (c) => c.html(renderHome()))
 app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
 
 // ─────────────────────────────
+//  CONTACT FORM API
+// ─────────────────────────────
+app.post('/api/contact', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { name, email, category, subject, message } = body
+
+    if (!name || !email || !subject || !message) {
+      return c.json({ success: false, error: '必須項目が未入力です' }, 400)
+    }
+
+    // MailChannels API (Cloudflare Workers 専用の無料メール送信)
+    const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        personalizations: [{
+          to: [{ email: CONTACT_EMAIL, name: 'Giverny Audio' }],
+          reply_to: { email, name },
+        }],
+        from: { email: 'noreply@givernyaudio.com', name: 'Giverny Audio Contact Form' },
+        subject: `[お問い合わせ] ${category ? '[' + category + '] ' : ''}${subject}`,
+        content: [{
+          type: 'text/plain',
+          value: [
+            `お名前: ${name}`,
+            `メールアドレス: ${email}`,
+            `カテゴリー: ${category || '未選択'}`,
+            `件名: ${subject}`,
+            '',
+            '--- 本文 ---',
+            message,
+          ].join('\n'),
+        }],
+      }),
+    })
+
+    if (res.ok || res.status === 202) {
+      return c.json({ success: true })
+    } else {
+      const err = await res.text()
+      console.error('MailChannels error:', res.status, err)
+      return c.json({ success: false, error: 'メール送信に失敗しました' }, 500)
+    }
+  } catch (e) {
+    console.error('Contact API error:', e)
+    return c.json({ success: false, error: 'サーバーエラーが発生しました' }, 500)
+  }
+})
+
+// ─────────────────────────────
 //  SHARED CSS & LAYOUT
 // ─────────────────────────────
 const CSS = `
@@ -1358,11 +1409,134 @@ function renderHome() {
         通常2〜3営業日以内にご返信いたします。
       </p>
       <div class="contact-btns">
-        <a href="mailto:${CONTACT_EMAIL}" class="btn-main">メールで問い合わせる</a>
+        <button onclick="openContactModal()" class="btn-main">お問い合わせ</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- CONTACT MODAL -->
+<div id="contact-modal" style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
+  <!-- オーバーレイ -->
+  <div id="contact-overlay" onclick="closeContactModal()" style="position:absolute;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);"></div>
+  <!-- モーダル本体 -->
+  <div style="position:relative;z-index:1;width:min(560px,92vw);max-height:90vh;overflow-y:auto;background:#0f1e2e;border-radius:12px;padding:40px 36px 36px;box-shadow:0 24px 80px rgba(0,0,0,.6);">
+    <!-- 閉じるボタン -->
+    <button onclick="closeContactModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#aaa;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;" aria-label="閉じる">✕</button>
+    <!-- タイトル -->
+    <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:400;color:#e8e4de;letter-spacing:.08em;margin-bottom:28px;">お問い合わせ</h2>
+
+    <!-- 送信完了メッセージ -->
+    <div id="contact-thanks" style="display:none;text-align:center;padding:32px 0;">
+      <p style="font-size:22px;margin-bottom:12px;">✅</p>
+      <p style="color:#4ce0b3;font-size:15px;margin-bottom:8px;">送信しました</p>
+      <p style="color:#aaa;font-size:13px;">お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。</p>
+    </div>
+
+    <!-- フォーム -->
+    <form id="contact-form" onsubmit="submitContactForm(event)" style="display:flex;flex-direction:column;gap:20px;">
+      <!-- お名前 -->
+      <div>
+        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">お名前 <span style="color:#e05a5a;">*</span></label>
+        <input name="name" type="text" required placeholder="" autocomplete="name"
+          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
+          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+      </div>
+      <!-- メールアドレス -->
+      <div>
+        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">Eメールアドレス <span style="color:#e05a5a;">*</span></label>
+        <input name="email" type="email" required placeholder="" autocomplete="email"
+          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
+          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+      </div>
+      <!-- カテゴリー -->
+      <div>
+        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:10px;">カテゴリー</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 8px;">
+          ${['サウンド制作','音声収録','製品購入','その他'].map((cat,i) => `
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#c8d8e4;">
+            <input type="radio" name="category" value="${cat}" ${i===0?'checked':''} style="accent-color:#4ce0b3;width:16px;height:16px;cursor:pointer;">
+            ${cat}
+          </label>`).join('')}
+        </div>
+      </div>
+      <!-- 件名 -->
+      <div>
+        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">件名 <span style="color:#e05a5a;">*</span></label>
+        <input name="subject" type="text" required placeholder=""
+          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;transition:border-color .2s;"
+          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'">
+      </div>
+      <!-- 本文 -->
+      <div>
+        <label style="display:block;font-size:12px;color:#8fafc4;letter-spacing:.06em;margin-bottom:7px;">本文 <span style="color:#e05a5a;">*</span></label>
+        <textarea name="message" required rows="5" placeholder=""
+          style="width:100%;background:#1a2e42;border:1px solid #2a4a62;border-radius:6px;padding:11px 14px;color:#e0dbd3;font-size:14px;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color .2s;"
+          onfocus="this.style.borderColor='#4ce0b3'" onblur="this.style.borderColor='#2a4a62'"></textarea>
+      </div>
+      <!-- 送信ボタン -->
+      <button type="submit" id="contact-submit-btn"
+        style="background:#4ce0b3;color:#0a1a28;border:none;border-radius:6px;padding:14px;font-size:15px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:background .2s;width:100%;"
+        onmouseover="this.style.background='#38c49a'" onmouseout="this.style.background='#4ce0b3'">送信</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function openContactModal(){
+  var m = document.getElementById('contact-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeContactModal(){
+  var m = document.getElementById('contact-modal');
+  m.style.display = 'none';
+  document.body.style.overflow = '';
+}
+// Escキーで閉じる
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeContactModal();
+});
+
+async function submitContactForm(e){
+  e.preventDefault();
+  var btn = document.getElementById('contact-submit-btn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  var form = document.getElementById('contact-form');
+  var fd   = new FormData(form);
+  var payload = {
+    name:     fd.get('name'),
+    email:    fd.get('email'),
+    category: fd.get('category'),
+    subject:  fd.get('subject'),
+    message:  fd.get('message'),
+  };
+
+  try {
+    var res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    var json = await res.json();
+    if(res.ok && json.success){
+      form.style.display = 'none';
+      document.getElementById('contact-thanks').style.display = 'block';
+      setTimeout(closeContactModal, 3000);
+    } else {
+      btn.disabled = false;
+      btn.textContent = '送信';
+      alert(json.error || '送信に失敗しました。しばらく経ってから再度お試しください。');
+    }
+  } catch(err){
+    btn.disabled = false;
+    btn.textContent = '送信';
+    alert('通信エラーが発生しました。');
+  }
+}
+</script>
 `
   return layout('Giverny Audio | Game Audio / Sound Design', body)
 }
