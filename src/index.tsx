@@ -1509,7 +1509,7 @@ async function submitContactForm(e){
 
   // Web3Forms: ブラウザから直接送信（サーバー不要）
   var payload = {
-    access_key: 'REPLACE_WITH_WEB3FORMS_KEY',
+    access_key: '23f8e041-696d-4df6-9494-43ffea7152ab',
     name:     fd.get('name'),
     email:    fd.get('email'),
     subject:  '[Giverny Audio] [' + fd.get('category') + '] ' + fd.get('subject'),
