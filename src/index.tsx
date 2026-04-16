@@ -967,9 +967,37 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .hd-in{padding:0 16px;}
   .gnav{display:none;}
   .ham{display:flex;}
-  .wrow{grid-template-columns:48px 80px 1fr !important;}
+  /* WORKS スマホ: 縦積みレイアウト */
+  .wrow{
+    display:flex !important;
+    flex-direction:column !important;
+    padding:14px 16px !important;
+    gap:6px !important;
+  }
+  .wy{
+    padding:0 !important;
+    border-right:none !important;
+    justify-content:flex-start !important;
+    font-size:10px;color:#bbb;
+  }
+  .wthumb{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    height:160px !important;
+    min-height:0 !important;
+    max-height:160px !important;
+    margin:4px 0 !important;
+  }
+  .wb{
+    padding:0 !important;
+    border-right:none !important;
+    width:100% !important;
+  }
+  .wt{font-size:13px;}
+  .wd{font-size:11px;}
   .wm{display:none !important;}
-  .wthumb{display:none !important;}
   #hero-slides{height:640px !important;}
   .hero-text p{font-size:14px;}
   .sns-grid{grid-template-columns:1fr 1fr;}
