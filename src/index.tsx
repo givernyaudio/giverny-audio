@@ -1854,7 +1854,7 @@ It was created with one simple goal: to directly translate the physical action o
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     /* 右カラム */
-    .price { font-size: 22px; font-weight: 500; color: #222; margin-bottom: 20px; }
+    .price { font-size: 32px; font-weight: 500; color: #222; margin-bottom: 20px; }
     .desc { font-size: 13px; color: #555; line-height: 2.0; margin-bottom: 28px; }
     /* 購入ボタン */
     .btn-buy { display: block; background: #1a1a1a; color: #fff; text-align: center;
