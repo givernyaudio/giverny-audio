@@ -1854,9 +1854,16 @@ It was created with one simple goal: to directly translate the physical action o
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     /* ギャラリー */
-    .gallery-main { width: 100%; margin-top: 12px; border-radius: 2px; display: block;
-                    box-shadow: 0 4px 24px rgba(0,0,0,.12); object-fit: contain; background: #0e0d14; }
-    .gallery-main.photo { object-fit: cover; aspect-ratio: 16/9; background: #000; }
+    /* ギャラリー：ラッパーで高さ固定 → 画像切り替えでもサムネが動かない */
+    .gallery-wrap { width: 100%; margin-top: 12px; border-radius: 2px;
+                    box-shadow: 0 4px 24px rgba(0,0,0,.12);
+                    background: #0e0d14;
+                    aspect-ratio: 800/630;
+                    overflow: hidden;
+                    display: flex; align-items: center; justify-content: center; }
+    .gallery-main { width: 100%; height: 100%; display: block;
+                    object-fit: contain; }
+    .gallery-main.photo { object-fit: cover; }
     .gallery-thumbs { display: flex; gap: 8px; margin-top: 8px; }
     .gallery-thumb { flex: 1; cursor: pointer; border-radius: 2px; overflow: hidden;
                      border: 2px solid transparent; transition: opacity .18s, border-color .18s; opacity: .65; }
@@ -1941,7 +1948,9 @@ It was created with one simple goal: to directly translate the physical action o
           </iframe>
         </div>
         <!-- ギャラリー -->
-        <img id="galleryMain" src="/store/sword-swish-ui.webp" alt="Sword Swish Generator" class="gallery-main">
+        <div class="gallery-wrap">
+          <img id="galleryMain" src="/store/sword-swish-ui.webp" alt="Sword Swish Generator" class="gallery-main">
+        </div>
         <div class="gallery-thumbs">
           <div class="gallery-thumb active" onclick="switchGallery(this, '/store/sword-swish-ui.webp', 'Sword Swish Generator UI', false)">
             <img src="/store/sword-swish-ui.webp" alt="UI">
