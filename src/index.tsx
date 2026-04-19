@@ -84,8 +84,8 @@ const STORE_ITEMS = [
   {
     id:    'sword-swish-generator',
     title: 'Sword Swish Generator',
-    count: '200+ samples',
-    price: '¥2,000',
+    count: 'VST plugin',
+    price: '2,000 JPY',
     image: 'sword-swish.webp',
     url:   'https://givernyaudio.gumroad.com/',  // 購入ページURL
     detailUrl: '/store/item/sword-swish-generator',
@@ -1420,7 +1420,7 @@ function renderHome() {
     </div>
     <div class="pickup-grid">
       ${PICKUP_ITEMS.map(item => `
-      <a href="${item.url}" target="_blank" rel="noopener" class="pickup-item">
+      <a href="${item.detailUrl ? item.detailUrl : item.url}" ${item.detailUrl ? '' : 'target="_blank" rel="noopener"'} class="pickup-item">
         <div class="pickup-img">
           ${item.image
             ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager" fetchpriority="high">`
