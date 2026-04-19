@@ -1789,7 +1789,7 @@ function renderItemPage(id: string) {
       subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
       price:     '¥2,000（税込）',
       buyUrl:    'https://givernyaudio.gumroad.com/',
-      youtubeId: 'YOUR_YOUTUBE_VIDEO_ID',  // ← YouTubeの動画IDに書き換えてください
+      youtubeId: 'hPC3mlDiDoo',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
       description: `Sword Swish Generator は、ゲームや映像制作のための、剣閃音に特化したサウンドプラグインです。<br><br>
 Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
