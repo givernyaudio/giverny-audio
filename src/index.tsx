@@ -1778,6 +1778,7 @@ function renderItemPage(id: string) {
     subtitle: string
     price: string
     buyUrl: string
+    buyUrlBase?: string
     youtubeId: string
     tags: string[]
     description: string
@@ -1787,11 +1788,12 @@ function renderItemPage(id: string) {
     'sword-swish-generator': {
       title:     'Sword Swish Generator',
       subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
-      price:     '¥2,000（税込）',
+      price:     '2,000 JPY',
       buyUrl:    'https://givernyaudio.gumroad.com/',
+      buyUrlBase: 'https://givernyaudio.base.shop/items/142243383',
       youtubeId: 'hPC3mlDiDoo',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
-      description: `Sword Swish Generator は、ゲームや映像制作のための、剣閃音に特化したサウンドプラグインです。<br><br>
+      description: `Sword Swish Generator は、ゲームや映像制作のための、Swish音に特化したサウンドプラグインです。<br><br>
 Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
 「剣を振る」というシンプルな動作を、そのまま音にするために作られました。`,
       features: [
@@ -1803,9 +1805,9 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
       ],
       specs: [
         { label: 'Format',     value: 'VST3' },
-        { label: 'Platform',   value: 'Windows 64bit / macOS' },
+        { label: 'Platform',   value: 'Windows 64bit' },
         { label: 'Samples',    value: '200+' },
-        { label: 'Categories', value: '5 sword types' },
+        { label: 'Categories', value: 'VST3 plugin' },
         { label: 'License',    value: '商用利用可（再配布禁止）' },
       ],
     },
@@ -1862,8 +1864,10 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
     /* 購入ボタン */
     .btn-buy { display: block; background: #1a1a1a; color: #fff; text-align: center;
                padding: 16px 24px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
-               text-decoration: none; transition: background .2s; margin-bottom: 12px; }
+               text-decoration: none; transition: background .2s; margin-bottom: 10px; }
     .btn-buy:hover { background: #333; }
+    .btn-buy-gumroad { background: #555; margin-bottom: 12px; }
+    .btn-buy-gumroad:hover { background: #666; }
     .btn-note { font-size: 10px; color: #aaa; text-align: center; letter-spacing: .08em; }
     /* フィーチャー */
     .sec-title { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #aaa;
@@ -1936,8 +1940,9 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
       <div>
         <p class="price">${item.price}</p>
         <p class="desc">${item.description}</p>
-        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Gumroad</a>
-        <p class="btn-note">※ Gumroad の決済ページに遷移します</p>
+        ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">購入する — BASE</a>` : ''}
+        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy btn-buy-gumroad">購入する — GUMROAD</a>
+        <p class="btn-note">※ BASE または Gumroad の決済ページに遷移します</p>
       </div>
     </div>
 
