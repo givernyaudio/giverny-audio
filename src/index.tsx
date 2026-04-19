@@ -1853,7 +1853,15 @@ It was created with one simple goal: to directly translate the physical action o
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    .plugin-ui-img { width: 100%; margin-top: 12px; border-radius: 2px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
+    /* ギャラリー */
+    .gallery-main { width: 100%; margin-top: 12px; border-radius: 2px; display: block;
+                    box-shadow: 0 4px 24px rgba(0,0,0,.12); aspect-ratio: 16/9; object-fit: cover; }
+    .gallery-thumbs { display: flex; gap: 8px; margin-top: 8px; }
+    .gallery-thumb { flex: 1; cursor: pointer; border-radius: 2px; overflow: hidden;
+                     border: 2px solid transparent; transition: border-color .18s; opacity: .65; transition: opacity .18s, border-color .18s; }
+    .gallery-thumb.active { border-color: #333; opacity: 1; }
+    .gallery-thumb:hover { opacity: 1; }
+    .gallery-thumb img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
     /* 左カラム：価格テキスト（32px + margin 20px = 約72px）分だけ動画を下げる */
     .yt-col { padding-top: 72px; }
     /* 右カラム */
@@ -1931,7 +1939,27 @@ It was created with one simple goal: to directly translate the physical action o
             allowfullscreen>
           </iframe>
         </div>
-        <img src="/store/sword-swish-ui.webp" alt="Sword Swish Generator UI" class="plugin-ui-img">
+        <!-- ギャラリー -->
+        <img id="galleryMain" src="/store/sword-swish-ui.webp" alt="Sword Swish Generator" class="gallery-main">
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="switchGallery(this, '/store/sword-swish-ui.webp', 'Sword Swish Generator UI')">
+            <img src="/store/sword-swish-ui.webp" alt="UI">
+          </div>
+          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG01.webp', 'Recording Setup')">
+            <img src="/store/SSG01.webp" alt="Recording Setup">
+          </div>
+          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG02.webp', 'Swords')">
+            <img src="/store/SSG02.webp" alt="Swords">
+          </div>
+        </div>
+        <script>
+        function switchGallery(thumb, src, alt) {
+          document.getElementById('galleryMain').src = src;
+          document.getElementById('galleryMain').alt = alt;
+          document.querySelectorAll('.gallery-thumb').forEach(function(t){ t.classList.remove('active'); });
+          thumb.classList.add('active');
+        }
+        </script>
       </div>
 
       <!-- 右：説明・購入 -->
