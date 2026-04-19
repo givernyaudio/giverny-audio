@@ -1782,12 +1782,15 @@ function renderItemPage(id: string) {
       subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
-      buyUrlBase: 'https://givernyaudio.base.shop/items/142243383',
+      buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
       youtubeId: 'hPC3mlDiDoo',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
       description: `Sword Swish Generator は、ゲームや映像制作のための、Swish音に特化したサウンドプラグインです。<br><br>
-Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
-「剣を振る」というシンプルな動作を、そのまま音にするために作られました。`,
+192kHz のハイサンプリングレートで録音された Swish はディテールを保ちながらあらゆる剣の Swish 音に対応でき、Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。「剣を振る」というシンプルな動作を、そのまま音にするために作られました。<br><br>
+Sword Swish Generator is a dedicated sound plugin built for game and video production, specializing exclusively in weapon swish sound effects.<br><br>
+Recorded at an ultra-high sampling rate of 192kHz, the audio retains pristine detail, making it highly versatile for crafting the perfect swish sound for any type of blade. It features 5 distinct sword categories—from Daggers to GreatSwords—with a total of over 200 high-quality samples.<br><br>
+Instantly trigger a swish sound just by hitting a MIDI note. Thanks to the built-in pitch and speed randomization, even rapid, repeated strikes will produce a unique, natural nuance every single time. You can also freely sculpt your tone using the integrated 5-band EQ.<br><br>
+It was created with one simple goal: to directly translate the physical action of “swinging a sword” into sound.`,
       features: [
         { label: '5種類の剣カテゴリー', text: 'Dagger / Rapier / HalfSword / LonSword / GreatSword + All Swords' },
         { label: '200+ サンプル収録',   text: 'MIDIノートを叩くだけで即座に再生' },
@@ -1932,7 +1935,7 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
         <p class="desc">${item.description}</p>
         ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">購入する — BASE</a>` : ''}
         <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Payhip</a>
-        <p class="btn-note">※ BASE または Payhip の決済ページに遷移します</p>
+        <p class="btn-note">※ Payhip の決済ページに遷移します</p>
       </div>
     </div>
 
