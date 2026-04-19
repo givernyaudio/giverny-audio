@@ -1789,7 +1789,7 @@ function renderItemPage(id: string) {
       title:     'Sword Swish Generator',
       subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
       price:     '2,000 JPY',
-      buyUrl:    'https://givernyaudio.gumroad.com/',
+      buyUrl:    'https://payhip.com/b/Nv6H3',
       buyUrlBase: 'https://givernyaudio.base.shop/items/142243383',
       youtubeId: 'hPC3mlDiDoo',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
@@ -1866,8 +1866,6 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
                padding: 16px 24px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
                text-decoration: none; transition: background .2s; margin-bottom: 10px; }
     .btn-buy:hover { background: #333; }
-    .btn-buy-gumroad { background: #555; margin-bottom: 12px; }
-    .btn-buy-gumroad:hover { background: #666; }
     .btn-note { font-size: 10px; color: #aaa; text-align: center; letter-spacing: .08em; }
     /* フィーチャー */
     .sec-title { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #aaa;
@@ -1941,8 +1939,8 @@ Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴ�
         <p class="price">${item.price}</p>
         <p class="desc">${item.description}</p>
         ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">購入する — BASE</a>` : ''}
-        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy btn-buy-gumroad">購入する — GUMROAD</a>
-        <p class="btn-note">※ BASE または Gumroad の決済ページに遷移します</p>
+        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Payhip</a>
+        <p class="btn-note">※ BASE または Payhip の決済ページに遷移します</p>
       </div>
     </div>
 
