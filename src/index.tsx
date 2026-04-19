@@ -1853,6 +1853,7 @@ It was created with one simple goal: to directly translate the physical action o
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .plugin-ui-img { width: 100%; margin-top: 12px; border-radius: 2px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     /* 左カラム：価格テキスト（32px + margin 20px = 約72px）分だけ動画を下げる */
     .yt-col { padding-top: 72px; }
     /* 右カラム */
@@ -1930,6 +1931,7 @@ It was created with one simple goal: to directly translate the physical action o
             allowfullscreen>
           </iframe>
         </div>
+        <img src="/store/sword-swish-ui.webp" alt="Sword Swish Generator UI" class="plugin-ui-img">
       </div>
 
       <!-- 右：説明・購入 -->
