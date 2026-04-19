@@ -86,7 +86,9 @@ function patchRoutes(): Plugin {
       const routes = {
         version: 1,
         include: ['/*'],
-        exclude: ['/static/*', '/hero/*', '/about/*', '/works/*', '/store/*', '/favicon.svg', '/favicon.ico', '/favicon.png', '/favicon-32.png', '/favicon-64.png', '/Giverny_Audio_Logo_White.png']
+        // /store/* は除外しない（/store/item/:id はWorkerで処理）
+        // 静的アセットフォルダのみ除外
+        exclude: ['/static/*', '/hero/*', '/about/*', '/works/*', '/store/1350.webp', '/store/sword-swish.webp', '/favicon.svg', '/favicon.ico', '/favicon.png', '/favicon-32.png', '/favicon-64.png', '/Giverny_Audio_Logo_White.png']
       }
       writeFileSync(
         join(process.cwd(), 'dist/_routes.json'),

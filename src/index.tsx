@@ -82,11 +82,22 @@ const CONTACT_EMAIL = 'k-toon@givernyaudio.com'  // お問い合わせ先メー�
 // ═══════════════════════════════════════════════════════════════════════
 const STORE_ITEMS = [
   {
+    id:    'sword-swish-generator',
+    title: 'Sword Swish Generator',
+    count: '200+ samples',
+    price: '¥2,000',
+    image: 'sword-swish.webp',
+    url:   'https://givernyaudio.gumroad.com/',  // 購入ページURL
+    detailUrl: '/store/item/sword-swish-generator',
+  },
+  {
+    id:    'reisho-zendera-ir',
     title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
     count: '収録数未定',
     price: '¥未定',
     image: '1350.webp',
     url:   STORE_LINKS.base,
+    detailUrl: '',
   },
   // ← 新商品をここに追加してください（上のテンプレートをコピー）
 ]
@@ -296,6 +307,7 @@ const WORKS_LIST = [
 
 app.get('/', (c) => c.html(renderHome()))
 app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
+app.get('/store/item/:id', (c) => c.html(renderItemPage(c.req.param('id'))))
 
 // ─────────────────────────────
 //  CONTACT FORM API
@@ -897,6 +909,10 @@ img{display:block;max-width:100%;}
   background:#fff;transition:all .18s;
 }
 .si-buy:hover{border-color:#888;color:#333;background:#f7f5f0;}
+.si-buy-detail{background:#1a1a1a;color:#fff;border-color:#1a1a1a;}
+.si-buy-detail:hover{background:#333;border-color:#333;color:#fff;}
+.si-title-link{text-decoration:none;color:inherit;}
+.si-title-link:hover .si-title{color:#555;}
 
 /* トップPickup */
 .pickup-head{
@@ -1704,17 +1720,23 @@ function renderStore() {
 ${STORE_ITEMS.map(item => `
   <div class="si">
     <div class="si-img">
-      ${item.image
-        ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager">`
-        : `<div class="si-img-none"><span>NO IMAGE</span></div>`}
+      ${item.detailUrl
+        ? `<a href="${item.detailUrl}"><img src="/store/${item.image}" alt="${item.title}" loading="eager"></a>`
+        : item.image
+          ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager">`
+          : `<div class="si-img-none"><span>NO IMAGE</span></div>`}
     </div>
     <div class="si-body">
       <div class="si-head">
-        <p class="si-title">${item.title}</p>
+        ${item.detailUrl
+          ? `<a href="${item.detailUrl}" class="si-title-link"><p class="si-title">${item.title}</p></a>`
+          : `<p class="si-title">${item.title}</p>`}
         ${item.count ? `<span class="si-count">${item.count}</span>` : ''}
       </div>
       <p class="si-price">${item.price}</p>
-      <a href="${item.url}" target="_blank" rel="noopener" class="si-buy">購入する</a>
+      ${item.detailUrl
+        ? `<a href="${item.detailUrl}" class="si-buy si-buy-detail">詳細を見る</a>`
+        : `<a href="${item.url}" target="_blank" rel="noopener" class="si-buy">購入する</a>`}
     </div>
   </div>`).join('')}
 </div></div>
@@ -1744,6 +1766,208 @@ ${STORE_ITEMS.map(item => `
     <li>カスタム制作・バルク購入のご相談はお気軽にどうぞ</li>
   </ul>
 </div>`
+}
+
+// ─────────────────────────────────────────────────────────────
+//  商品詳細ページ
+// ─────────────────────────────────────────────────────────────
+function renderItemPage(id: string) {
+  // 商品データマップ
+  const ITEMS: Record<string, {
+    title: string
+    subtitle: string
+    price: string
+    buyUrl: string
+    youtubeId: string
+    tags: string[]
+    description: string
+    features: { label: string; text: string }[]
+    specs: { label: string; value: string }[]
+  }> = {
+    'sword-swish-generator': {
+      title:     'Sword Swish Generator',
+      subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
+      price:     '¥2,000（税込）',
+      buyUrl:    'https://givernyaudio.gumroad.com/',
+      youtubeId: 'YOUR_YOUTUBE_VIDEO_ID',  // ← YouTubeの動画IDに書き換えてください
+      tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
+      description: `Sword Swish Generator は、ゲームや映像制作のための、剣閃音に特化したサウンドプラグインです。<br><br>
+Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
+「剣を振る」というシンプルな動作を、そのまま音にするために作られました。`,
+      features: [
+        { label: '5種類の剣カテゴリー', text: 'Dagger / Rapier / HalfSword / LonSword / GreatSword + All Swords' },
+        { label: '200+ サンプル収録',   text: 'MIDIノートを叩くだけで即座に再生' },
+        { label: 'ランダマイズ機能',     text: 'ピッチ・スピードをランダム化。連打でも毎回異なるニュアンス' },
+        { label: '5バンド内蔵EQ',       text: '100Hz / 500Hz / 2kHz / 5kHz / 10kHz' },
+        { label: 'Exact モード',         text: '指定サンプルを固定再生。SE として組み込む際に便利' },
+      ],
+      specs: [
+        { label: 'Format',     value: 'VST3' },
+        { label: 'Platform',   value: 'Windows 64bit / macOS' },
+        { label: 'Samples',    value: '200+' },
+        { label: 'Categories', value: '5 sword types' },
+        { label: 'License',    value: '商用利用可（再配布禁止）' },
+      ],
+    },
+  }
+
+  const item = ITEMS[id]
+  if (!item) {
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Not Found</title></head><body><p>商品が見つかりません。</p><a href="/tabs/store">← Store に戻る</a></body></html>`
+  }
+
+  return `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${item.title} | Giverny Audio</title>
+  <link rel="icon" type="image/png" href="/favicon-64.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+    body { font-family: 'Inter', sans-serif; background: #f0eeeb; color: #222; }
+    /* ── ヘッダー ── */
+    .hd { background: #1a1a1a; color: #fff; }
+    .hd-in { max-width: 1080px; margin: 0 auto; padding: 0 32px;
+             display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .hd-logo { font-size: 12px; letter-spacing: .22em; font-weight: 500; color: #fff;
+               text-decoration: none; text-transform: uppercase; }
+    .hd-back { font-size: 11px; letter-spacing: .12em; color: #aaa; text-decoration: none;
+               text-transform: uppercase; transition: color .18s; }
+    .hd-back:hover { color: #fff; }
+    /* ── メイン ── */
+    .page-wrap { max-width: 1080px; margin: 0 auto; padding: 48px 32px 80px; }
+    /* パンくず */
+    .breadcrumb { font-size: 11px; color: #aaa; margin-bottom: 32px; letter-spacing: .08em; }
+    .breadcrumb a { color: #aaa; text-decoration: none; }
+    .breadcrumb a:hover { color: #555; }
+    /* タグ */
+    .tag { display: inline-block; font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+           border: 1px solid #ccc; padding: 3px 10px; color: #888; margin-right: 6px; margin-bottom: 8px; }
+    /* タイトル */
+    .item-title { font-size: 28px; font-weight: 500; letter-spacing: .04em; color: #111;
+                  margin: 12px 0 6px; line-height: 1.3; }
+    .item-subtitle { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.7; }
+    /* 2カラムレイアウト */
+    .item-body { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+                 margin-bottom: 56px; }
+    /* YouTube埋め込み */
+    .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
+               overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
+    .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    /* 右カラム */
+    .price { font-size: 22px; font-weight: 500; color: #222; margin-bottom: 20px; }
+    .desc { font-size: 13px; color: #555; line-height: 2.0; margin-bottom: 28px; }
+    /* 購入ボタン */
+    .btn-buy { display: block; background: #1a1a1a; color: #fff; text-align: center;
+               padding: 16px 24px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+               text-decoration: none; transition: background .2s; margin-bottom: 12px; }
+    .btn-buy:hover { background: #333; }
+    .btn-note { font-size: 10px; color: #aaa; text-align: center; letter-spacing: .08em; }
+    /* フィーチャー */
+    .sec-title { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #aaa;
+                 margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #e0dedd; }
+    .feature-list { list-style: none; padding: 0; margin: 0 0 40px; }
+    .feature-list li { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid #e8e6e1;
+                       font-size: 13px; }
+    .feature-list li:last-child { border-bottom: none; }
+    .fl-label { font-weight: 500; color: #333; min-width: 140px; flex-shrink: 0; }
+    .fl-text  { color: #666; line-height: 1.7; }
+    /* スペック表 */
+    .spec-tbl { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+    .spec-tbl tr { border-bottom: 1px solid #e8e6e1; }
+    .spec-tbl td { padding: 11px 0; font-size: 12px; }
+    .spec-tbl td:first-child { color: #aaa; letter-spacing: .12em; text-transform: uppercase;
+                               width: 140px; font-size: 11px; }
+    .spec-tbl td:last-child { color: #333; }
+    /* フッター */
+    .item-footer { border-top: 1px solid #ddd; padding-top: 32px; text-align: center; }
+    .item-footer a { font-size: 11px; letter-spacing: .14em; color: #888; text-decoration: none;
+                     text-transform: uppercase; }
+    .item-footer a:hover { color: #333; }
+    /* スマホ対応 */
+    @media (max-width: 700px) {
+      .page-wrap { padding: 32px 20px 60px; }
+      .item-body { grid-template-columns: 1fr; gap: 28px; }
+      .item-title { font-size: 22px; }
+      .fl-label { min-width: 110px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="hd">
+    <div class="hd-in">
+      <a href="/" class="hd-logo">Giverny Audio</a>
+      <a href="/tabs/store" class="hd-back">← Back to Store</a>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <!-- パンくず -->
+    <nav class="breadcrumb">
+      <a href="/">Home</a> &nbsp;/&nbsp;
+      <a href="/tabs/store">Store</a> &nbsp;/&nbsp;
+      ${item.title}
+    </nav>
+
+    <!-- タグ -->
+    <div>${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+
+    <!-- タイトル -->
+    <h1 class="item-title">${item.title}</h1>
+    <p class="item-subtitle">${item.subtitle}</p>
+
+    <!-- 2カラム：YouTube ＋ 説明 -->
+    <div class="item-body">
+      <!-- 左：YouTube -->
+      <div>
+        <div class="yt-wrap">
+          <iframe
+            src="https://www.youtube.com/embed/${item.youtubeId}?rel=0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <!-- 右：説明・購入 -->
+      <div>
+        <p class="price">${item.price}</p>
+        <p class="desc">${item.description}</p>
+        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Gumroad</a>
+        <p class="btn-note">※ Gumroad の決済ページに遷移します</p>
+      </div>
+    </div>
+
+    <!-- 機能一覧 -->
+    <h2 class="sec-title">Features</h2>
+    <ul class="feature-list">
+      ${item.features.map(f => `
+      <li>
+        <span class="fl-label">${f.label}</span>
+        <span class="fl-text">${f.text}</span>
+      </li>`).join('')}
+    </ul>
+
+    <!-- スペック -->
+    <h2 class="sec-title">Specifications</h2>
+    <table class="spec-tbl">
+      ${item.specs.map(s => `
+      <tr>
+        <td>${s.label}</td>
+        <td>${s.value}</td>
+      </tr>`).join('')}
+    </table>
+
+    <!-- フッター -->
+    <div class="item-footer">
+      <a href="/tabs/store">← Store 一覧に戻る</a>
+    </div>
+  </main>
+</body>
+</html>`
 }
 
 export default app
