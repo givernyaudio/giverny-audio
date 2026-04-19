@@ -1853,6 +1853,8 @@ It was created with one simple goal: to directly translate the physical action o
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    /* 左カラム：価格テキスト（32px + margin 20px = 約72px）分だけ動画を下げる */
+    .yt-col { padding-top: 72px; }
     /* 右カラム */
     .price { font-size: 32px; font-weight: 500; color: #222; margin-bottom: 20px; }
     .desc { font-size: 13px; color: #555; line-height: 2.0; margin-bottom: 28px; }
@@ -1887,6 +1889,7 @@ It was created with one simple goal: to directly translate the physical action o
     @media (max-width: 700px) {
       .page-wrap { padding: 32px 20px 60px; }
       .item-body { grid-template-columns: 1fr; gap: 28px; }
+      .yt-col { padding-top: 0; }
       .item-title { font-size: 22px; }
       .fl-label { min-width: 110px; }
     }
@@ -1918,8 +1921,8 @@ It was created with one simple goal: to directly translate the physical action o
 
     <!-- 2カラム：YouTube ＋ 説明 -->
     <div class="item-body">
-      <!-- 左：YouTube -->
-      <div>
+      <!-- 左：YouTube（右列の価格テキスト先頭と上端を合わせるためprice分をpadding-topで下げる） -->
+      <div class="yt-col">
         <div class="yt-wrap">
           <iframe
             src="https://www.youtube.com/embed/${item.youtubeId}?rel=0"
