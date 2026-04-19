@@ -51,7 +51,7 @@ const YOUTUBE_VIDEOS = [
 ]
 const STORE_LINKS = {
   base:    'https://givernyaudio.base.shop',    // BASE ショップURL（Store ページ購入ボタン）
-  gumroad: 'https://givernyaudio.gumroad.com/', // Gumroad ショップURL
+  payhip:  'https://payhip.com/GivernyAudio',   // Payhip ショップURL
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -90,16 +90,8 @@ const STORE_ITEMS = [
     url:   'https://givernyaudio.gumroad.com/',  // 購入ページURL
     detailUrl: '/store/item/sword-swish-generator',
   },
-  {
-    id:    'reisho-zendera-ir',
-    title: '霊松禅寺 インパルスレスポンス & アンビエンス素材集',
-    count: '収録数未定',
-    price: '¥未定',
-    image: '1350.webp',
-    url:   STORE_LINKS.base,
-    detailUrl: '',
-  },
   // ← 新商品をここに追加してください（上のテンプレートをコピー）
+  // 霊松禅寺コンテンツは販売開始後に再追加予定
 ]
 
 // トップページ Pickup 用（STORE_ITEMS の先頭3件を使用）
@@ -1394,7 +1386,7 @@ function renderHome() {
           <p class="svc-ja">素材販売</p>
         </div>
         <div class="svc-right">
-          BASE / GUMROAD にて効果音素材や環境音、IRデータを販売中。<br>
+          BASE / Payhip にて効果音素材や環境音、IRデータ、プラグインを販売中。<br>
           ハイエンドマイク/レコーダーで録音した高品質な効果音素材。<br>
           サラウンド・Ambisonicsで録音された環境音、イマーシブ対応のIRデータも取り揃えています。<br>
           詳しくは、<a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
@@ -1711,8 +1703,8 @@ function renderStore() {
     <div><p class="sp-name">BASE</p><p class="sp-url">givernyaudio.base.shop</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
-  <a href="${STORE_LINKS.gumroad}" target="_blank" rel="noopener" class="sp-item">
-    <div><p class="sp-name">Gumroad</p><p class="sp-url">givernyaudio.gumroad.com</p></div>
+  <a href="${STORE_LINKS.payhip}" target="_blank" rel="noopener" class="sp-item">
+    <div><p class="sp-name">Payhip</p><p class="sp-url">payhip.com/GivernyAudio</p></div>
     <span class="sp-arrow">Open →</span>
   </a>
 </div>
