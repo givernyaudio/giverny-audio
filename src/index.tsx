@@ -1855,10 +1855,11 @@ It was created with one simple goal: to directly translate the physical action o
     .yt-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     /* ギャラリー */
     .gallery-main { width: 100%; margin-top: 12px; border-radius: 2px; display: block;
-                    box-shadow: 0 4px 24px rgba(0,0,0,.12); aspect-ratio: 16/9; object-fit: cover; }
+                    box-shadow: 0 4px 24px rgba(0,0,0,.12); object-fit: contain; background: #0e0d14; }
+    .gallery-main.photo { object-fit: cover; aspect-ratio: 16/9; background: #000; }
     .gallery-thumbs { display: flex; gap: 8px; margin-top: 8px; }
     .gallery-thumb { flex: 1; cursor: pointer; border-radius: 2px; overflow: hidden;
-                     border: 2px solid transparent; transition: border-color .18s; opacity: .65; transition: opacity .18s, border-color .18s; }
+                     border: 2px solid transparent; transition: opacity .18s, border-color .18s; opacity: .65; }
     .gallery-thumb.active { border-color: #333; opacity: 1; }
     .gallery-thumb:hover { opacity: 1; }
     .gallery-thumb img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
@@ -1942,20 +1943,26 @@ It was created with one simple goal: to directly translate the physical action o
         <!-- ギャラリー -->
         <img id="galleryMain" src="/store/sword-swish-ui.webp" alt="Sword Swish Generator" class="gallery-main">
         <div class="gallery-thumbs">
-          <div class="gallery-thumb active" onclick="switchGallery(this, '/store/sword-swish-ui.webp', 'Sword Swish Generator UI')">
+          <div class="gallery-thumb active" onclick="switchGallery(this, '/store/sword-swish-ui.webp', 'Sword Swish Generator UI', false)">
             <img src="/store/sword-swish-ui.webp" alt="UI">
           </div>
-          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG01.webp', 'Recording Setup')">
+          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG01.webp', 'Recording Setup', true)">
             <img src="/store/SSG01.webp" alt="Recording Setup">
           </div>
-          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG02.webp', 'Swords')">
+          <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG02.webp', 'Swords', true)">
             <img src="/store/SSG02.webp" alt="Swords">
           </div>
         </div>
         <script>
-        function switchGallery(thumb, src, alt) {
-          document.getElementById('galleryMain').src = src;
-          document.getElementById('galleryMain').alt = alt;
+        function switchGallery(thumb, src, alt, isPhoto) {
+          var main = document.getElementById('galleryMain');
+          main.src = src;
+          main.alt = alt;
+          if (isPhoto) {
+            main.classList.add('photo');
+          } else {
+            main.classList.remove('photo');
+          }
           document.querySelectorAll('.gallery-thumb').forEach(function(t){ t.classList.remove('active'); });
           thumb.classList.add('active');
         }
