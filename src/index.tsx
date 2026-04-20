@@ -86,7 +86,7 @@ const STORE_ITEMS = [
     title: 'Sword Swish Generator',
     count: 'VST plugin',
     price: '2,000 JPY',
-    image: 'sword-swish.webp',
+    image: 'SSG_Plg.webp',
     url:   'https://givernyaudio.gumroad.com/',  // 購入ページURL
     detailUrl: '/store/item/sword-swish-generator',
   },
@@ -717,12 +717,13 @@ img{display:block;max-width:100%;}
 }
 .fb:hover,.fb.on{color:#333;border-color:#888;background:#f7f5f0;}
 
-.works-outer{width:100%;border:1px solid #ccc;border-radius:2px;overflow:hidden;}
+.works-outer{width:100%;border:1px solid #ccc;border-radius:2px;}
 .works-head{
   display:grid;
   grid-template-columns:72px 160px 1fr 160px;
   background:#fafaf9;
   border-bottom:2px solid #ccc;
+  border-radius:2px 2px 0 0;
 }
 .whead-cell{
   padding:10px 16px;
@@ -730,7 +731,13 @@ img{display:block;max-width:100%;}
   color:#aaa;font-weight:500;
 }
 .whead-cell.wh-info{padding-left:24px;}
-.works-tbl{width:100%;overflow-y:auto;max-height:calc(100vh - 260px);}
+.works-tbl{
+  width:100%;
+  overflow-y:auto;
+  height:calc(100dvh - 300px);
+  min-height:300px;
+  display:block;
+}
 .wrow{
   display:grid;
   grid-template-columns:72px 160px 1fr 160px;
@@ -1809,11 +1816,25 @@ function renderItemPage(id: string) {
       buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
       youtubeId: 'hPC3mlDiDoo',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
-      description: `Sword Swish Generator は、ゲームや映像制作のための、Swish音に特化したサウンドプラグインです。<br><br>
-192kHz のハイサンプリングレートで録音された Swish はディテールを保ちながらあらゆる剣の Swish 音に対応でき、Dagger（短剣）から GreatSword（大剣）まで、5種類の剣カテゴリーと総数 200 以上のサンプルを収録。MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。「剣を振る」というシンプルな動作を、そのまま音にするために作られました。<br><br>
+      description: `Sword Swish Generator は、ゲームや映像制作のための、Swish 音に特化したサウンドプラグインです。<br><br>
+192kHzのハイサンプリングレートで録音された素材は、ディテールを保ちながらあらゆる剣のSwish音に対応できます。<br>
+Dagger（短剣）から GreatSword（大剣）までの5 種類の剣カテゴリーと総数 200 以上のサンプルを収録。<br>
+MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
+Ver. 1.5.0 では、Swish 音の表現力をさらに高める新機能を追加しました。<br>
+気に入ったサンプルをストックキー（C4〜C5）に登録し、演奏中にいつでも即座に呼び出せるようになったほか、<br>
+登録した各スロットに対してピッチ・スピード・EQ・音量を個別にチューニングできる Designer タブを搭載。<br>
+さらに、波形上にピッチカーブを自由に描けるピッチオートメーション機能により、振り下ろす際の自然なドップラー感やうねりを細かく作り込むことができます。<br>
+作成したカーブはプリセットとして保存・再利用が可能です。<br><br>
+「剣を振る」というシンプルな動作を、そのまま音にするために作られました。<br><br>
 Sword Swish Generator is a dedicated sound plugin built for game and video production, specializing exclusively in weapon swish sound effects.<br><br>
-Recorded at an ultra-high sampling rate of 192kHz, the audio retains pristine detail, making it highly versatile for crafting the perfect swish sound for any type of blade. It features 5 distinct sword categories—from Daggers to GreatSwords—with a total of over 200 high-quality samples.<br><br>
+Recorded at an ultra-high sampling rate of 192kHz, the audio retains pristine detail, making it highly versatile for crafting the perfect swish sound for any type of blade.<br>
+It features 5 distinct sword categories—from Daggers to GreatSwords—with a total of over 200 high-quality samples.<br>
 Instantly trigger a swish sound just by hitting a MIDI note. Thanks to the built-in pitch and speed randomization, even rapid, repeated strikes will produce a unique, natural nuance every single time. You can also freely sculpt your tone using the integrated 5-band EQ.<br><br>
+Ver. 1.5.0 introduces a new set of tools to push your sound design even further.<br>
+Register your favorite samples to dedicated Stock Keys (C4–C5) for instant recall during performance or production.<br>
+The new Designer tab lets you fine-tune pitch, speed, EQ, and volume for each registered slot individually—giving every key its own distinct character.<br>
+And with Pitch Automation, you can draw a pitch curve directly on the waveform to add natural movement and depth, like the Doppler sweep of a full downswing.<br>
+Automation curves can be saved and reloaded as named presets.<br><br>
 It was created with one simple goal: to directly translate the physical action of “swinging a sword” into sound.`,
       features: [
         { label: '5種類の剣カテゴリー', text: 'Dagger / Rapier / HalfSword / LonSword / GreatSword + All Swords' },
@@ -1973,11 +1994,11 @@ It was created with one simple goal: to directly translate the physical action o
         </div>
         <!-- ギャラリー -->
         <div class="gallery-wrap">
-          <img id="galleryMain" src="/store/sword-swish-ui.webp" alt="Sword Swish Generator" class="gallery-main">
+          <img id="galleryMain" src="/store/SSG_Plg.webp" alt="Sword Swish Generator" class="gallery-main">
         </div>
         <div class="gallery-thumbs">
-          <div class="gallery-thumb active" onclick="switchGallery(this, '/store/sword-swish-ui.webp', 'Sword Swish Generator UI', false)">
-            <img src="/store/sword-swish-ui.webp" alt="UI">
+          <div class="gallery-thumb active" onclick="switchGallery(this, '/store/SSG_Plg.webp', 'Sword Swish Generator UI', false)">
+            <img src="/store/SSG_Plg.webp" alt="UI">
           </div>
           <div class="gallery-thumb" onclick="switchGallery(this, '/store/SSG01.webp', 'Recording Setup', true)">
             <img src="/store/SSG01.webp" alt="Recording Setup">
