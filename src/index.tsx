@@ -1814,7 +1814,7 @@ function renderItemPage(id: string) {
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
       buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
-      youtubeId: 'hPC3mlDiDoo',
+      youtubeId: 'WtwIuUxzIDY',
       tags:      ['VST3', 'Game Audio', 'Sound Design', 'Sword SFX'],
       description: `Sword Swish Generator は、ゲームや映像制作のための、Swish 音に特化したサウンドプラグインです。<br><br>
 192kHzのハイサンプリングレートで録音された素材は、ディテールを保ちながらあらゆる剣のSwish音に対応できます。Dagger（短剣）から GreatSword（大剣）までの5 種類の剣カテゴリーと総数 200 以上のサンプルを収録。<br>
