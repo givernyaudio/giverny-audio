@@ -717,7 +717,20 @@ img{display:block;max-width:100%;}
 }
 .fb:hover,.fb.on{color:#333;border-color:#888;background:#f7f5f0;}
 
-.works-tbl{border:1px solid #ccc;border-bottom:none;width:100%;}
+.works-outer{width:100%;border:1px solid #ccc;border-radius:2px;overflow:hidden;}
+.works-head{
+  display:grid;
+  grid-template-columns:72px 160px 1fr 160px;
+  background:#fafaf9;
+  border-bottom:2px solid #ccc;
+}
+.whead-cell{
+  padding:10px 16px;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:#aaa;font-weight:500;
+}
+.whead-cell.wh-info{padding-left:24px;}
+.works-tbl{width:100%;overflow-y:auto;max-height:calc(100vh - 260px);}
 .wrow{
   display:grid;
   grid-template-columns:72px 160px 1fr 160px;
@@ -962,6 +975,8 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .svc-left{border-right:none;border-bottom:1px solid #ccc;padding-bottom:14px;}
   .store-grid-wrap{max-height:68vh;}
   .store-grid{grid-template-columns:1fr 1fr;}
+  .works-head{grid-template-columns:56px 120px 1fr 0;}
+  .works-head .whead-cell:last-child{display:none;}
   .wrow{grid-template-columns:56px 120px 1fr 0;}
   .wthumb{width:120px;height:68px;min-width:120px;max-width:120px;min-height:68px;max-height:68px;}
   .wthumb img{width:100%;height:100%;}
@@ -976,6 +991,7 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
   .gnav{display:none;}
   .ham{display:flex;}
   /* WORKS スマホ: 縦積みレイアウト */
+  .works-head{display:none !important;}
   .wrow{
     display:flex !important;
     flex-direction:column !important;
@@ -1626,7 +1642,14 @@ function renderWorks() {
 <div class="wf" id="wf">
   ${years.map((y, i) => `<button class="fb${i === 0 ? ' on' : ''}" onclick="fw('${y === 'All' ? 'all' : y}',this)">${y}</button>`).join('')}
 </div>
-<div class="works-tbl" id="wl">
+<div class="works-outer">
+  <div class="works-head">
+    <div class="whead-cell"></div>
+    <div class="whead-cell"></div>
+    <div class="whead-cell wh-info">Artist / Title</div>
+    <div class="whead-cell">Role</div>
+  </div>
+  <div class="works-tbl" id="wl">
 ${WORKS_LIST.map(w => `
   <div class="wrow" data-y="${w.year}">
     <div class="wy">${w.year}</div>
@@ -1646,6 +1669,7 @@ ${WORKS_LIST.map(w => `
       <p class="wplat">${w.platform}</p>
     </div>
   </div>`).join('')}
+  </div>
 </div>
 <script>
 function fw(y,b){
