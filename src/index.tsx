@@ -295,11 +295,142 @@ const WORKS_LIST = [
   },
 ]
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ 多言語（日本語 / 英語）テキスト辞書
+//  ★ ja / en で同じキーを持ち、各ページは lang に応じて TR[lang] を参照します
+//  ★ 英語は下訳です。文言を直すときはここ（en 側）を編集してください
+// ═══════════════════════════════════════════════════════════════════════
+type Lang = 'ja' | 'en'
+
+const TR = {
+  ja: {
+    htmlLang: 'ja',
+    heroCatch: '光と色のように、音をつくる。',
+    aboutLabel: 'About',
+    aboutBody: `<p>Giverny Audio はゲームオーディオ / サウンドデザインを専門とする制作スタジオです。<br>
+        サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。</p>
+        <p>専門的な知識と積み重ねてきた技術を活かし、<br>
+        クライアントのビジョンに寄り添った質の高いオーディオを提供することを大切にしています。<br>
+        ゲームからイマーシブコンテンツまで、幅広い分野において没入できるサウンドをお届けします。</p>`,
+    snsLabel: 'Official Account',
+    servicesLabel: 'Services',
+    svcDesignSub: 'サウンドデザイン',
+    svcDesignDesc: `ゲーム、映像、PVなどの効果音を制作。<br>
+          ハイエンドのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
+          Unity/Unreal, Wwise/ADX2の実装実績があり、ゲームエンジンやミドルウェア組み込みも幅広く対応可能。`,
+    svcRecordingSub: '音声収録',
+    svcRecordingDesc: `iZotope RXによるノイズ除去・整音からゲームエンジン・ミドルウェアへの実装まで一貫して対応いたします。<br>
+          また、キャストやスタジオのブッキング、ボイスディレクションも対応が可能ですので、音声収録の全てをお任せいただく事が可能。`,
+    svcSalesSub: '素材販売',
+    svcSalesDesc: `BASE / Payhip にて効果音素材や環境音、IRデータ、プラグインを販売中。<br>
+          ハイエンドマイク/レコーダーで録音した高品質な効果音素材。<br>
+          サラウンド・Ambisonicsで録音された環境音、イマーシブ対応のIRデータも取り揃えています。<br>
+          詳しくは、<a href="__STORE__" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。`,
+    priceNote: '料金は制作規模・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。まずはお気軽にご相談ください。',
+    contactBtn: 'お問い合わせ',
+    pickupLabel: '販売コンテンツ — Pickup',
+    viewAllStore: 'View All Store →',
+    contactLabel: 'Contact',
+    contactTitle: 'お仕事のご依頼・ご相談はこちらから',
+    contactBody: `BGM制作・効果音・サウンドデザインのご依頼、<br>
+        素材パックに関するご質問など、お気軽にご連絡ください。<br>
+        通常2〜3営業日以内にご返信いたします。`,
+    mName: 'お名前',
+    mEmail: 'E-mail',
+    mCategory: 'Category',
+    mSubject: '件名',
+    mMessage: '本文',
+    mSend: '送信',
+    mSending: '送信中...',
+    mFail: '送信に失敗しました。しばらく経ってから再度お試しください。',
+    mNetErr: '通信エラーが発生しました。',
+    mClose: '閉じる',
+    mThanks: '送信しました',
+    mThanksSub: 'お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。',
+    mCats: ['サウンド制作', '音声収録', '製品購入', 'その他'],
+    backToTop: 'Top',
+    worksLabel: 'Works',
+    equipmentLabel: 'Equipment',
+    storeLabel: 'Store',
+    storeNote: [
+      '全商品は商用利用が可能です（ライセンス詳細は各商品ページをご確認ください）。',
+      '再販・再配布・二次配布は禁止です。',
+      'ゲーム・映像・配信など、幅広い用途に対応しています。',
+      'カスタム制作・バルク購入のご相談もお気軽にどうぞ。',
+    ],
+    storeNoteTitle: 'ご購入前に',
+    buyDetail: '詳細を見る',
+    buy: '購入する',
+  },
+  en: {
+    htmlLang: 'en',
+    heroCatch: 'Crafting sound, like light and color.',
+    aboutLabel: 'About',
+    aboutBody: `<p class="en-catch">Giverny Audio <br>is a studio specializing in game audio and sound design.</p>
+        <p class="en-sub">From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof. Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
+        With a track record spanning games and immersive content, we craft sound that draws players and audiences naturally into the worlds they experience.</p>`,
+    snsLabel: 'Official Account',
+    servicesLabel: 'Services',
+    svcDesignSub: '',
+    svcDesignDesc: `Sound effects for games, film, and promotional videos.<br>
+          We deliver professional, original sound using high-end microphones for delicate sound capture and field recording, complemented by our SFX libraries.<br>
+          With a proven track record in Unity/Unreal and Wwise/ADX2, we also handle game-engine and middleware integration.`,
+    svcRecordingSub: '',
+    svcRecordingDesc: `We cover the whole process — from noise reduction and audio restoration with iZotope RX through to implementation in game engines and middleware.<br>
+          We can also arrange cast and studio booking and provide voice direction, so you can entrust the entirety of your audio recording to us.`,
+    svcSalesSub: '',
+    svcSalesDesc: `Sound effects, ambiences, IR data, and plugins are on sale via BASE / Payhip.<br>
+          High-quality SFX recorded with high-end microphones and recorders.<br>
+          Ambiences captured in surround and Ambisonics, plus immersive-ready IR data, are all available.<br>
+          For details, see the <a href="__STORE__" style="color:#555;border-bottom:1px solid #bbb;">Store page</a>.`,
+    priceNote: 'Pricing varies with the scale and schedule of each project. Flexible plans for indie games and individual developers are also available. Feel free to get in touch.',
+    contactBtn: 'Contact',
+    pickupLabel: 'Featured Products — Pickup',
+    viewAllStore: 'View All Store →',
+    contactLabel: 'Contact',
+    contactTitle: 'Get in touch about your project',
+    contactBody: `For BGM, sound effects, and sound design inquiries,<br>
+        or questions about our asset packs, feel free to contact us.<br>
+        We usually reply within 2–3 business days.`,
+    mName: 'Name',
+    mEmail: 'E-mail',
+    mCategory: 'Category',
+    mSubject: 'Subject',
+    mMessage: 'Message',
+    mSend: 'Send',
+    mSending: 'Sending...',
+    mFail: 'Failed to send. Please try again in a moment.',
+    mNetErr: 'A network error occurred.',
+    mClose: 'Close',
+    mThanks: 'Message sent',
+    mThanksSub: 'Thank you for your inquiry.<br>We will reply within 2–3 business days.',
+    mCats: ['Sound Production', 'Audio Recording', 'Product Purchase', 'Other'],
+    backToTop: 'Top',
+    worksLabel: 'Works',
+    equipmentLabel: 'Equipment',
+    storeLabel: 'Store',
+    storeNote: [
+      'All products are licensed for commercial use (see each product page for license details).',
+      'Resale and redistribution are prohibited.',
+      'Suitable for a wide range of uses — games, film, streaming, and more.',
+      'Feel free to ask about custom production or bulk purchases.',
+    ],
+    storeNoteTitle: 'Before You Buy',
+    buyDetail: 'View Details',
+    buy: 'Buy Now',
+  },
+} as const
+
 // favicon は静的ファイルとして dist/ から直接配信（_routes.json の exclude 経由）
 
-app.get('/', (c) => c.html(renderHome()))
-app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'))))
-app.get('/store/item/:id', (c) => c.html(renderItemPage(c.req.param('id'))))
+// ── 日本語（デフォルト）──
+app.get('/', (c) => c.html(renderHome('ja')))
+app.get('/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'), 'ja')))
+app.get('/store/item/:id', (c) => c.html(renderItemPage(c.req.param('id'), 'ja')))
+// ── 英語（/en 配下）──
+app.get('/en', (c) => c.html(renderHome('en')))
+app.get('/en/tabs/:tab', (c) => c.html(renderTabPage(c.req.param('tab'), 'en')))
+app.get('/en/store/item/:id', (c) => c.html(renderItemPage(c.req.param('id'), 'en')))
 
 // ─────────────────────────────
 //  CONTACT FORM API
@@ -971,6 +1102,11 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 .fade.in{opacity:1;transform:none;}
 
 /* ── RESPONSIVE ── */
+/* ナビ項目数（多言語トグル含む）が収まらない幅ではハンバーガーへ */
+@media(max-width:768px){
+  .gnav{display:none;}
+  .ham{display:flex;}
+}
 @media(max-width:900px){
   .about-2col{grid-template-columns:200px 1fr;gap:36px;max-width:100%;}
   .about-img-wrap img{height:260px;}
@@ -1045,9 +1181,15 @@ hr.div{border:none;border-top:1px solid #ccc;margin:0;}
 }
 `
 
-function layout(title: string, body: string) {
+function layout(title: string, body: string, lang: Lang = 'ja', canonical: string = '/') {
+  const t = TR[lang]
+  const home = lang === 'en' ? '/en' : '/'
+  const tabs = lang === 'en' ? '/en/tabs' : '/tabs'
+  const jaUrl = canonical === '/' ? '/' : canonical
+  const enUrl = canonical === '/' ? '/en' : '/en' + canonical
+  const la = (active: boolean) => active ? 'color:#fff;font-weight:600;' : 'color:rgba(255,255,255,.45);'
   return `<!DOCTYPE html>
-<html lang="ja">
+<html lang="${t.htmlLang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -1056,6 +1198,8 @@ function layout(title: string, body: string) {
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/favicon-64.png">
 <link rel="shortcut icon" href="/favicon-64.png">
+<link rel="alternate" hreflang="ja" href="https://givernyaudio.com${jaUrl}">
+<link rel="alternate" hreflang="en" href="https://givernyaudio.com${enUrl}">
 <link rel="preload" as="image" href="/hero/hero-01.webp" type="image/webp">
 <link rel="preload" as="image" href="/about/about-photo.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1067,15 +1211,16 @@ function layout(title: string, body: string) {
 
 <header id="hd">
   <div class="hd-in">
-    <a href="/" class="logo">Giverny Audio</a>
+    <a href="${home}" class="logo">Giverny Audio</a>
     <nav><ul class="gnav">
-      <li><a href="/">Top</a></li>
-      <li><a href="/#sns">Account</a></li>
-      <li><a href="/#services">Services</a></li>
-      <li><a href="/tabs/works">Works</a></li>
-      <li><a href="/tabs/equipment">Equipment</a></li>
-      <li><a href="/tabs/store">Store</a></li>
-      <li><a href="/#contact">Contact</a></li>
+      <li><a href="${home}">Top</a></li>
+      <li><a href="${home}#sns">Account</a></li>
+      <li><a href="${home}#services">Services</a></li>
+      <li><a href="${tabs}/works">Works</a></li>
+      <li><a href="${tabs}/equipment">Equipment</a></li>
+      <li><a href="${tabs}/store">Store</a></li>
+      <li><a href="${home}#contact">Contact</a></li>
+      <li class="lang-li" style="display:flex;align-items:center;"><a href="${jaUrl}" style="${la(lang==='ja')}">JA</a><span style="opacity:.35;margin:0 5px;">/</span><a href="${enUrl}" style="${la(lang==='en')}">EN</a></li>
     </ul></nav>
     <div class="ham" onclick="document.getElementById('mmenu').classList.add('open')">
       <span></span><span></span><span></span>
@@ -1085,13 +1230,17 @@ function layout(title: string, body: string) {
 
 <div id="mmenu">
   <button id="mc" onclick="document.getElementById('mmenu').classList.remove('open')">✕</button>
-  <a href="/" onclick="document.getElementById('mmenu').classList.remove('open')">Top</a>
-  <a href="/#sns" onclick="document.getElementById('mmenu').classList.remove('open')">Account</a>
-  <a href="/#services" onclick="document.getElementById('mmenu').classList.remove('open')">Services</a>
-  <a href="/tabs/works">Works</a>
-  <a href="/tabs/equipment">Equipment</a>
-  <a href="/tabs/store">Store</a>
-  <a href="/#contact" onclick="document.getElementById('mmenu').classList.remove('open')">Contact</a>
+  <a href="${home}" onclick="document.getElementById('mmenu').classList.remove('open')">Top</a>
+  <a href="${home}#sns" onclick="document.getElementById('mmenu').classList.remove('open')">Account</a>
+  <a href="${home}#services" onclick="document.getElementById('mmenu').classList.remove('open')">Services</a>
+  <a href="${tabs}/works">Works</a>
+  <a href="${tabs}/equipment">Equipment</a>
+  <a href="${tabs}/store">Store</a>
+  <a href="${home}#contact" onclick="document.getElementById('mmenu').classList.remove('open')">Contact</a>
+  <div style="margin-top:30px;display:flex;gap:18px;justify-content:center;font-size:15px;letter-spacing:.06em;">
+    <a href="${jaUrl}" style="${la(lang==='ja')}">日本語</a>
+    <a href="${enUrl}" style="${la(lang==='en')}">English</a>
+  </div>
 </div>
 
 ${body}
@@ -1100,10 +1249,10 @@ ${body}
   <div class="ft-in">
     <p class="ft-copy">© 2026 Giverny Audio. All Rights Reserved.</p>
     <nav><ul class="ft-nav">
-      <li><a href="/">Top</a></li>
-      <li><a href="/#services">Services</a></li>
-      <li><a href="/tabs/works">Works</a></li>
-      <li><a href="/#contact">Contact</a></li>
+      <li><a href="${home}">Top</a></li>
+      <li><a href="${home}#services">Services</a></li>
+      <li><a href="${tabs}/works">Works</a></li>
+      <li><a href="${home}#contact">Contact</a></li>
     </ul></nav>
   </div>
 </footer>
@@ -1112,13 +1261,14 @@ ${body}
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.07});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 
-document.querySelectorAll('a[href^="/#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    if(window.location.pathname!=='/') return;
-    e.preventDefault();
-    const id=a.getAttribute('href').slice(2);
-    const el=document.getElementById(id);
-    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+document.querySelectorAll('a[href*="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var href=a.getAttribute('href')||'';
+    var hi=href.indexOf('#');
+    if(hi<1) return;
+    if(href.slice(0,hi)!==window.location.pathname) return;
+    var el=document.getElementById(href.slice(hi+1));
+    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
   });
 });
 </script>
@@ -1129,7 +1279,11 @@ document.querySelectorAll('a[href^="/#"]').forEach(a=>{
 // ─────────────────────────────
 //  HOME
 // ─────────────────────────────
-function renderHome() {
+function renderHome(lang: Lang = 'ja') {
+  const t = TR[lang]
+  const home = lang === 'en' ? '/en' : '/'
+  const tabs = lang === 'en' ? '/en/tabs' : '/tabs'
+  const base = lang === 'en' ? '/en' : ''
   const body = `
 <!-- HERO SLIDESHOW（Ken Burns ズームイン付き）
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1157,7 +1311,7 @@ function renderHome() {
     <!-- ロゴ＋キャッチコピー：中央にまとめて配置 -->
     <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:8px;">
       <img src="/Giverny_Audio_Logo_White.png" alt="Giverny Audio" style="width:clamp(220px,36vw,440px);opacity:.92;filter:drop-shadow(0 4px 24px rgba(0,0,0,.5));">
-      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(18px,2.8vw,34px);font-weight:300;color:rgba(255,255,255,.88);letter-spacing:.14em;line-height:1.5;text-shadow:0 2px 14px rgba(0,0,0,.6);">光と色のように、音をつくる。</p>
+      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(18px,2.8vw,34px);font-weight:300;color:rgba(255,255,255,.88);letter-spacing:.14em;line-height:1.5;text-shadow:0 2px 14px rgba(0,0,0,.6);">${t.heroCatch}</p>
     </div>
     <!-- スライドインジケーター -->
     <div id="hero-dots" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:8px;"></div>
@@ -1289,14 +1443,7 @@ function renderHome() {
 
       <!-- 右列: テキスト -->
       <div class="about-body">
-        <p>Giverny Audio はゲームオーディオ / サウンドデザインを専門とする制作スタジオです。<br>
-        サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。</p>
-        <p>専門的な知識と積み重ねてきた技術を活かし、<br>
-        クライアントのビジョンに寄り添った質の高いオーディオを提供することを大切にしています。<br>
-        ゲームからイマーシブコンテンツまで、幅広い分野において没入できるサウンドをお届けします。</p>
-        <p class="en-catch">Giverny Audio <br>is a studio specializing in game audio and sound design.</p>
-        <p class="en-sub">From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof. Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
-        With a track record spanning games and immersive content, we craft sound that draws players and audiences naturally into the worlds they experience.</p>
+        ${t.aboutBody}
         <div class="skill-tags">
           <span class="skill-tag">Reaper</span>
           <span class="skill-tag">Wwise</span>
@@ -1385,40 +1532,34 @@ function renderHome() {
       <div class="svc-row">
         <div class="svc-left">
           <p class="svc-en">Sound Design</p>
-          <p class="svc-ja">サウンドデザイン</p>
+          ${t.svcDesignSub ? `<p class="svc-ja">${t.svcDesignSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          ゲーム、映像、PVなどの効果音を制作。<br>
-          ハイエンドのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
-          Unity/Unreal, Wwise/ADX2の実装実績があり、ゲームエンジンやミドルウェア組み込みも幅広く対応可能。
+          ${t.svcDesignDesc}
         </div>
       </div>
       <div class="svc-row">
         <div class="svc-left">
           <p class="svc-en">Audio Recording</p>
-          <p class="svc-ja">音声収録</p>
+          ${t.svcRecordingSub ? `<p class="svc-ja">${t.svcRecordingSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          iZotope RXによるノイズ除去・整音からゲームエンジン・ミドルウェアへの実装まで一貫して対応いたします。<br>
-          また、キャストやスタジオのブッキング、ボイスディレクションも対応が可能ですので、音声収録の全てをお任せいただく事が可能。
+          ${t.svcRecordingDesc}
         </div>
       </div>
       <div class="svc-row">
         <div class="svc-left">
           <p class="svc-en">Asset Sales</p>
-          <p class="svc-ja">素材販売</p>
+          ${t.svcSalesSub ? `<p class="svc-ja">${t.svcSalesSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          BASE / Payhip にて効果音素材や環境音、IRデータ、プラグインを販売中。<br>
-          ハイエンドマイク/レコーダーで録音した高品質な効果音素材。<br>
-          サラウンド・Ambisonicsで録音された環境音、イマーシブ対応のIRデータも取り揃えています。<br>
-          詳しくは、<a href="/tabs/store" style="color:#555;border-bottom:1px solid #bbb;">Store ページ</a> をご覧ください。
+          ${t.svcSalesDesc.replace('__STORE__', tabs + '/store')}
         </div>
       </div>
     </div>
     <div class="price-note">
-      <p>料金は制作規模・納期などにより異なります。インディーゲーム・個人開発者向けの柔軟なプランも対応可能です。まずはお気軽にご相談ください。</p>
-      <a href="/#contact" class="btn-contact">お問い合わせ</a>
+      <p>${t.priceNote}</p>
+      <a href="${home}#contact" class="btn-contact">${t.contactBtn}</a>
     </div>
   </div>
 </section>
@@ -1430,12 +1571,12 @@ function renderHome() {
 <section id="pickup" style="background:#f0eeeb;">
   <div class="page sec fade">
     <div class="pickup-head">
-      <p class="sec-label" style="margin-bottom:0;">販売コンテンツ — Pickup</p>
-      <a href="/tabs/store" class="pickup-more">View All Store →</a>
+      <p class="sec-label" style="margin-bottom:0;">${t.pickupLabel}</p>
+      <a href="${tabs}/store" class="pickup-more">${t.viewAllStore}</a>
     </div>
     <div class="pickup-grid">
       ${PICKUP_ITEMS.map(item => `
-      <a href="${item.detailUrl ? item.detailUrl : item.url}" ${item.detailUrl ? '' : 'target="_blank" rel="noopener"'} class="pickup-item">
+      <a href="${item.detailUrl ? base + item.detailUrl : item.url}" ${item.detailUrl ? '' : 'target="_blank" rel="noopener"'} class="pickup-item">
         <div class="pickup-img">
           ${item.image
             ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager" fetchpriority="high">`
@@ -1460,14 +1601,12 @@ function renderHome() {
   <div class="page sec fade">
     <p class="sec-label">Contact</p>
     <div class="contact-box">
-      <p class="contact-title">お仕事のご依頼・ご相談はこちらから</p>
+      <p class="contact-title">${t.contactTitle}</p>
       <p class="contact-body">
-        BGM制作・効果音・サウンドデザインのご依頼、<br>
-        素材パックに関するご質問など、お気軽にご連絡ください。<br>
-        通常2〜3営業日以内にご返信いたします。
+        ${t.contactBody}
       </p>
       <div class="contact-btns">
-        <button onclick="openContactModal()" class="btn-main">お問い合わせ</button>
+        <button onclick="openContactModal()" class="btn-main">${t.contactBtn}</button>
       </div>
     </div>
   </div>
@@ -1480,22 +1619,22 @@ function renderHome() {
   <!-- モーダル本体 -->
   <div style="position:relative;z-index:1;width:min(560px,92vw);max-height:90vh;overflow-y:auto;background:#fff;padding:44px 40px 40px;box-shadow:0 20px 60px rgba(0,0,0,.22);">
     <!-- 閉じるボタン -->
-    <button onclick="closeContactModal()" style="position:absolute;top:14px;right:18px;background:none;border:none;color:#999;font-size:20px;cursor:pointer;line-height:1;padding:4px 6px;transition:color .2s;" onmouseover="this.style.color='#333'" onmouseout="this.style.color='#999'" aria-label="閉じる">✕</button>
+    <button onclick="closeContactModal()" style="position:absolute;top:14px;right:18px;background:none;border:none;color:#999;font-size:20px;cursor:pointer;line-height:1;padding:4px 6px;transition:color .2s;" onmouseover="this.style.color='#333'" onmouseout="this.style.color='#999'" aria-label="${t.mClose}">✕</button>
     <!-- タイトル -->
     <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:11px;font-weight:700;color:#1a1a1a;letter-spacing:.2em;text-transform:uppercase;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid #ddd;">Contact</h2>
 
     <!-- 送信完了メッセージ -->
     <div id="contact-thanks" style="display:none;text-align:center;padding:40px 0;">
       <p style="font-size:28px;margin-bottom:16px;">✓</p>
-      <p style="color:#333;font-size:14px;letter-spacing:.06em;margin-bottom:8px;">送信しました</p>
-      <p style="color:#888;font-size:12px;line-height:2;">お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。</p>
+      <p style="color:#333;font-size:14px;letter-spacing:.06em;margin-bottom:8px;">${t.mThanks}</p>
+      <p style="color:#888;font-size:12px;line-height:2;">${t.mThanksSub}</p>
     </div>
 
     <!-- フォーム -->
     <form id="contact-form" onsubmit="submitContactForm(event)" style="display:flex;flex-direction:column;gap:22px;">
       <!-- お名前 -->
       <div>
-        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">お名前 <span style="color:#999;font-weight:400;">*</span></label>
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">${t.mName} <span style="color:#999;font-weight:400;">*</span></label>
         <input name="name" type="text" required autocomplete="name"
           style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit;"
           onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'">
@@ -1511,7 +1650,7 @@ function renderHome() {
       <div>
         <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">Category</label>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-          ${['サウンド制作','音声収録','製品購入','その他'].map((cat,i) => `
+          ${t.mCats.map((cat,i) => `
           <label style="display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:12px;color:#444;padding:9px 4px;border:1px solid #ddd;background:#f8f7f5;transition:border-color .2s;white-space:nowrap;" onmouseover="this.style.borderColor='#888'" onmouseout="this.style.borderColor='#ddd'">
             <input type="radio" name="category" value="${cat}" ${i===0?'checked':''} style="accent-color:#2d2d2d;width:14px;height:14px;cursor:pointer;flex-shrink:0;">
             <span>${cat}</span>
@@ -1520,14 +1659,14 @@ function renderHome() {
       </div>
       <!-- 件名 -->
       <div>
-        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">件名 <span style="color:#999;font-weight:400;">*</span></label>
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">${t.mSubject} <span style="color:#999;font-weight:400;">*</span></label>
         <input name="subject" type="text" required
           style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s;font-family:inherit;"
           onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'">
       </div>
       <!-- 本文 -->
       <div>
-        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">本文 <span style="color:#999;font-weight:400;">*</span></label>
+        <label style="display:block;font-size:11px;font-weight:700;color:#555;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">${t.mMessage} <span style="color:#999;font-weight:400;">*</span></label>
         <textarea name="message" required rows="5"
           style="width:100%;background:#f8f7f5;border:1px solid #ddd;border-bottom:1px solid #aaa;padding:10px 12px;color:#333;font-size:13px;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color .2s;"
           onfocus="this.style.borderColor='#2d2d2d'" onblur="this.style.borderColor='#aaa'"></textarea>
@@ -1535,7 +1674,7 @@ function renderHome() {
       <!-- 送信ボタン -->
       <button type="submit" id="contact-submit-btn"
         style="background:#2d2d2d;color:#fff;border:none;padding:14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s;width:100%;font-family:inherit;"
-        onmouseover="this.style.background='#444'" onmouseout="this.style.background='#2d2d2d'">送信</button>
+        onmouseover="this.style.background='#444'" onmouseout="this.style.background='#2d2d2d'">${t.mSend}</button>
     </form>
   </div>
 </div>
@@ -1560,7 +1699,7 @@ async function submitContactForm(e){
   e.preventDefault();
   var btn = document.getElementById('contact-submit-btn');
   btn.disabled = true;
-  btn.textContent = '送信中...';
+  btn.textContent = ${JSON.stringify(t.mSending)};
 
   var form = document.getElementById('contact-form');
   var fd   = new FormData(form);
@@ -1588,24 +1727,26 @@ async function submitContactForm(e){
       setTimeout(closeContactModal, 3000);
     } else {
       btn.disabled = false;
-      btn.textContent = '送信';
-      alert(json.message || '送信に失敗しました。しばらく経ってから再度お試しください。');
+      btn.textContent = ${JSON.stringify(t.mSend)};
+      alert(json.message || ${JSON.stringify(t.mFail)});
     }
   } catch(err){
     btn.disabled = false;
     btn.textContent = '送信';
-    alert('通信エラーが発生しました。');
+    alert(${JSON.stringify(t.mNetErr)});
   }
 }
 </script>
 `
-  return layout('Giverny Audio | Game Audio / Sound Design', body)
+  return layout('Giverny Audio | Game Audio / Sound Design', body, lang, '/')
 }
 
 // ─────────────────────────────
 //  TAB PAGE
 // ─────────────────────────────
-function renderTabPage(tab: string) {
+function renderTabPage(tab: string, lang: Lang = 'ja') {
+  const tb = lang === 'en' ? '/en/tabs' : '/tabs'
+  const home = lang === 'en' ? '/en' : '/'
   const tabs = [
     { id: 'works', label: 'Works' },
     { id: 'equipment', label: 'Equipment' },
@@ -1617,25 +1758,25 @@ function renderTabPage(tab: string) {
     store: 'Store | Giverny Audio',
   }
   let content = ''
-  if (tab === 'works') content = renderWorks()
-  else if (tab === 'equipment') content = renderEquipment()
-  else if (tab === 'store') content = renderStore()
-  else content = renderWorks()
+  if (tab === 'works') content = renderWorks(lang)
+  else if (tab === 'equipment') content = renderEquipment(lang)
+  else if (tab === 'store') content = renderStore(lang)
+  else content = renderWorks(lang)
 
   const body = `
 <div class="tab-bar">
   <div class="tab-bar-in">
-    ${tabs.map(t => `<a href="/tabs/${t.id}" class="tab-btn${t.id === tab ? ' on' : ''}">${t.label}</a>`).join('')}
+    ${tabs.map(t => `<a href="${tb}/${t.id}" class="tab-btn${t.id === tab ? ' on' : ''}">${t.label}</a>`).join('')}
   </div>
 </div>
 <div style="background:#f0eeeb;flex:1;">
   <div class="page sec fade">
-    <a href="/" class="back-link">Top</a>
+    <a href="${home}" class="back-link">${TR[lang].backToTop}</a>
     ${content}
   </div>
 </div>
 `
-  return layout(titleMap[tab] || 'Giverny Audio', body)
+  return layout(titleMap[tab] || 'Giverny Audio', body, lang, '/tabs/' + tab)
 }
 
 // ─────────────────────────────
@@ -1794,7 +1935,7 @@ ${STORE_ITEMS.map(item => `
 // ─────────────────────────────────────────────────────────────
 //  商品詳細ページ
 // ─────────────────────────────────────────────────────────────
-function renderItemPage(id: string) {
+function renderItemPage(id: string, lang: Lang = 'ja') {
   // 商品データマップ
   const ITEMS: Record<string, {
     title: string
