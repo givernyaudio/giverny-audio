@@ -889,7 +889,7 @@ img{display:block;max-width:100%;}
 }
 .si-img img{
   width:100%;height:100%;
-  object-fit:cover;
+  object-fit:cover;object-position:left;
   display:block;
   transition:transform .3s;
 }
@@ -944,7 +944,7 @@ img{display:block;max-width:100%;}
 .pickup-img{
   width:100%;aspect-ratio:3/4;overflow:hidden;background:#e8e6e1;flex-shrink:0;
 }
-.pickup-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.pickup-img img{width:100%;height:100%;object-fit:cover;object-position:left;display:block;}
 .pickup-img-none{
   width:100%;aspect-ratio:3/4;background:#e8e6e1;
   display:flex;align-items:center;justify-content:center;
