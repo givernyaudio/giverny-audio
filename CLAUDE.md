@@ -18,17 +18,18 @@ npm run deploy       # build してから wrangler pages deploy（公開。実�
 ```
 ※ このシェルに `curl` は無い。HTTP 確認は `node` の `fetch` を使う。
 
-## アーキテクチャ（`src/index.tsx` 一枚にほぼ全部・約2000行）
-| 行（目安） | 内容 |
+## アーキテクチャ（`src/index.tsx` 一枚にほぼ全部・約2200行）
+※ 行番号は流動的。関数は `grep -n "function render\|function layout" src/index.tsx` で確認。
+| 区分 | 内容 |
 |---|---|
-| 〜296 | **編集対象の定数群**（下表） |
-| 300–356 | ルート定義（`/`, `/tabs/:tab`, `/store/item/:id`, `POST /api/contact`） |
-| 358–1047 | `CSS` 定数（全ページ共通インラインCSS） |
-| 1048–1127 | `layout()` … 共通の `<head>`/ヘッダー/モバイルメニュー/フッター/スクロールJS |
-| 1132–1603 | `renderHome()`（Hero / About / SNS / Services / Pickup / Contact）+ モーダルJS |
-| 1608–1639 | `renderTabPage()`（works/equipment/store を振り分け） |
-| 1644–1796 | `renderWorks()` / `renderEquipment()` / `renderStore()` |
-| 1797–2055 | `renderItemPage()`（商品詳細。Tailwind + Inter を CDN 読み込み） |
+| 定数群（冒頭） | 編集対象データ（下表）＋ `TR`（日英文言辞書）＋ `WORKS_EN`（実績の英訳） |
+| ルート定義 | 日本語 `/`・`/tabs/:tab`・`/store/item/:id` と 英語 `/en…`、`POST /api/contact` |
+| `CSS` 定数 | 全ページ共通インラインCSS |
+| `layout(title, body, lang, canonical)` | 共通 `<head>`/ヘッダー（JA/ENトグル）/モバイルメニュー/フッター/スクロールJS |
+| `renderHome(lang)` | Hero / About / SNS / Services / Pickup / Contact + モーダルJS |
+| `renderTabPage(tab, lang)` | works/equipment/store を振り分け |
+| `renderWorks(lang)` / `renderEquipment(lang)` / `renderStore(lang)` | 各タブ |
+| `renderItemPage(id, lang)` | 商品詳細（Tailwind + Inter を CDN 読み込み。独自ヘッダー＋トグル） |
 
 `src/renderer.tsx` は実質未使用（各 render 関数が完結した HTML 文字列を返す）。
 
@@ -42,6 +43,18 @@ npm run deploy       # build してから wrangler pages deploy（公開。実�
 | SNS / ショップ URL | `SNS_LINKS` / `STORE_LINKS` |
 | About 画像 | `ABOUT_IMAGE` |
 | 商品詳細ページの中身 | `renderItemPage()` 内（現状 `sword-swish-generator` のみハードコード） |
+| 英語の文言を直す | `TR.en.<key>`（共通文言）／`WORKS_EN`（実績の英訳）／`renderItemPage` 内の `lang === 'en' ? …` |
+
+## 多言語（JP / EN）切替
+- 日本語がデフォルト（`/`・`/tabs/*`・`/store/item/*`）、英語は **`/en` 配下**（同パスに `/en` を前置）。
+- 各 render 関数は `lang: 'ja'|'en'` を受け取り、文言は **`TR[lang]`**（`src/index.tsx` 冒頭、ja/en 同一キー）から取得。ヘッダー（PC）とモバイルメニューに **JA/EN トグル**。`<html lang>`・`hreflang` も言語別に設定。
+- **共通文言を直す → `TR`**（英語は `TR.en.<key>`）。
+- **Works の実績 → `WORKS_EN`**（日本語タイトルをキーに `title`/`desc`/`role` の英語）。実績を足すときは `WORKS_LIST` と `WORKS_EN` の**両方**に追加（英語未定義なら日本語にフォールバック）。
+- **商品詳細（`renderItemPage`）** は関数内で `lang` を直接分岐（`subtitle`/`description`/`License` を `lang === 'en' ? 英 : 和`）。
+- 内部リンクは言語別プレフィックス（`/en`）を付与。同一ページ内アンカーのスムーズスクロールは現在の `pathname` で同一ページ判定。
+- ⚠️ ナビ項目が増えたため **768px 以下はハンバーガー**（CSS の `@media(max-width:768px)`）。
+- ⚠️ 新ページ／新セクション追加時は **ja/en 両方**の文言を `TR` に入れ、リンクに lang プレフィックスを通すこと。
+- 作品タイトルは英語版では英語/ローマ字（`WORKS_EN` の `title`）。
 
 ## 画像の扱い（重要）
 - 元画像（jpg/png）を `public/<hero|about|works|store>/` に置く。
