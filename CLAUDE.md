@@ -58,4 +58,8 @@ npm run deploy       # build してから wrangler pages deploy（公開。実�
 - Web3Forms の access_key は `submitContactForm()`（≈1570行）にハードコード。
 - favicon は `public/favicon-32/64.png`, `favicon.svg`。`_routes.json` で静的配信に除外済み。
 - ローカル本番相当の確認は PM2 + `wrangler pages dev dist`（`ecosystem.config.cjs`、ポート3000）。
+- ⚠️ **デプロイは手動のみ**：CF Pages プロジェクト名は **`giverny-audio`**（本番 givernyaudio.com）。
+  **GitHub への push では自動デプロイされない**（git連携なし）。反映には `npm run deploy` を実行する。
+  事前に一度 `npx wrangler login`（アカウント: k-toon@givernyaudio.com）が必要。
+  実プロジェクト名は `npx wrangler pages project list` で確認可。push は通常 GitHub Desktop。
 - コミット／プッシュ／デプロイはユーザーの指示があってから行う。
