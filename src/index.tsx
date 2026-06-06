@@ -1810,7 +1810,7 @@ function renderItemPage(id: string) {
   }> = {
     'sword-swish-generator': {
       title:     'Sword Swish Generator',
-      subtitle:  'VST3 プラグイン — ゲーム・映像制作向け剣閃音特化型サウンドプラグイン',
+      subtitle:  'VST3 / AU / AAX / StandAlone — ゲーム・映像制作向け剣撃音生成ツール',
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
       buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
