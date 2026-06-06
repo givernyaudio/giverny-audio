@@ -1805,7 +1805,6 @@ function renderItemPage(id: string) {
     youtubeId: string
     tags: string[]
     description: string
-    features: { label: string; text: string }[]
     specs: { label: string; value: string }[]
   }> = {
     'sword-swish-generator': {
@@ -1816,30 +1815,37 @@ function renderItemPage(id: string) {
       buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
       youtubeId: 'WtwIuUxzIDY',
       tags:      ['VST3', 'AU', 'AAX', 'StandAlone', 'Game Audio', 'Sound Design', 'Sword SFX'],
-      description: `Sword Swish Generator は、ゲームや映像制作のための、Swish 音に特化したサウンドプラグインです。<br><br>
-192kHzのハイサンプリングレートで録音された素材は、ディテールを保ちながらあらゆる剣のSwish音に対応できます。Dagger（短剣）から GreatSword（大剣）までの5 種類の剣カテゴリーと総数 200 以上のサンプルを収録。<br>
-MIDI ノートを叩くだけで即座に Swish 音が鳴り、ピッチやスピードのランダマイズ機能により、連打しても毎回異なるニュアンスで発音します。内蔵の 5 バンド EQ で音色の調整も自在です。<br><br>
-Ver. 1.5.0 では、Swish 音の表現力をさらに高める新機能を追加しました。気に入ったサンプルをストックキー（C4〜C5）に登録し、演奏中にいつでも即座に呼び出せるようになったほか、登録した各スロットに対してピッチ・スピード・EQ・音量を個別にチューニングできる Designer タブを搭載。さらに、波形上にピッチカーブを自由に描けるピッチオートメーション機能により、振り下ろす際の自然なドップラー感やうねりを細かく作り込むことができます。<br>
-作成したカーブはプリセットとして保存・再利用が可能です。<br><br>
-「剣を振る」というシンプルな動作を、そのまま音にするために作られました。<br><br>
-Sword Swish Generator is a dedicated sound plugin built for game and video production, specializing exclusively in weapon swish sound effects.<br><br>
-Recorded at an ultra-high sampling rate of 192kHz, the audio retains pristine detail, making it highly versatile for crafting the perfect swish sound for any type of blade. It features 5 distinct sword categories—from Daggers to GreatSwords—with a total of over 200 high-quality samples. Instantly trigger a swish sound just by hitting a MIDI note. Thanks to the built-in pitch and speed randomization, even rapid, repeated strikes will produce a unique, natural nuance every single time. You can also freely sculpt your tone using the integrated 5-band EQ.<br><br>
-Ver. 1.5.0 introduces a new set of tools to push your sound design even further. Register your favorite samples to dedicated Stock Keys (C4–C5) for instant recall during performance or production.<br>
-The new Designer tab lets you fine-tune pitch, speed, EQ, and volume for each registered slot individually—giving every key its own distinct character. And with Pitch Automation, you can draw a pitch curve directly on the waveform to add natural movement and depth, like the Doppler sweep of a full downswing. Automation curves can be saved and reloaded as named presets.<br><br>
-It was created with one simple goal: to directly translate the physical action of “swinging a sword” into sound.`,
-      features: [
-        { label: '5種類の剣カテゴリー', text: 'Dagger / Rapier / HalfSword / LonSword / GreatSword + All Swords' },
-        { label: '200+ サンプル収録',   text: 'MIDIノートを叩くだけで即座に再生' },
-        { label: 'ランダマイズ機能',     text: 'ピッチ・スピードをランダム化。連打でも毎回異なるニュアンス' },
-        { label: '5バンド内蔵EQ',       text: '100Hz / 500Hz / 2kHz / 5kHz / 10kHz' },
-        { label: 'Exact モード',         text: '指定サンプルを固定再生。SE として組み込む際に便利' },
-      ],
+      description: `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ 説明</strong>
+ゲーム・映像制作のための、剣の風切り音（Swish）に特化したサウンドプラグイン。<br>
+192kHz録音の200点超サンプル（短剣〜大剣の5カテゴリー）を、MIDIキーひとつで即発音。<br>
+さらに 風切り音（SWISH）に金属質のブレード音（Blade）を重ねる2層構成で、空気感と刃の鳴りを自在にミックスできます。<br>
+ピッチ＆スピードのランダマイズにより、連打しても毎回ニュアンスの違う自然な音に。<br><br>
+<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ 主な特長</strong>
+・VST3,AU,AAXといった幅広いDAWに対応<br>
+・WAV書き出しにも対応した、DAW不要のスタンドアロン版<br>
+・短剣〜大剣まで 5カテゴリー・200点超の 192kHz Swishサンプル<br>
+・SWISH＋Blade の2層ミックス：風切り音に金属質のブレード音を重ね、それぞれ独立に調整（Blade 6タイプ＋ランダム）<br>
+・MIDIで即発音／ランダマイズで毎回自然に違う響き<br>
+・お気に入りの音をキーに登録して即呼び出しできる ストックキー<br>
+・波形にピッチカーブを描ける ピッチオートメーション（振り下ろしのドップラー感）＋ 5バンドEQ で音作り<br><br>
+<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ Description</strong>
+A sound plugin for game and video production, specializing in sword swish (Swish) effects.<br>
+Over 200 samples recorded at 192kHz — five categories spanning daggers to greatswords — trigger instantly from a single MIDI key.<br>
+On top of that, a two-layer design stacks a metallic blade tone (Blade) over the swish (SWISH), letting you freely mix the rush of air with the ring of steel.<br>
+Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound natural and distinct every time.<br><br>
+<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ Key Features</strong>
+・Broad DAW support — VST3, AU, and AAX<br>
+・Standalone version (no DAW required), with WAV export<br>
+・200+ 192kHz swish samples across 5 categories, from daggers to greatswords<br>
+・SWISH + Blade two-layer mix: stack a metallic blade tone over the swish, each adjustable independently (6 Blade types + Random)<br>
+・Instant MIDI triggering — randomization for a natural, different sound every time<br>
+・Stock Keys: register your favorite sounds to a key for instant recall<br>
+・Pitch Automation: draw a pitch curve on the waveform (downswing Doppler), plus a 5-band EQ for shaping your tone`,
       specs: [
-        { label: 'Format',     value: 'VST3' },
-        { label: 'Platform',   value: 'Windows 64bit' },
-        { label: 'Samples',    value: '200+' },
-        { label: 'Categories', value: 'VST3 plugin' },
-        { label: 'License',    value: '商用利用可（再配布禁止）' },
+        { label: 'Format',   value: 'VST3 / AU / AAX / Standalone' },
+        { label: 'Platform', value: 'Windows / macOS' },
+        { label: 'Samples',  value: '200+' },
+        { label: 'License',  value: '商用利用可（再配布禁止）' },
       ],
     },
   }
@@ -2023,16 +2029,6 @@ It was created with one simple goal: to directly translate the physical action o
         <p class="btn-note">※ Payhip の決済ページに遷移します</p>
       </div>
     </div>
-
-    <!-- 機能一覧 -->
-    <h2 class="sec-title">Features</h2>
-    <ul class="feature-list">
-      ${item.features.map(f => `
-      <li>
-        <span class="fl-label">${f.label}</span>
-        <span class="fl-text">${f.text}</span>
-      </li>`).join('')}
-    </ul>
 
     <!-- スペック -->
     <h2 class="sec-title">Specifications</h2>
