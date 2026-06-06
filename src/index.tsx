@@ -421,6 +421,46 @@ const TR = {
   },
 } as const
 
+// ═══════════════════════════════════════════════════════════════════════
+//  ★ Works（実績）の英訳 — タイトルをキーに desc / role の英語を定義
+//  ★ WORKS_LIST に実績を追加したら、ここにも同じ title で英訳を追加してください
+//  ★ 未定義のタイトルは日本語のまま表示されます（フォールバック）
+// ═══════════════════════════════════════════════════════════════════════
+const WORKS_EN: Record<string, { desc: string; role: string }> = {
+  '動き出す妖怪展 NAGOYA / TOKYO': {
+    desc: "The world's first immersive digital art museum, where Japan's celebrated yōkai art comes alive through cutting-edge visuals and three-dimensional sculpture.",
+    role: 'SE production, surround mix',
+  },
+  'Imy feat. Kotoha “追憶のファインダー”': {
+    desc: 'A music project by composer Myu and illustrator Onineko.',
+    role: 'Field recording, voice editing',
+  },
+  'キャプテン翼〜たたかえドリームチーム〜': {
+    desc: "The competitive soccer simulation game loved worldwide, based on 'Captain Tsubasa'.",
+    role: 'Sound direction, SE production, audio implementation (Wwise/Unity), voice direction',
+  },
+  'ゴーヘルゴー つきおとしてこ': {
+    desc: 'In hell, money is everything. An RPG where sending sinners down to hell is your livelihood — earn, and fight.',
+    role: 'Sound direction, SE production, audio implementation (ADX2 / Unreal), voice editing',
+  },
+  'GRAND SUMMONERS': {
+    desc: 'A pixel-art action RPG with intense real-time battles for up to four players.',
+    role: 'Sound direction, SE production, BGM production, audio implementation (ADX2), voice editing',
+  },
+  '結城友奈は勇者である 花結いのきらめき': {
+    desc: "A smartphone and PC-browser game based on the 'Yuki Yuna is a Hero' series, planned and conceived by Takahiro.",
+    role: 'SE production',
+  },
+  'すだまリレイシヨン': {
+    desc: 'A strange bond forged in a land where demons lie — a tale woven between people and sudama (spirits).',
+    role: 'Sound direction, SE production, BGM production',
+  },
+  'TIMEGAL Re:birth': {
+    desc: "A new adventure game for Nintendo Switch based on the original 'Time Gal'.",
+    role: 'BGM production',
+  },
+}
+
 // favicon は静的ファイルとして dist/ から直接配信（_routes.json の exclude 経由）
 
 // ── 日本語（デフォルト）──
@@ -1782,7 +1822,7 @@ function renderTabPage(tab: string, lang: Lang = 'ja') {
 // ─────────────────────────────
 //  WORKS
 // ─────────────────────────────
-function renderWorks() {
+function renderWorks(lang: Lang = 'ja') {
   // フィルターボタン用: WORKS_LIST に含まれる year を自動収集（重複除去・降順ソート）
   const years = ['All', ...Array.from(new Set(WORKS_LIST.map(w => w.year))).sort((a, b) => b.localeCompare(a))]
   return `
@@ -1798,7 +1838,7 @@ function renderWorks() {
     <div class="whead-cell">Role</div>
   </div>
   <div class="works-tbl" id="wl">
-${WORKS_LIST.map(w => `
+${WORKS_LIST.map(w => { const we = lang === 'en' ? WORKS_EN[w.title] : null; return `
   <div class="wrow" data-y="${w.year}">
     <div class="wy">${w.year}</div>
     <div class="wthumb">
@@ -1809,14 +1849,14 @@ ${WORKS_LIST.map(w => `
     </div>
     <div class="wb">
       <p class="wt">${w.url ? `<a href="${w.url}" target="_blank" rel="noopener">${w.title}</a>` : w.title}</p>
-      <p class="wd">${w.desc}</p>
-      <p class="wr">${w.role}</p>
+      <p class="wd">${we ? we.desc : w.desc}</p>
+      <p class="wr">${we ? we.role : w.role}</p>
     </div>
     <div class="wm">
       <span class="wtype">${w.type}</span>
       <p class="wplat">${w.platform}</p>
     </div>
-  </div>`).join('')}
+  </div>`}).join('')}
   </div>
 </div>
 <script>
@@ -1833,7 +1873,7 @@ function fw(y,b){
 // ─────────────────────────────
 //  EQUIPMENT
 // ─────────────────────────────
-function renderEquipment() {
+function renderEquipment(lang: Lang = 'ja') {
   return `
 <p class="sec-label">Equipment</p>
 <div class="eq-grid">
@@ -1867,7 +1907,9 @@ function eqToggle(i){
 // ─────────────────────────────
 //  STORE
 // ─────────────────────────────
-function renderStore() {
+function renderStore(lang: Lang = 'ja') {
+  const t = TR[lang]
+  const base = lang === 'en' ? '/en' : ''
   return `
 <p class="sec-label">Store</p>
 <div class="store-plats">
@@ -1885,7 +1927,7 @@ ${STORE_ITEMS.map(item => `
   <div class="si">
     <div class="si-img">
       ${item.detailUrl
-        ? `<a href="${item.detailUrl}"><img src="/store/${item.image}" alt="${item.title}" loading="eager"></a>`
+        ? `<a href="${base + item.detailUrl}"><img src="/store/${item.image}" alt="${item.title}" loading="eager"></a>`
         : item.image
           ? `<img src="/store/${item.image}" alt="${item.title}" loading="eager">`
           : `<div class="si-img-none"><span>NO IMAGE</span></div>`}
@@ -1893,14 +1935,14 @@ ${STORE_ITEMS.map(item => `
     <div class="si-body">
       <div class="si-head">
         ${item.detailUrl
-          ? `<a href="${item.detailUrl}" class="si-title-link"><p class="si-title">${item.title}</p></a>`
+          ? `<a href="${base + item.detailUrl}" class="si-title-link"><p class="si-title">${item.title}</p></a>`
           : `<p class="si-title">${item.title}</p>`}
         ${item.count ? `<span class="si-count">${item.count}</span>` : ''}
       </div>
       <p class="si-price">${item.price}</p>
       ${item.detailUrl
-        ? `<a href="${item.detailUrl}" class="si-buy si-buy-detail">詳細を見る</a>`
-        : `<a href="${item.url}" target="_blank" rel="noopener" class="si-buy">購入する</a>`}
+        ? `<a href="${base + item.detailUrl}" class="si-buy si-buy-detail">${t.buyDetail}</a>`
+        : `<a href="${item.url}" target="_blank" rel="noopener" class="si-buy">${t.buy}</a>`}
     </div>
   </div>`).join('')}
 </div></div>
@@ -1922,12 +1964,9 @@ ${STORE_ITEMS.map(item => `
 })();
 </script>
 <div class="store-note">
-  <p class="sn-title">ご購入前に</p>
+  <p class="sn-title">${t.storeNoteTitle}</p>
   <ul>
-    <li>全商品は商用利用可能です（ライセンス詳細は各商品ページをご確認ください）</li>
-    <li>再販・再配布・二次配布は禁止です</li>
-    <li>ゲーム・映像・配信など幅広い用途に対応しています</li>
-    <li>カスタム制作・バルク購入のご相談はお気軽にどうぞ</li>
+    ${t.storeNote.map(n => `<li>${n}</li>`).join('')}
   </ul>
 </div>`
 }
@@ -1936,6 +1975,11 @@ ${STORE_ITEMS.map(item => `
 //  商品詳細ページ
 // ─────────────────────────────────────────────────────────────
 function renderItemPage(id: string, lang: Lang = 'ja') {
+  const home = lang === 'en' ? '/en' : '/'
+  const storeUrl = lang === 'en' ? '/en/tabs/store' : '/tabs/store'
+  const selfJa = '/store/item/' + id
+  const selfEn = '/en/store/item/' + id
+  const la = (active: boolean) => active ? 'color:#fff;font-weight:600;' : 'color:rgba(255,255,255,.5);'
   // 商品データマップ
   const ITEMS: Record<string, {
     title: string
@@ -1950,28 +1994,15 @@ function renderItemPage(id: string, lang: Lang = 'ja') {
   }> = {
     'sword-swish-generator': {
       title:     'Sword Swish Generator',
-      subtitle:  'VST3 / AU / AAX / StandAlone — ゲーム・映像制作向け剣撃音生成ツール',
+      subtitle:  lang === 'en'
+        ? 'VST3 / AU / AAX / Standalone — a sword-combat SFX generator for game & video production'
+        : 'VST3 / AU / AAX / StandAlone — ゲーム・映像制作向け剣撃音生成ツール',
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
       buyUrlBase: '',  // BASEは使用しない（空文字で非表示）
       youtubeId: 'WtwIuUxzIDY',
       tags:      ['VST3', 'AU', 'AAX', 'StandAlone', 'Game Audio', 'Sound Design', 'Sword SFX'],
-      description: `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ 説明</strong>
-ゲーム・映像制作のための、剣の風切り音（Swish）に特化したサウンドプラグイン。<br>
-192kHz録音の200点超サンプル（短剣〜大剣の5カテゴリー）を、MIDIキーひとつで即発音。<br>
-さらに 風切り音（SWISH）に金属質のブレード音（Blade）を重ねる2層構成で、空気感と刃の鳴りを自在にミックスできます。<br>
-ピッチ＆スピードのランダマイズにより、連打しても毎回ニュアンスの違う自然な音に。<br><br>
-<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ 主な特長</strong>
-<ul class="feat">
-<li>VST3,AU,AAXといった幅広いDAWに対応</li>
-<li>WAV書き出しにも対応した、DAW不要のスタンドアロン版</li>
-<li>短剣〜大剣まで 5カテゴリー・200点超の 192kHz Swishサンプル</li>
-<li>SWISH＋Blade の2層ミックス</li>
-<li>MIDIで即発音／ランダマイズで毎回自然に違う響き</li>
-<li>お気に入りの音をキーに登録して即呼び出しできるストックキー</li>
-<li>波形にピッチカーブを描ける ピッチオートメーション ＋ 5バンドEQ</li>
-</ul>
-<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ Description</strong>
+      description: lang === 'en' ? `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ Description</strong>
 A sound plugin for game and video production, specializing in sword swish (Swish) effects.<br>
 Over 200 samples recorded at 192kHz — five categories spanning daggers to greatswords — trigger instantly from a single MIDI key.<br>
 On top of that, a two-layer design stacks a metallic blade tone (Blade) over the swish (SWISH), letting you freely mix the rush of air with the ring of steel.<br>
@@ -1985,12 +2016,26 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
 <li>Instant MIDI triggering — randomization for a natural, different sound every time</li>
 <li>Stock Keys: register your favorite sounds to a key for instant recall</li>
 <li>Pitch Automation: draw a pitch curve on the waveform, plus a 5-band EQ</li>
+</ul>` : `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ 説明</strong>
+ゲーム・映像制作のための、剣の風切り音（Swish）に特化したサウンドプラグイン。<br>
+192kHz録音の200点超サンプル（短剣〜大剣の5カテゴリー）を、MIDIキーひとつで即発音。<br>
+さらに 風切り音（SWISH）に金属質のブレード音（Blade）を重ねる2層構成で、空気感と刃の鳴りを自在にミックスできます。<br>
+ピッチ＆スピードのランダマイズにより、連打しても毎回ニュアンスの違う自然な音に。<br><br>
+<strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ 主な特長</strong>
+<ul class="feat">
+<li>VST3,AU,AAXといった幅広いDAWに対応</li>
+<li>WAV書き出しにも対応した、DAW不要のスタンドアロン版</li>
+<li>短剣〜大剣まで 5カテゴリー・200点超の 192kHz Swishサンプル</li>
+<li>SWISH＋Blade の2層ミックス</li>
+<li>MIDIで即発音／ランダマイズで毎回自然に違う響き</li>
+<li>お気に入りの音をキーに登録して即呼び出しできるストックキー</li>
+<li>波形にピッチカーブを描ける ピッチオートメーション ＋ 5バンドEQ</li>
 </ul>`,
       specs: [
         { label: 'Format',   value: 'VST3 / AU / AAX / Standalone' },
         { label: 'Platform', value: 'Windows / macOS' },
         { label: 'Samples',  value: '200+' },
-        { label: 'License',  value: '商用利用可（再配布禁止）' },
+        { label: 'License',  value: lang === 'en' ? 'Licensed for commercial use (no redistribution)' : '商用利用可（再配布禁止）' },
       ],
     },
   }
@@ -2001,11 +2046,13 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
   }
 
   return `<!DOCTYPE html>
-<html lang="ja">
+<html lang="${lang}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>${item.title} | Giverny Audio</title>
+  <link rel="alternate" hreflang="ja" href="https://givernyaudio.com${selfJa}">
+  <link rel="alternate" hreflang="en" href="https://givernyaudio.com${selfEn}">
   <link rel="icon" type="image/png" href="/favicon-64.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -2106,16 +2153,19 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
   <!-- ヘッダー -->
   <header class="hd">
     <div class="hd-in">
-      <a href="/" class="hd-logo">Giverny Audio</a>
-      <a href="/tabs/store" class="hd-back">← Back to Store</a>
+      <a href="${home}" class="hd-logo">Giverny Audio</a>
+      <div style="display:flex;align-items:center;gap:22px;">
+        <span style="font-size:11px;letter-spacing:.1em;"><a href="${selfJa}" style="${la(lang==='ja')}text-decoration:none;">JA</a><span style="opacity:.35;margin:0 5px;color:#fff;">/</span><a href="${selfEn}" style="${la(lang==='en')}text-decoration:none;">EN</a></span>
+        <a href="${storeUrl}" class="hd-back">${lang === 'en' ? '← Back to Store' : '← ストアに戻る'}</a>
+      </div>
     </div>
   </header>
 
   <main class="page-wrap">
     <!-- パンくず -->
     <nav class="breadcrumb">
-      <a href="/">Home</a> &nbsp;/&nbsp;
-      <a href="/tabs/store">Store</a> &nbsp;/&nbsp;
+      <a href="${home}">Home</a> &nbsp;/&nbsp;
+      <a href="${storeUrl}">Store</a> &nbsp;/&nbsp;
       ${item.title}
     </nav>
 
@@ -2172,9 +2222,9 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
       <div>
         <p class="price">${item.price}</p>
         <div class="desc">${item.description}</div>
-        ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">購入する — BASE</a>` : ''}
-        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Payhip</a>
-        <p class="btn-note">※ Payhip の決済ページに遷移します</p>
+        ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">${lang === 'en' ? 'Buy on BASE' : '購入する — BASE'}</a>` : ''}
+        <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">${lang === 'en' ? 'Buy on Payhip' : '購入する — Payhip'}</a>
+        <p class="btn-note">${lang === 'en' ? 'You will be redirected to the Payhip checkout page.' : '※ Payhip の決済ページに遷移します'}</p>
       </div>
     </div>
 
@@ -2190,7 +2240,7 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
 
     <!-- フッター -->
     <div class="item-footer">
-      <a href="/tabs/store">← Store 一覧に戻る</a>
+      <a href="${storeUrl}">${lang === 'en' ? '← Back to Store list' : '← Store 一覧に戻る'}</a>
     </div>
   </main>
 </body>
