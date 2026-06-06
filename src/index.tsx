@@ -1868,7 +1868,7 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     body { font-family: 'Inter', sans-serif; background: #f0eeeb; color: #222; }
     /* ── ヘッダー ── */
     .hd { background: #1a1a1a; color: #fff; }
-    .hd-in { max-width: 1080px; margin: 0 auto; padding: 0 32px;
+    .hd-in { max-width: 1160px; margin: 0 auto; padding: 0 32px;
              display: flex; align-items: center; justify-content: space-between; height: 56px; }
     .hd-logo { font-size: 12px; letter-spacing: .22em; font-weight: 500; color: #fff;
                text-decoration: none; text-transform: uppercase; }
@@ -1876,7 +1876,7 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
                text-transform: uppercase; transition: color .18s; }
     .hd-back:hover { color: #fff; }
     /* ── メイン ── */
-    .page-wrap { max-width: 1080px; margin: 0 auto; padding: 48px 32px 80px; }
+    .page-wrap { max-width: 1160px; margin: 0 auto; padding: 48px 32px 80px; }
     /* パンくず */
     .breadcrumb { font-size: 11px; color: #aaa; margin-bottom: 32px; letter-spacing: .08em; }
     .breadcrumb a { color: #aaa; text-decoration: none; }
@@ -1889,7 +1889,7 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
                   margin: 12px 0 6px; line-height: 1.3; }
     .item-subtitle { font-size: 13px; color: #888; margin-bottom: 24px; line-height: 1.7; }
     /* 2カラムレイアウト */
-    .item-body { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+    .item-body { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start;
                  margin-bottom: 56px; }
     /* YouTube埋め込み */
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
