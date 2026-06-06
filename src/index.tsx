@@ -426,36 +426,44 @@ const TR = {
 //  ★ WORKS_LIST に実績を追加したら、ここにも同じ title で英訳を追加してください
 //  ★ 未定義のタイトルは日本語のまま表示されます（フォールバック）
 // ═══════════════════════════════════════════════════════════════════════
-const WORKS_EN: Record<string, { desc: string; role: string }> = {
+const WORKS_EN: Record<string, { title?: string; desc: string; role: string }> = {
   '動き出す妖怪展 NAGOYA / TOKYO': {
+    title: 'Yōkai Immersive Exhibition — NAGOYA / TOKYO',
     desc: "The world's first immersive digital art museum, where Japan's celebrated yōkai art comes alive through cutting-edge visuals and three-dimensional sculpture.",
     role: 'SE production, surround mix',
   },
   'Imy feat. Kotoha “追憶のファインダー”': {
+    title: 'Imy feat. Kotoha “Tsuioku no Finder”',
     desc: 'A music project by composer Myu and illustrator Onineko.',
     role: 'Field recording, voice editing',
   },
   'キャプテン翼〜たたかえドリームチーム〜': {
+    title: 'Captain Tsubasa: Dream Team',
     desc: "The competitive soccer simulation game loved worldwide, based on 'Captain Tsubasa'.",
     role: 'Sound direction, SE production, audio implementation (Wwise/Unity), voice direction',
   },
   'ゴーヘルゴー つきおとしてこ': {
+    title: 'Go Hell Go: Tsukiotoshiteko',
     desc: 'In hell, money is everything. An RPG where sending sinners down to hell is your livelihood — earn, and fight.',
     role: 'Sound direction, SE production, audio implementation (ADX2 / Unreal), voice editing',
   },
   'GRAND SUMMONERS': {
+    title: 'GRAND SUMMONERS',
     desc: 'A pixel-art action RPG with intense real-time battles for up to four players.',
     role: 'Sound direction, SE production, BGM production, audio implementation (ADX2), voice editing',
   },
   '結城友奈は勇者である 花結いのきらめき': {
+    title: 'Yuki Yuna is a Hero: Hanayui no Kirameki',
     desc: "A smartphone and PC-browser game based on the 'Yuki Yuna is a Hero' series, planned and conceived by Takahiro.",
     role: 'SE production',
   },
   'すだまリレイシヨン': {
+    title: 'Sudama Relation',
     desc: 'A strange bond forged in a land where demons lie — a tale woven between people and sudama (spirits).',
     role: 'Sound direction, SE production, BGM production',
   },
   'TIMEGAL Re:birth': {
+    title: 'TIMEGAL Re:birth',
     desc: "A new adventure game for Nintendo Switch based on the original 'Time Gal'.",
     role: 'BGM production',
   },
@@ -1838,17 +1846,17 @@ function renderWorks(lang: Lang = 'ja') {
     <div class="whead-cell">Role</div>
   </div>
   <div class="works-tbl" id="wl">
-${WORKS_LIST.map(w => { const we = lang === 'en' ? WORKS_EN[w.title] : null; return `
+${WORKS_LIST.map(w => { const we = lang === 'en' ? WORKS_EN[w.title] : null; const wt = we && we.title ? we.title : w.title; return `
   <div class="wrow" data-y="${w.year}">
     <div class="wy">${w.year}</div>
     <div class="wthumb">
       ${w.image
-        ? `<img src="/works/${w.image}" alt="${w.title}" loading="eager">`
+        ? `<img src="/works/${w.image}" alt="${wt}" loading="eager">`
         : `<div class="wthumb-none"></div>`
       }
     </div>
     <div class="wb">
-      <p class="wt">${w.url ? `<a href="${w.url}" target="_blank" rel="noopener">${w.title}</a>` : w.title}</p>
+      <p class="wt">${w.url ? `<a href="${w.url}" target="_blank" rel="noopener">${wt}</a>` : wt}</p>
       <p class="wd">${we ? we.desc : w.desc}</p>
       <p class="wr">${we ? we.role : w.role}</p>
     </div>
