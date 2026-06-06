@@ -1821,26 +1821,30 @@ function renderItemPage(id: string) {
 さらに 風切り音（SWISH）に金属質のブレード音（Blade）を重ねる2層構成で、空気感と刃の鳴りを自在にミックスできます。<br>
 ピッチ＆スピードのランダマイズにより、連打しても毎回ニュアンスの違う自然な音に。<br><br>
 <strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ 主な特長</strong>
-・VST3,AU,AAXといった幅広いDAWに対応<br>
-・WAV書き出しにも対応した、DAW不要のスタンドアロン版<br>
-・短剣〜大剣まで 5カテゴリー・200点超の 192kHz Swishサンプル<br>
-・SWISH＋Blade の2層ミックス：風切り音に金属質のブレード音を重ね、それぞれ独立に調整（Blade 6タイプ＋ランダム）<br>
-・MIDIで即発音／ランダマイズで毎回自然に違う響き<br>
-・お気に入りの音をキーに登録して即呼び出しできる ストックキー<br>
-・波形にピッチカーブを描ける ピッチオートメーション（振り下ろしのドップラー感）＋ 5バンドEQ で音作り<br><br>
+<ul class="feat">
+<li>VST3,AU,AAXといった幅広いDAWに対応</li>
+<li>WAV書き出しにも対応した、DAW不要のスタンドアロン版</li>
+<li>短剣〜大剣まで 5カテゴリー・200点超の 192kHz Swishサンプル</li>
+<li>SWISH＋Blade の2層ミックス</li>
+<li>MIDIで即発音／ランダマイズで毎回自然に違う響き</li>
+<li>お気に入りの音をキーに登録して即呼び出しできるストックキー</li>
+<li>波形にピッチカーブを描ける ピッチオートメーション ＋ 5バンドEQ</li>
+</ul>
 <strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ Description</strong>
 A sound plugin for game and video production, specializing in sword swish (Swish) effects.<br>
 Over 200 samples recorded at 192kHz — five categories spanning daggers to greatswords — trigger instantly from a single MIDI key.<br>
 On top of that, a two-layer design stacks a metallic blade tone (Blade) over the swish (SWISH), letting you freely mix the rush of air with the ring of steel.<br>
 Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound natural and distinct every time.<br><br>
 <strong style="display:block;font-size:14px;color:#333;margin:22px 0 10px;">■ Key Features</strong>
-・Broad DAW support — VST3, AU, and AAX<br>
-・Standalone version (no DAW required), with WAV export<br>
-・200+ 192kHz swish samples across 5 categories, from daggers to greatswords<br>
-・SWISH + Blade two-layer mix: stack a metallic blade tone over the swish, each adjustable independently (6 Blade types + Random)<br>
-・Instant MIDI triggering — randomization for a natural, different sound every time<br>
-・Stock Keys: register your favorite sounds to a key for instant recall<br>
-・Pitch Automation: draw a pitch curve on the waveform (downswing Doppler), plus a 5-band EQ for shaping your tone`,
+<ul class="feat">
+<li>Broad DAW support — VST3, AU, and AAX</li>
+<li>Standalone version (no DAW required), with WAV export</li>
+<li>200+ 192kHz swish samples across 5 categories, from daggers to greatswords</li>
+<li>SWISH + Blade two-layer mix</li>
+<li>Instant MIDI triggering — randomization for a natural, different sound every time</li>
+<li>Stock Keys: register your favorite sounds to a key for instant recall</li>
+<li>Pitch Automation: draw a pitch curve on the waveform, plus a 5-band EQ</li>
+</ul>`,
       specs: [
         { label: 'Format',   value: 'VST3 / AU / AAX / Standalone' },
         { label: 'Platform', value: 'Windows / macOS' },
@@ -1917,6 +1921,9 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     /* 右カラム */
     .price { font-size: 32px; font-weight: 500; color: #222; margin-bottom: 20px; }
     .desc { font-size: 13px; color: #555; line-height: 2.0; margin-bottom: 28px; }
+    .desc .feat { list-style: none; margin: 6px 0 10px; padding: 0; }
+    .desc .feat li { display: flex; gap: 6px; align-items: baseline; line-height: 1.8; margin-bottom: 6px; }
+    .desc .feat li::before { content: "・"; flex-shrink: 0; font-size: 18px; color: #888; }
     /* 購入ボタン */
     .btn-buy { display: block; background: #1a1a1a; color: #fff; text-align: center;
                padding: 16px 24px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
@@ -2023,7 +2030,7 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
       <!-- 右：説明・購入 -->
       <div>
         <p class="price">${item.price}</p>
-        <p class="desc">${item.description}</p>
+        <div class="desc">${item.description}</div>
         ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">購入する — BASE</a>` : ''}
         <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">購入する — Payhip</a>
         <p class="btn-note">※ Payhip の決済ページに遷移します</p>
