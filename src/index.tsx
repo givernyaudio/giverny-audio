@@ -2094,7 +2094,8 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     /* 左カラムは自然な高さ。右カラムだけ行高まで伸ばし、購入ボタン群を下端に固定
        → 画像が縦に伸びる広い画面でも、購入ボタンが左画像の下端ラインに揃う */
     .item-right { display: flex; flex-direction: column; align-self: stretch; }
-    .buy-group { margin-top: auto; }
+    .buy-group { margin-top: auto; position: relative; padding-bottom: 24px; }
+    .buy-group .btn-note { position: absolute; left: 0; right: 0; bottom: 0; }
     /* YouTube埋め込み */
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
