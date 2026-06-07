@@ -307,10 +307,9 @@ const TR = {
     htmlLang: 'ja',
     heroCatch: '光と色のように、音をつくる。',
     aboutLabel: 'About',
-    aboutBody: `<p>Giverny Audio はゲームオーディオ / サウンドデザインを専門とする制作スタジオです。<br>
-        サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。</p>
-        <p>専門的な知識と積み重ねてきた技術を活かし、<br>
-        クライアントのビジョンに寄り添った質の高いオーディオを提供することを大切にしています。<br>
+    aboutBody: `<p class="ja-catch">Giverny Audio は<br>ゲームオーディオ / サウンドデザインを専門とする制作スタジオです。</p>
+        <p class="ja-sub">サウンドの提案から制作、実装などオーディオに関わる部分をワンストップでお任せいただけます。<br>
+        専門的な知識と積み重ねてきた技術を活かし、クライアントのビジョンに寄り添った質の高いオーディオを提供することを大切にしています。<br>
         ゲームからイマーシブコンテンツまで、幅広い分野において没入できるサウンドをお届けします。</p>`,
     snsLabel: 'Official Account',
     servicesLabel: 'Services',
@@ -366,9 +365,8 @@ const TR = {
     htmlLang: 'en',
     heroCatch: 'Crafting sound, like light and color.',
     aboutLabel: 'About',
-    aboutBody: `<p>Giverny Audio is a studio specializing in game audio and sound design.<br>
-        From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof.</p>
-        <p>Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
+    aboutBody: `<p class="en-catch">Giverny Audio <br>is a studio specializing in game audio and sound design.</p>
+        <p class="en-sub">From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof. Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
         With a track record spanning games and immersive content, we craft sound that draws players and audiences naturally into the worlds they experience.</p>`,
     snsLabel: 'Official Account',
     servicesLabel: 'Services',
@@ -699,6 +697,15 @@ img{display:block;max-width:100%;}
 }
 .about-body .en-sub{
   font-size:13px;font-weight:400;color:#888;line-height:2.0;
+  margin-top:4px;
+}
+/* 日本語版 About：英語版（catch + sub）と同じ見せ方。日本語向けに字間と大きさを調整 */
+.about-body .ja-catch{
+  font-size:14px;font-weight:700;letter-spacing:.04em;
+  color:#444;margin-top:52px;margin-bottom:12px;line-height:1.9;
+}
+.about-body .ja-sub{
+  font-size:13.5px;font-weight:400;color:#888;line-height:2.1;
   margin-top:4px;
 }
 .skill-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:28px;}
