@@ -820,7 +820,7 @@ img{display:block;max-width:100%;}
 .svc-en{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:5px;text-align:center;}
 .svc-ja{font-size:12px;color:#999;text-align:center;}
 .svc-right{
-  padding:28px 36px;font-size:14px;color:#3f3f3f;line-height:2.25;letter-spacing:.01em;
+  padding:26px 32px;font-size:13px;color:#444;line-height:2.1;
 }
 .svc-right strong{color:#333;font-weight:500;}
 
