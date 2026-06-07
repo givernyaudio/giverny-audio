@@ -814,13 +814,13 @@ img{display:block;max-width:100%;}
 }
 .svc-row:hover{background:#faf9f6;}
 .svc-left{
-  padding:22px 24px;border-right:1px solid #ccc;
+  padding:28px 24px;border-right:1px solid #ccc;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
-.svc-en{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:4px;text-align:center;}
+.svc-en{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#333;margin-bottom:5px;text-align:center;}
 .svc-ja{font-size:12px;color:#999;text-align:center;}
 .svc-right{
-  padding:22px 28px;font-size:13px;color:#555;line-height:1.95;
+  padding:28px 36px;font-size:14px;color:#3f3f3f;line-height:2.25;letter-spacing:.01em;
 }
 .svc-right strong{color:#333;font-weight:500;}
 
