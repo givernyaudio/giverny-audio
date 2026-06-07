@@ -315,7 +315,7 @@ const TR = {
     servicesLabel: 'Services',
     svcDesignSub: 'サウンドデザイン',
     svcDesignDesc: `ゲーム、映像、PVなどの効果音を制作。<br>
-          ハイエンドのマイクを駆使した繊細な音素材/屋外収録、効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
+          ハイエンドのマイクを駆使した繊細な音素材/屋外収録、<br>効果音ライブラリーも活用してプロフェッショナルなオリジナルサウンド制作を提供。<br>
           Unity/Unreal, Wwise/ADX2の実装実績があり、ゲームエンジンやミドルウェア組み込みも幅広く対応可能。`,
     svcRecordingSub: '音声収録',
     svcRecordingDesc: `iZotope RXによるノイズ除去・整音からゲームエンジン・ミドルウェアへの実装まで一貫して対応いたします。<br>
@@ -821,6 +821,8 @@ img{display:block;max-width:100%;}
 .svc-ja{font-size:12px;color:#999;text-align:center;}
 .svc-right{
   padding:26px 32px;font-size:13px;color:#444;line-height:2.1;
+  display:flex;flex-direction:column;justify-content:center;
+  text-wrap:pretty;
 }
 .svc-right strong{color:#333;font-weight:500;}
 
@@ -1531,7 +1533,7 @@ function renderHome(lang: Lang = 'ja') {
           ${t.svcDesignSub ? `<p class="svc-ja">${t.svcDesignSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          ${t.svcDesignDesc}
+          <div class="svc-desc">${t.svcDesignDesc}</div>
         </div>
       </div>
       <div class="svc-row">
@@ -1540,7 +1542,7 @@ function renderHome(lang: Lang = 'ja') {
           ${t.svcRecordingSub ? `<p class="svc-ja">${t.svcRecordingSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          ${t.svcRecordingDesc}
+          <div class="svc-desc">${t.svcRecordingDesc}</div>
         </div>
       </div>
       <div class="svc-row">
@@ -1549,7 +1551,7 @@ function renderHome(lang: Lang = 'ja') {
           ${t.svcSalesSub ? `<p class="svc-ja">${t.svcSalesSub}</p>` : ''}
         </div>
         <div class="svc-right">
-          ${t.svcSalesDesc.replace('__STORE__', tabs + '/store')}
+          <div class="svc-desc">${t.svcSalesDesc.replace('__STORE__', tabs + '/store')}</div>
         </div>
       </div>
     </div>
