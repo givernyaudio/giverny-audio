@@ -1274,8 +1274,8 @@ function layout(title: string, body: string, lang: Lang = 'ja', canonical: strin
     <a href="${home}" class="logo">Giverny Audio</a>
     <nav><ul class="gnav">
       <li><a href="${home}">Top</a></li>
-      <li><a href="${home}#sns">Account</a></li>
       <li><a href="${home}#services">Services</a></li>
+      <li><a href="${home}#sns">Account</a></li>
       <li><a href="${tabs}/works">Works</a></li>
       <li><a href="${tabs}/equipment">Equipment</a></li>
       <li><a href="${tabs}/store">Store</a></li>
@@ -1291,8 +1291,8 @@ function layout(title: string, body: string, lang: Lang = 'ja', canonical: strin
 <div id="mmenu">
   <button id="mc" onclick="document.getElementById('mmenu').classList.remove('open')">✕</button>
   <a href="${home}" onclick="document.getElementById('mmenu').classList.remove('open')">Top</a>
-  <a href="${home}#sns" onclick="document.getElementById('mmenu').classList.remove('open')">Account</a>
   <a href="${home}#services" onclick="document.getElementById('mmenu').classList.remove('open')">Services</a>
+  <a href="${home}#sns" onclick="document.getElementById('mmenu').classList.remove('open')">Account</a>
   <a href="${tabs}/works">Works</a>
   <a href="${tabs}/equipment">Equipment</a>
   <a href="${tabs}/store">Store</a>
@@ -1520,6 +1520,48 @@ function renderHome(lang: Lang = 'ja') {
 
 <hr class="div">
 
+<!-- SERVICES -->
+<section id="services" style="background:#f0eeeb;">
+  <div class="page sec fade">
+    <p class="sec-label">Services</p>
+    <div class="svc-table">
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Sound Design</p>
+          ${t.svcDesignSub ? `<p class="svc-ja">${t.svcDesignSub}</p>` : ''}
+        </div>
+        <div class="svc-right">
+          ${t.svcDesignDesc}
+        </div>
+      </div>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Audio Recording</p>
+          ${t.svcRecordingSub ? `<p class="svc-ja">${t.svcRecordingSub}</p>` : ''}
+        </div>
+        <div class="svc-right">
+          ${t.svcRecordingDesc}
+        </div>
+      </div>
+      <div class="svc-row">
+        <div class="svc-left">
+          <p class="svc-en">Asset Sales</p>
+          ${t.svcSalesSub ? `<p class="svc-ja">${t.svcSalesSub}</p>` : ''}
+        </div>
+        <div class="svc-right">
+          ${t.svcSalesDesc.replace('__STORE__', tabs + '/store')}
+        </div>
+      </div>
+    </div>
+    <div class="price-note">
+      <p>${t.priceNote}</p>
+      <a href="${home}#contact" class="btn-contact">${t.contactBtn}</a>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
 <!-- SNS / OFFICIAL ACCOUNTS -->
 <section id="sns" style="background:#f0eeeb;">
   <div class="page sec fade">
@@ -1579,48 +1621,6 @@ function renderHome(lang: Lang = 'ja') {
       </a>`).join('')}
     </div>
 
-  </div>
-</section>
-
-<hr class="div">
-
-<!-- SERVICES -->
-<section id="services" style="background:#f0eeeb;">
-  <div class="page sec fade">
-    <p class="sec-label">Services</p>
-    <div class="svc-table">
-      <div class="svc-row">
-        <div class="svc-left">
-          <p class="svc-en">Sound Design</p>
-          ${t.svcDesignSub ? `<p class="svc-ja">${t.svcDesignSub}</p>` : ''}
-        </div>
-        <div class="svc-right">
-          ${t.svcDesignDesc}
-        </div>
-      </div>
-      <div class="svc-row">
-        <div class="svc-left">
-          <p class="svc-en">Audio Recording</p>
-          ${t.svcRecordingSub ? `<p class="svc-ja">${t.svcRecordingSub}</p>` : ''}
-        </div>
-        <div class="svc-right">
-          ${t.svcRecordingDesc}
-        </div>
-      </div>
-      <div class="svc-row">
-        <div class="svc-left">
-          <p class="svc-en">Asset Sales</p>
-          ${t.svcSalesSub ? `<p class="svc-ja">${t.svcSalesSub}</p>` : ''}
-        </div>
-        <div class="svc-right">
-          ${t.svcSalesDesc.replace('__STORE__', tabs + '/store')}
-        </div>
-      </div>
-    </div>
-    <div class="price-note">
-      <p>${t.priceNote}</p>
-      <a href="${home}#contact" class="btn-contact">${t.contactBtn}</a>
-    </div>
   </div>
 </section>
 
