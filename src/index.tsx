@@ -668,9 +668,9 @@ img{display:block;max-width:100%;}
 /* ── ABOUT ── */
 .about-2col{
   display:grid;
-  grid-template-columns:320px 1fr;
+  grid-template-columns:300px 1fr;
   gap:56px;
-  align-items:stretch;
+  align-items:start;
   max-width:1000px;
   margin:0 auto;
 }
@@ -679,10 +679,9 @@ img{display:block;max-width:100%;}
   overflow:hidden;
 }
 .about-img-wrap img{
-  width:100%;height:100%;
+  width:100%;height:380px;
   object-fit:cover;object-position:center;
   display:block;
-  min-height:300px;
 }
 .about-body{
   display:flex;flex-direction:column;
