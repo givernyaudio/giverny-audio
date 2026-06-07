@@ -2025,7 +2025,7 @@ function renderItemPage(id: string, lang: Lang = 'ja') {
         : 'VST3 / AU / AAX / StandAlone — ゲーム・映像制作向け剣撃音生成ツール',
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
-      buyUrlBase: 'https://givernyaudio.base.shop/',  // BASE ショップ（空文字で非表示）
+      buyUrlBase: 'https://givernyaudio.base.shop/items/146368425',  // BASE 商品ページ（空文字で非表示）
       youtubeId: 'WtwIuUxzIDY',
       tags:      ['VST3', 'AU', 'AAX', 'StandAlone', 'Game Audio', 'Sound Design', 'Sword SFX'],
       description: lang === 'en' ? `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ Description</strong>
