@@ -1107,6 +1107,7 @@ img{display:block;max-width:100%;}
 }
 .si-title{font-size:13px;color:#222;font-weight:500;line-height:1.5;flex:1;}
 .si-count{font-size:10px;color:#bbb;letter-spacing:.04em;white-space:nowrap;flex-shrink:0;}
+.si-blurb{font-size:11px;color:#999;line-height:1.65;margin:4px 0 8px;}
 .si-price{font-size:16px;color:#333;font-weight:600;margin-bottom:14px;letter-spacing:.02em;}
 .si-buy{
   display:block;text-align:center;
@@ -1965,6 +1966,7 @@ ${STORE_ITEMS.map(item => `
           : `<p class="si-title">${item.title}</p>`}
         ${item.count ? `<span class="si-count">${item.count}</span>` : ''}
       </div>
+      ${(lang === 'en' ? item.blurbEn : item.blurb) ? `<p class="si-blurb">${lang === 'en' ? item.blurbEn : item.blurb}</p>` : ''}
       <p class="si-price">${item.price}</p>
       ${item.detailUrl
         ? `<a href="${base + item.detailUrl}" class="si-buy si-buy-detail">${t.buyDetail}</a>`
