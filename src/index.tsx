@@ -2091,6 +2091,10 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     /* 2カラムレイアウト */
     .item-body { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start;
                  margin-bottom: 56px; }
+    /* 左カラムは自然な高さ。右カラムだけ行高まで伸ばし、購入ボタン群を下端に固定
+       → 画像が縦に伸びる広い画面でも、購入ボタンが左画像の下端ラインに揃う */
+    .item-right { display: flex; flex-direction: column; align-self: stretch; }
+    .buy-group { margin-top: auto; }
     /* YouTube埋め込み */
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
@@ -2227,12 +2231,14 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
       </div>
 
       <!-- 右：説明・購入 -->
-      <div>
+      <div class="item-right">
         <p class="price">${item.price}</p>
         <div class="desc">${item.description}</div>
+        <div class="buy-group">
         ${item.buyUrlBase ? `<a href="${item.buyUrlBase}" target="_blank" rel="noopener" class="btn-buy">${lang === 'en' ? 'Buy on BASE' : '購入する — BASE'}</a>` : ''}
         <a href="${item.buyUrl}" target="_blank" rel="noopener" class="btn-buy">${lang === 'en' ? 'Buy on Payhip' : '購入する — Payhip'}</a>
         <p class="btn-note">${lang === 'en' ? "You will be redirected to the store's checkout page." : '※ 各ストアの決済ページに遷移します'}</p>
+        </div>
       </div>
     </div>
 
