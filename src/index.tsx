@@ -2091,11 +2091,8 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     /* 2カラムレイアウト */
     .item-body { display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: start;
                  margin-bottom: 56px; }
-    /* 左カラムは自然な高さ。右カラムだけ行高まで伸ばし、購入ボタン群を下端に固定
-       → 画像が縦に伸びる広い画面でも、購入ボタンが左画像の下端ラインに揃う */
-    .item-right { display: flex; flex-direction: column; align-self: stretch; }
-    .buy-group { margin-top: auto; position: relative; padding-bottom: 24px; }
-    .buy-group .btn-note { position: absolute; left: 0; right: 0; bottom: 0; }
+    .item-right { }
+    .buy-group { }
     /* YouTube埋め込み */
     .yt-wrap { position: relative; padding-top: 56.25%; background: #000; border-radius: 2px;
                overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.12); }
@@ -2242,6 +2239,25 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
         </div>
       </div>
     </div>
+
+    <script>
+    (function(){
+      function alignBuy(){
+        var thumbs=document.querySelector('.gallery-thumbs');
+        var btns=document.querySelectorAll('.btn-buy');
+        var bg=document.querySelector('.buy-group');
+        if(!thumbs||!btns.length||!bg||window.innerWidth<=700) { if(bg) bg.style.marginTop=''; return; }
+        bg.style.marginTop='0';
+        var target=thumbs.getBoundingClientRect().bottom;
+        var last=btns[btns.length-1].getBoundingClientRect().bottom;
+        var diff=target-last;
+        bg.style.marginTop=Math.max(0,diff)+'px';
+      }
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(alignBuy,50);});
+      else setTimeout(alignBuy,50);
+      window.addEventListener('resize',function(){setTimeout(alignBuy,30);});
+    })();
+    </script>
 
     <!-- スペック -->
     <h2 class="sec-title">Specifications</h2>
