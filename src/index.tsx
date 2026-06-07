@@ -85,6 +85,8 @@ const STORE_ITEMS = [
     id:    'sword-swish-generator',
     title: 'Sword Swish Generator',
     count: 'VST plugin',
+    blurb:   '剣の風切り音（Swish）に特化したサウンドプラグイン',
+    blurbEn: 'A sound plugin specializing in sword swish (Swish) effects',
     price: '2,000 JPY',
     image: 'SSG_Plg.webp',
     url:   'https://givernyaudio.gumroad.com/',  // 購入ページURL
@@ -1146,6 +1148,7 @@ img{display:block;max-width:100%;}
 .pickup-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin-bottom:3px;}
 .pickup-title{font-size:12px;color:#222;font-weight:500;line-height:1.5;flex:1;}
 .pickup-count{font-size:10px;color:#bbb;white-space:nowrap;flex-shrink:0;}
+.pickup-blurb{font-size:11px;color:#999;line-height:1.65;margin:1px 0 7px;}
 .pickup-price{font-size:13px;color:#555;font-weight:500;}
 
 .store-note{
@@ -1649,6 +1652,7 @@ function renderHome(lang: Lang = 'ja') {
             <p class="pickup-title">${item.title}</p>
             ${item.count ? `<span class="pickup-count">${item.count}</span>` : ''}
           </div>
+          ${(lang === 'en' ? item.blurbEn : item.blurb) ? `<p class="pickup-blurb">${lang === 'en' ? item.blurbEn : item.blurb}</p>` : ''}
           <p class="pickup-price">${item.price}</p>
         </div>
       </a>`).join('')}
