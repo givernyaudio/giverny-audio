@@ -2138,12 +2138,14 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     .fl-label { font-weight: 500; color: #333; min-width: 140px; flex-shrink: 0; }
     .fl-text  { color: #666; line-height: 1.7; }
     /* スペック表 */
-    .spec-tbl { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
-    .spec-tbl tr { border-bottom: 1px solid #e8e6e1; }
-    .spec-tbl td { padding: 11px 0; font-size: 12px; }
-    .spec-tbl td:first-child { color: #aaa; letter-spacing: .12em; text-transform: uppercase;
-                               width: 140px; font-size: 11px; }
-    .spec-tbl td:last-child { color: #333; }
+    .spec-wrap { background: #fff; border: 1px solid #e0dedd; padding: 28px 32px 20px; margin-bottom: 40px; }
+    .spec-tbl { width: 100%; border-collapse: collapse; }
+    .spec-tbl tr { border-bottom: 1px solid #eae8e5; }
+    .spec-tbl tr:last-child { border-bottom: none; }
+    .spec-tbl td { padding: 14px 0; font-size: 13px; vertical-align: middle; }
+    .spec-tbl td:first-child { color: #999; letter-spacing: .14em; text-transform: uppercase;
+                               width: 150px; font-size: 10px; font-weight: 500; }
+    .spec-tbl td:last-child { color: #222; font-weight: 400; letter-spacing: .02em; }
     /* フッター */
     .item-footer { border-top: 1px solid #ddd; padding-top: 32px; text-align: center; }
     .item-footer a { font-size: 11px; letter-spacing: .14em; color: #888; text-decoration: none;
@@ -2260,14 +2262,16 @@ Thanks to pitch &amp; speed randomization, even rapid, repeated strikes sound na
     </script>
 
     <!-- スペック -->
-    <h2 class="sec-title">Specifications</h2>
-    <table class="spec-tbl">
-      ${item.specs.map(s => `
-      <tr>
-        <td>${s.label}</td>
-        <td>${s.value}</td>
-      </tr>`).join('')}
-    </table>
+    <div class="spec-wrap">
+      <h2 class="sec-title" style="margin-top:0;">Specifications</h2>
+      <table class="spec-tbl">
+        ${item.specs.map(s => `
+        <tr>
+          <td>${s.label}</td>
+          <td>${s.value}</td>
+        </tr>`).join('')}
+      </table>
+    </div>
 
     <!-- フッター -->
     <div class="item-footer">
