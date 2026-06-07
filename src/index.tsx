@@ -366,8 +366,9 @@ const TR = {
     htmlLang: 'en',
     heroCatch: 'Crafting sound, like light and color.',
     aboutLabel: 'About',
-    aboutBody: `<p class="en-catch">Giverny Audio <br>is a studio specializing in game audio and sound design.</p>
-        <p class="en-sub">From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof. Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
+    aboutBody: `<p>Giverny Audio is a studio specializing in game audio and sound design.<br>
+        From initial concept and creative direction through to production and implementation, we handle the entire audio process under one roof.</p>
+        <p>Grounded in deep expertise and years of experience, we work closely with each client to understand their vision and deliver audio of the highest quality.<br>
         With a track record spanning games and immersive content, we craft sound that draws players and audiences naturally into the worlds they experience.</p>`,
     snsLabel: 'Official Account',
     servicesLabel: 'Services',
