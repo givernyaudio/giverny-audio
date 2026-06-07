@@ -2028,7 +2028,7 @@ function renderItemPage(id: string, lang: Lang = 'ja') {
       price:     '2,000 JPY',
       buyUrl:    'https://payhip.com/b/Nv6H3',
       buyUrlBase: 'https://givernyaudio.base.shop/items/146368425',  // BASE 商品ページ（空文字で非表示）
-      youtubeId: 'WtwIuUxzIDY',
+      youtubeId: 'gViry1jufqI',
       tags:      ['VST3', 'AU', 'AAX', 'StandAlone', 'Game Audio', 'Sound Design', 'Sword SFX'],
       description: lang === 'en' ? `<strong style="display:block;font-size:14px;color:#333;margin-bottom:10px;">■ Description</strong>
 A sound plugin for game and video production, specializing in sword swish (Swish) effects.<br>
